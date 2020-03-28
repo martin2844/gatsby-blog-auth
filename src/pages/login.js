@@ -1,13 +1,20 @@
-import React, { useCallback } from 'react'
+import React, { useContext } from 'react'
 import Layout from '../layout/Layout';
-import app from '../config/base.js'
+import Title from '../layout/title';
+import app from '../config/base.js';
+import { AuthContext } from '../config/context';
+
 
 //import navigate to navigate to page after successfully login or creating user.
-import { navigate } from "@reach/router"
+import { navigate, Redirect } from "@reach/router"
 
 
-const signIn = () => {
 
+const Login = () => {
+  
+    const { currentUser } = useContext(AuthContext);
+
+    console.table(currentUser, "help")
     const handleSignUp = async event => {
         event.preventDefault();
         const {email, password} = event.target.elements;
@@ -31,34 +38,38 @@ const signIn = () => {
         }
     }
 
+    
+
+
     return (
         <Layout>
-
-
+                <Title title="Login" subtitle="Logueate o registraté" />
+        <section className="login-container">
+            {currentUser ? <Redirect noThrow to="/" /> : null}
             <form onSubmit={handleSignIn}>
 
                 <label>Email</label>
-                <input type="email" name="email" placeholder="email" />
+                <input type="email" name="email" placeholder="Email" />
                 <label>Password</label>
                 <input type="password" name="password" placeholder="Password" />
-                <button type="submit">Sign Up</button>
+                <button type="submit">Login</button>
             </form>
 
 
             <form onSubmit={handleSignUp}>
 
                 <label>Email</label>
-                <input type="email" name="email" placeholder="email" />
+                <input type="email" name="email" placeholder="Email" />
                 <label>Password</label>
                 <input type="password" name="password" placeholder="Password" />
-                <button type="submit">Sign Up</button>
+                <button type="submit">Register</button>
             </form>
-
+            </section>
 
             
         </Layout>
     )
 }
 
-export default signIn
+export default Login
 
