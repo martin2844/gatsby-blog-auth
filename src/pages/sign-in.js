@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react'
+import Layout from '../layout/Layout';
 import app from '../config/base.js'
 
 //import navigate to navigate to page after successfully login or creating user.
@@ -31,7 +32,7 @@ const signIn = () => {
     }
 
     return (
-        <div>
+        <Layout>
 
 
             <form onSubmit={handleSignIn}>
@@ -55,7 +56,7 @@ const signIn = () => {
 
 
             
-        </div>
+        </Layout>
     )
 }
 

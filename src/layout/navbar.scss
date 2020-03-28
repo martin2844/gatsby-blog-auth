@@ -1,0 +1,177 @@
+$text-primary: #b6b6b6;
+$text-secondary: #ececec;
+$bg-primary: #23232e;
+$bg-secondary: #141418;
+$speed: 600ms;
+
+
+
+
+
+.navbar {
+   
+    position: fixed;
+    background-color: $bg-primary;
+    transition: width 200ms ease;
+
+    &.light {
+        background-color: lightgray;
+
+        .nav-link {
+            color: black;
+            &:hover {
+                background-color: rgb(190, 190, 190);
+            }
+        }
+
+        .logo {
+            background-color: rgb(190, 190, 190);
+        }
+    }
+   
+  
+}
+
+
+
+.navbar-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 100%;
+}
+
+.nav-item {
+    width: 100%;
+ 
+
+}
+
+.nav-item:last-of-type {
+   margin-top: auto;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    color: $text-primary;
+    text-decoration: none;
+    height: 5rem;
+    filter: grayscale(100%) opacity(0.7);
+    transition: $speed;
+    svg {
+        width: 2rem;
+        min-width: 2rem;
+        margin: 0 1.5rem;
+        transition: $speed;
+        color: limegreen;
+    }
+    &:hover {
+        background-color: $bg-secondary;
+        filter: grayscale(0%) opacity(1);
+    }
+}
+
+.link-text {
+    display: none;
+    margin-right:1rem;
+}
+
+
+.logo {
+    font-weight: bold;
+    background-color: $bg-secondary;
+    text-transform: uppercase;
+    font-size: 1.5rem;
+    
+    text-align: center;
+    letter-spacing: 0.3ch;
+    width: 100%;
+    .link-text{
+        margin-left: 1.2rem;
+    }
+   .nav-link svg {
+        transform: rotate(0deg);
+        transition: transform $speed;
+        
+
+
+    }
+
+}
+
+.navbar:hover .logo .nav-link svg {
+        transform: rotate(-180deg);    
+}
+
+
+.sun {
+    cursor: pointer;
+    svg {
+        color: rgb(255, 217, 0);
+    }
+}
+
+.moon {
+    cursor: pointer;
+    svg {
+        color: rgb(0, 255, 191);
+    }
+}
+
+
+//large screen
+@media screen and (min-width: 600px) {
+
+    .navbar {
+        top: 0;
+        width: 5rem;
+        height: 100vh;
+
+        &:hover {
+            width: 19rem;
+        }
+
+        &:hover .link-text {
+            display: block;
+        }
+
+    }
+
+    
+
+}
+
+
+@media screen and (max-width: 600px) {
+    .navbar {
+        bottom: 0;
+        width: 100vw;
+        height: 5rem;
+
+    
+
+    }
+
+    .logo {
+        display: none;
+    }
+
+    .navbar-nav {
+        flex-direction: row;
+    }
+
+    .nav-link {
+        justify-content: center;
+    }
+    
+    .main-container {
+        margin: 0;
+    }
+
+
+}

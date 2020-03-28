@@ -11,15 +11,16 @@ export const AuthContext = React.createContext();
 
 // From global state reducers
 const initialState = {
-    user: "user"
+    toggleDark: true
 }
 
 
 function reducer(state, action) {
   switch (action.type) {
-    case "CHANGE_PATH": {
+    case "TOGGLE_THEME": {
       return {
         ...state,
+        toggleDark: !state.toggleDark
        
       }
     }
