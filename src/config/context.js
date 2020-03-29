@@ -38,6 +38,8 @@ function reducer(state, action) {
 const GlobalContextProvider = ({ children }) => {
   const [state, dispatch] = React.useReducer(reducer, initialState);
   const [currentUser, setCurrentUser] = useState(null);
+
+
   useEffect(() => {
       app.auth().onAuthStateChanged(setCurrentUser);
       console.log(app.auth().onAuthStateChanged(setCurrentUser))

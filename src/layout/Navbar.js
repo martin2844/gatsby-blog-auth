@@ -4,7 +4,11 @@ import './navbar.scss';
 import {GlobalDispatchContext, GlobalStateContext, AuthContext} from '../config/context';
 
 const Navbar = () => {
-    const { currentUser } = useContext(AuthContext);
+    let currentUser;
+    let test = useContext(AuthContext);
+    if(test) {
+        currentUser = test.currentUser;
+    }
     const dispatch = useContext(GlobalDispatchContext);
     const state = useContext(GlobalStateContext) || {
         toggleDark: true

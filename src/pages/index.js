@@ -10,7 +10,11 @@ const Index = () => {
       user: "hello world"
       }
 
-      const {currentUser} = useContext(AuthContext);
+      let currentUser;
+      let test = useContext(AuthContext);
+      if(test) {
+          currentUser = test.currentUser;
+      }
       //conditional testing.
       let logged = (<div>YOU ARE LOGGED</div>)
       let notLogged = (<div>YOU ARE NOT LOGGED</div>)

@@ -12,9 +12,12 @@ import { navigate, Redirect } from "@reach/router"
 
 const Login = () => {
   
-    const { currentUser } = useContext(AuthContext);
+    let currentUser;
+    let test = useContext(AuthContext);
+    if(test) {
+        currentUser = test.currentUser;
+    }
 
-    console.table(currentUser, "help")
     const handleSignUp = async event => {
         event.preventDefault();
         const {email, password} = event.target.elements;

@@ -8,7 +8,11 @@ import { GlobalDispatchContext, GlobalStateContext, AuthContext } from '../confi
 const Profile = () => {
    
 
-    const {currentUser} = useContext(AuthContext);
+    let currentUser;
+    let test = useContext(AuthContext);
+    if(test) {
+        currentUser = test.currentUser;
+    }
     const [name, setName] = useState(null);
 
 
