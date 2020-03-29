@@ -20,7 +20,7 @@ const Login = () => {
         const {email, password} = event.target.elements;
         try {
             await app.auth().createUserWithEmailAndPassword(email.value, password.value);
-            navigate(`/`);
+          navigate(`/profile`);
         } catch (error) {
             alert(error);
         }
@@ -32,7 +32,7 @@ const Login = () => {
         const {email, password} = event.target.elements;
         try {
             await app.auth().signInWithEmailAndPassword(email.value, password.value);
-            navigate(`/`);
+           navigate(`/profile`);
         } catch (error) {
             alert(error);
         }
@@ -45,7 +45,7 @@ const Login = () => {
         <Layout>
                 <Title title="Login" subtitle="Logueate o registraté" />
         <section className="login-container">
-            {currentUser ? <Redirect noThrow to="/" /> : null}
+            {currentUser ? <Redirect noThrow to="/profile" /> : null}
             <form onSubmit={handleSignIn}>
 
                 <label>Email</label>
