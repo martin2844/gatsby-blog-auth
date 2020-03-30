@@ -11,4 +11,7 @@ const app = firebase.initializeApp({
 
 })
 
+console.log(process.env.FIREBASE_DOMAIN, "help2");
+console.log(process.env.NETLIFY);
+
 export default app;
