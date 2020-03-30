@@ -17,6 +17,14 @@ module.exports = {
       },
       
     },
+    {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `thumbs`,
+        path: path.join(__dirname, `src`, `blog`,`thumbs`),
+      },
+      
+    },
     `gatsby-plugin-sharp`,
     `gatsby-transformer-sharp`,
     {
