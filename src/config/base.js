@@ -13,5 +13,6 @@ const app = firebase.initializeApp({
 
 console.log(process.env.FIREBASE_DOMAIN, "help2");
 console.log(process.env.NETLIFY);
+console.log(process.env.production.FIREBASE_KEY);
 
 export default app;
