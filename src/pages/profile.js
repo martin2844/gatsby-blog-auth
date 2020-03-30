@@ -86,7 +86,7 @@ const Profile = () => {
 
 
             <section className="user-section">
-              <h4>Tu nombre de display: {currentUser.displayName}</h4>
+              <h4>Tu nombre de display: {name}</h4>
               <button>Cambiar</button>
 
               <h4>Tu imagen {currentUser ? <img src={displayImage}/> : null}</h4>
