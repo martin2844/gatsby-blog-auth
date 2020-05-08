@@ -1,0 +1,9 @@
+.post-sub-data-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    p {
+        margin-right: 20px;
+        margin-top: -20px;
+    }
+}

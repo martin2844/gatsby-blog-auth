@@ -1,0 +1,44 @@
+.section-blog-posts{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    .tags-section {
+        margin-right: 50px;
+    }
+}
+
+
+
+.post-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    padding: 20px 40px;
+    border-radius: 60px;
+    a {
+        margin: 0;
+        text-decoration: none;
+    
+    }
+    h1 {
+        margin-bottom: 10px;
+        margin-top: 10px;
+        text-decoration: underline;
+    }
+    .post-date {
+        margin-top: 0;
+    }
+
+    &.dark  {
+        background-color: #23232e;
+        a {
+            color: white;
+           }
+    }
+    .post-container-img {
+        width: 150px;
+        margin-right: 200px;
+        
+    }
+}

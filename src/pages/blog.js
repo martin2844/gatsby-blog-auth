@@ -1,12 +1,24 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {Link, graphql, useStaticQuery} from 'gatsby';
 import Img from 'gatsby-image';
 import Layout from "../layout/Layout";
 import Title from '../layout/title';
 
+import {GlobalDispatchContext, GlobalStateContext, AuthContext} from '../config/context';
+
+
+
+
+import './styles/blog.scss';
 
 
 const Blog = () => {
+
+  const state = useContext(GlobalStateContext) || {
+    toggleDark: true
+  }
+
+
 
     const postsQuery = useStaticQuery(graphql`
 query {
@@ -90,20 +102,23 @@ const posts = thePosts.map((posts) => {
       filterTags.indexOf(tag) === -1 ? setFilterTags([...filterTags, tag]) : console.log('');
     })
   }
-  
-    return ( <ul className='post-container'>
+
+    let theme = "dark";
+    state.toggleDark ? theme = "dark": theme = "light";
+
+    return ( <ul className={`post-container ${theme}`}>
             
-            <div className='post-container-img'><Link className='no-decor' to={`/blog/${posts.node.fields.slug}`}  ><Img fluid={theImage} /></Link></div>
+                <div className='post-container-img'><Link className='no-decor' to={`/blog/${posts.node.fields.slug}`}  ><Img fluid={theImage} /></Link></div>
 
-            <div className='post-container-text'>
-              
-            <Link className='no-decor' to={`/blog/${posts.node.fields.slug}`}  >
-            <h1 className='post-title'>{posts.node.frontmatter.title}</h1> 
-            <p className='post-date'>{posts.node.frontmatter.date}</p>
-            </Link>
-            <div className='post-sinopsis'><p>{posts.node.frontmatter.sinopsis} </p><Link className='read-more' to={`/blog/${posts.node.fields.slug}`}>...Leer más</Link></div>
+                <div className='post-container-text'>
+                
+                  <Link className='no-decor' to={`/blog/${posts.node.fields.slug}`}  >
+                  <h1 className='post-title'>{posts.node.frontmatter.title}</h1> 
+                  <p className='post-date'>{posts.node.frontmatter.date}</p>
+                  </Link>
+                  <div className='post-sinopsis'><p>{posts.node.frontmatter.sinopsis} </p><Link className='read-more' to={`/blog/${posts.node.fields.slug}`}>...Leer más</Link></div>
 
-            </div>
+                  </div>
             </ul>
            
     )
