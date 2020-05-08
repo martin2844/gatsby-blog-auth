@@ -19,7 +19,7 @@ const Index = () => {
       let logged = (<div>YOU ARE LOGGED</div>)
       let notLogged = (<div>YOU ARE NOT LOGGED</div>)
       console.log(currentUser);
-
+      console.log(process.env.GATSBY_FIREBASE_KEY)
     return (
         <Layout>
 
