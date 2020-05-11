@@ -22,6 +22,11 @@ const Inspirate = () => {
         console.log(commentRef);
         setComments(commentRef.data().comments)
         //setComments(data.docs.map(doc => doc.data()));
+
+
+        
+
+
     }
     fetchData();
    }, []) 

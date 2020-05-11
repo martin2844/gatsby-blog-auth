@@ -7,7 +7,7 @@ import { GlobalDispatchContext, GlobalStateContext, AuthContext } from '../confi
 
 
 const Profile = () => {
-    
+
     const [displayImage, setDisplayImage] = useState(null);
 
     //BUILD BYPASS
@@ -19,7 +19,7 @@ const Profile = () => {
 
     const [name, setName] = useState(null);
 
-
+    const db = app.firestore();
 
     //CHECK IF USER HAS DISPLAY NAME, IF NOT SET IT UP FOR HIM
     useEffect(()=> {
@@ -35,14 +35,40 @@ const Profile = () => {
                     setName(currentUser.displayName);
                     console.log("allready has a name")
                 }
-                
+
             } catch (error) {
                     console.log(error);
             }
-        
-        
+
+
         }
-        checkName();
+        checkName().then( async () => {
+
+
+            // Do checking here, if user does not have a name in DB write it down, so search first
+            console.log("entered .then")
+            if(currentUser) {
+
+                const usernameRef = await db.collection('usernames').doc(currentUser.email).get();
+                const usernameEntry = usernameRef.data();
+                console.log(usernameEntry);
+
+                   
+                // If no results do following block
+                if(usernameEntry === undefined) {
+                    console.log("username === undefind, writing name to DB")
+                    await db.collection("usernames").doc(currentUser.email).set({
+                        email: currentUser.email,
+                        username: currentUser.displayName
+                    });
+                }
+                    
+            }  
+            
+
+  
+        }).catch(err => console.err(err));
+
         // ALSO set users image into state for displaying it.
         if(currentUser && currentUser.photoURL !== null) {
             setDisplayImage(currentUser.photoURL);
@@ -81,7 +107,7 @@ const Profile = () => {
 
     return (
         <Layout>
-            
+
             { name ? <Title subtitle={`Bienvenido ${name}`} sub2={`${da}-${mo}-${ye}`} /> : null}
 
 
@@ -91,12 +117,12 @@ const Profile = () => {
 
               <h4>Tu imagen {currentUser ? <img src={displayImage}/> : null}</h4>
               <button>Cambiar:</button>
-              <button onClick={ () => setNewProfile() }>Poner una random</button> 
+              <button onClick={ () => setNewProfile() }>Poner una random</button>
 
             </section>
-            
 
-            
+
+
         </Layout>
     )
 }

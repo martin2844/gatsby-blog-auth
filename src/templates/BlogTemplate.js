@@ -47,6 +47,7 @@ const BlogTemplate = (props) => {
 
   // set state for fetching comments.
   const [comments, setComments] = useState([]);
+  const [newComms, setNewComms] = useState([]);
   //Separate postID to search DB
   const postID = props.data.markdownRemark.frontmatter.id;
   useEffect(() => {
@@ -58,31 +59,91 @@ const BlogTemplate = (props) => {
        //Must do error handling, for the case the document does not exists obviously.
        const commentRef = await db.collection("comments").doc(postID).get();
        const data = await db.collection("comments").get();
-       console.log(commentRef);
-       setComments(commentRef.data().comments)
+       const usernameRef = await db.collection("usernames");
+       
+       const findName = async (email) => {
+         return usernameRef.doc(email).get();
+       } 
+       // logs correctly each user for each comment. Beneath code in comments were failed attempts.
+       commentRef.data().comments.forEach((comment) => {
+        findName(comment.email).then(x => console.log(x.data()))
+       })
+     
+
+       //no sirvio
+
+      //  commentRef.data().comments.forEach((comment) => {
+      //    console.log("foreach");
+      //    console.log(comment);
+      //    setNewComms([...newComms,
+      //     {
+      //       email: comment.email,
+      //       comment: comment.comment,
+      //       id: comment.id,
+      //       usernam: findName(comment.email)
+            
+
+      //     }
+      //   ])
+      //    findName(comment.email).then(data => setNewComms([...newComms, {
+      
+      //     username: data.data().username
+      //   }]));
+      
+      //  })
+
+      //  let finalConsideration = [];
+       
+      //  await commentRef.data().comments.forEach((comment) => {
+      //     usernameRef.doc(comment.email).get().then((doc) => {
+      //       setComments([
+      //         ...comments,
+      //         {
+      //           comment: comment.comment,
+      //           email: comment.email,
+      //           id: comment.id,
+      //           username: doc.data().username
+      //         }
+
+      //       ])
+      //     })
+        
+      //     });
+
+  
+      //  console.log(finalConsideration);
+       setComments(commentRef.data().comments);
+
        //setComments(data.docs.map(doc => doc.data()));
    }
    fetchData();
   }, []);
 
   console.log(comments);
+  console.log(newComms);
+  
 
   comments && (commentCount = comments.length);
+
+
 
   //Must make conditional if user is logged in show comment box
   // Must make conditional for each comment if user.email === to comment.email user gets edit, or Delete button
   // Must style comment box in general
 
-  let commentsDisplay = comments.map((comment) => {
-    const { email } = comment;
-    // por ahora no hay manera de sacar el username a través de firebase sin meterse en firebase functions o otro workaround mas facil es guardar el user en una base 
-    // de datos, collection, separada cuando alguien se registra y cuando cambia el username lo actualiza. Y eso si es publico.
-    return (
-      <div>
-        {comment.email}
-      </div>
-    )
-  })
+  let commentsDisplay;
+  if(comments !== undefined) {
+    commentsDisplay = comments.map((comment) => {
+      const { email } = comment;
+      // por ahora no hay manera de sacar el username a través de firebase sin meterse en firebase functions o otro workaround mas facil es guardar el user en una base 
+      // de datos, collection, separada cuando alguien se registra y cuando cambia el username lo actualiza. Y eso si es publico.
+      return (
+        <div>
+          {comment.email}
+        </div>
+      )
+    })
+  }
  
   
 
