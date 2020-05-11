@@ -7,3 +7,28 @@
         margin-top: -20px;
     }
 }
+
+.post-comments {
+    .comment {
+        .profile-pic{
+            margin-right: 40px;
+            .picture {
+                width: 80px;
+                border-radius: 50px;
+            }
+        }
+        background-color: darkgrey;
+        padding:15px 20px;
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        h4 {
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+        p {
+            margin-bottom: 0;
+        }
+    }
+}

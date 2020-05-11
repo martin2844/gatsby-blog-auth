@@ -51,7 +51,7 @@ const BlogTemplate = (props) => {
 
 
   // Initiate var for comment count info.
-  let commentCount = 0;
+  let commentCount = null;
 
 
 
@@ -61,6 +61,7 @@ const BlogTemplate = (props) => {
   const [comments, setComments] = useState([]);
   //second state to populate the actual info that will be shown.
   const [newComms, setNewComms] = useState([]);
+  const [loading, setLoading] = useState(true);
 
 
   //Initialization of the variable to get the postID from the blog posts front matter in order to search the DB
@@ -97,7 +98,7 @@ const BlogTemplate = (props) => {
   } 
 
 
- //Create async function to construc the comment objects using a map from the previously created comments state. since each comment will have a pending promise
+ //Create async function to construct the comment objects using a map from the previously created comments state. since each comment will have a pending promise
  //we will use promise.all inside the async function to return them once they are all promised.
     const constructComments = async () => {
       let promises = comments.map(async (comment) => {
@@ -106,7 +107,8 @@ const BlogTemplate = (props) => {
           {
             comment: comment.comment,
             email: comment.email,
-            username: username.data().username
+            username: username.data().username,
+            id: comment.id
           }
         )
       })
@@ -122,7 +124,9 @@ const BlogTemplate = (props) => {
         setNewComms(data);
       }
 
-      run();
+        run().then(setLoading(false));
+     
+
  
     }, [comments]);
 
@@ -130,28 +134,42 @@ const BlogTemplate = (props) => {
   //just modifying the original commentcount variable to show the actual length of the comments array.
   comments && (commentCount = comments.length);
 
+  
 
 
-  //Must make conditional if user is logged in show comment box
-  // Must make conditional for each comment if user.email === to comment.email user gets edit, or Delete button
-  // Must style comment box in general
 
   let commentsDisplay;
-  if(comments !== undefined) {
-    commentsDisplay = comments.map((comment) => {
-      const { email } = comment;
+  if(newComms !== undefined) {
+    
+    commentsDisplay = newComms.map((commentario) => {
+      const { email, username, comment, image, id } = commentario;
       // por ahora no hay manera de sacar el username a través de firebase sin meterse en firebase functions o otro workaround mas facil es guardar el user en una base 
       // de datos, collection, separada cuando alguien se registra y cuando cambia el username lo actualiza. Y eso si es publico.
+      let imageSRC;
+      if(image) {
+        imageSRC = image
+      } else {
+        imageSRC = "https://limitlesstravellers.com/wp-content/plugins/wp-ulike/assets/img/no-thumbnail.png"
+      }
       return (
-        <div>
-          {comment.email}
-          {comment.comment}
+        <div key={id} className="comment">
+          <div className="profile-pic">
+            <img className="picture" src={imageSRC} />
+          </div>
+          <div className="comment-content">
+            <h4><a href={`emailto:${email}`}>{username}</a></h4>
+            <p>{comment}</p>
+
+          </div>
+         
+
         </div>
       )
     })
   }
  
   
+console.log(loading);
 
  return (
     <Layout>
@@ -161,8 +179,9 @@ const BlogTemplate = (props) => {
         <div className="post-sub-data-container">
         <p className='post-date'> posted on {props.data.markdownRemark.frontmatter.date}</p>
         <p className="comment-info">comments: {commentCount}</p>
+        {JSON.stringify(loading)}
         </div>
-       
+
         </div>
   
 
@@ -170,8 +189,9 @@ const BlogTemplate = (props) => {
         <div className='post-content-container' dangerouslySetInnerHTML={{__html: props.data.markdownRemark.html}}></div>
         </section>
         <section className="post-comments">
+
           {commentsDisplay}
-          {JSON.stringify(newComms)}
+         
         </section>
         <Link className='goback' to="/blog">Go back to posts</Link>
     </Layout>
