@@ -39,90 +39,95 @@ query (
 
 
 const BlogTemplate = (props) => {
+   //Async await is difficult
 
-  // Initiate var for comment count:
+  //In order to get the username, I need to access my username collection, because firebase doesnt allow access to the auth module if you're not
+  //running an admin sdk. So everytime a user is created the username, and later profile picture is stored into a DB, inside a collection called usernames.
+  //Each doc has the name of the user's email, so its just a matter of getting one document per email.
+
+  //So first we load up the comments, then we check for each comment, which has the user's email stored, what is that users 'username' by accessing the collection
+  //usernames.
+
+
+
+  // Initiate var for comment count info.
   let commentCount = 0;
 
 
 
   // set state for fetching comments.
+
+  //initial comment loading for mapping afterwards
   const [comments, setComments] = useState([]);
+  //second state to populate the actual info that will be shown.
   const [newComms, setNewComms] = useState([]);
-  //Separate postID to search DB
+
+
+  //Initialization of the variable to get the postID from the blog posts front matter in order to search the DB
   const postID = props.data.markdownRemark.frontmatter.id;
+ 
+  //Initial useEffect to do the fetching of the DB only once
   useEffect(() => {
-  
    //function to fetch comment data 
    const fetchData = async () => {
+        //initialize firestore. local scope
        const db = app.firestore();
 
        //Must do error handling, for the case the document does not exists obviously.
        const commentRef = await db.collection("comments").doc(postID).get();
        const data = await db.collection("comments").get();
-       const usernameRef = await db.collection("usernames");
        
-       const findName = async (email) => {
-         return usernameRef.doc(email).get();
-       } 
-       // logs correctly each user for each comment. Beneath code in comments were failed attempts.
-       commentRef.data().comments.forEach((comment) => {
-        findName(comment.email).then(x => console.log(x.data()))
-       })
-     
-
-       //no sirvio
-
-      //  commentRef.data().comments.forEach((comment) => {
-      //    console.log("foreach");
-      //    console.log(comment);
-      //    setNewComms([...newComms,
-      //     {
-      //       email: comment.email,
-      //       comment: comment.comment,
-      //       id: comment.id,
-      //       usernam: findName(comment.email)
-            
-
-      //     }
-      //   ])
-      //    findName(comment.email).then(data => setNewComms([...newComms, {
-      
-      //     username: data.data().username
-      //   }]));
-      
-      //  })
-
-      //  let finalConsideration = [];
-       
-      //  await commentRef.data().comments.forEach((comment) => {
-      //     usernameRef.doc(comment.email).get().then((doc) => {
-      //       setComments([
-      //         ...comments,
-      //         {
-      //           comment: comment.comment,
-      //           email: comment.email,
-      //           id: comment.id,
-      //           username: doc.data().username
-      //         }
-
-      //       ])
-      //     })
-        
-      //     });
-
-  
-      //  console.log(finalConsideration);
        setComments(commentRef.data().comments);
 
-       //setComments(data.docs.map(doc => doc.data()));
+     
    }
+   //carrt out actual function
    fetchData();
+
+
+
   }, []);
 
-  console.log(comments);
-  console.log(newComms);
-  
+  //create function for finding username in the username collection
+  const findName = async (email) => {
+    const db = app.firestore();
+    const usernameRef = await db.collection("usernames");
+    return usernameRef.doc(email).get();
 
+  } 
+
+
+ //Create async function to construc the comment objects using a map from the previously created comments state. since each comment will have a pending promise
+ //we will use promise.all inside the async function to return them once they are all promised.
+    const constructComments = async () => {
+      let promises = comments.map(async (comment) => {
+        let username = await findName(comment.email);
+        return (
+          {
+            comment: comment.comment,
+            email: comment.email,
+            username: username.data().username
+          }
+        )
+      })
+      return await Promise.all(promises)
+    }
+
+    //Use effect to run only when the comments change, that is to say, when comments change from initial empty state to fully populated
+    useEffect(() => {
+      //create an async function in order to be able to await the constructComment function and pass it into a variable called data
+      let run = async () => {
+        let data = await constructComments();
+        //once we get the Data we will pass it into the newComms state.
+        setNewComms(data);
+      }
+
+      run();
+ 
+    }, [comments]);
+
+  
+  //just modifying the original commentcount variable to show the actual length of the comments array.
   comments && (commentCount = comments.length);
 
 
@@ -140,6 +145,7 @@ const BlogTemplate = (props) => {
       return (
         <div>
           {comment.email}
+          {comment.comment}
         </div>
       )
     })
@@ -165,7 +171,7 @@ const BlogTemplate = (props) => {
         </section>
         <section className="post-comments">
           {commentsDisplay}
-
+          {JSON.stringify(newComms)}
         </section>
         <Link className='goback' to="/blog">Go back to posts</Link>
     </Layout>
