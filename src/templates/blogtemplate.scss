@@ -1,3 +1,6 @@
+.post-content-container {
+    max-width: calc(100vw - 5rem);
+}
 .post-sub-data-container {
     display: flex;
     flex-direction: row;
@@ -29,6 +32,34 @@
         }
         p {
             margin-bottom: 0;
+        }
+    }
+}
+
+.new-comment {
+    form {
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        label {
+            font-size: 1.4rem;
+            
+        }
+        textarea {
+            width: 50%;
+            margin: 15px 40px;
+            min-height: 150px;
+            border: solid 1px rebeccapurple;        
+        }
+        button {
+            background-color: rebeccapurple;
+            color: white;
+            width: 150px;
+            height: 40px;
+            padding: 5px;
+            border: none;
+            margin-bottom: 20px;
+            cursor: pointer;
         }
     }
 }

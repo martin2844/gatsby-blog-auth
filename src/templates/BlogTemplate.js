@@ -1,6 +1,9 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import Layout from '../layout/Layout';
 import {graphql, Link} from 'gatsby';
+import Spinner from '../layout/Spinner';
+import firebase from "firebase/app";
+
 
 import '@firebase/firestore'
 
@@ -39,7 +42,18 @@ query (
 
 
 const BlogTemplate = (props) => {
-   //Async await is difficult
+
+     //BUILD BYPASS
+     let currentUser;
+     let getUser = useContext(AuthContext);
+     if(getUser) {
+         currentUser = getUser.currentUser;
+     }
+ 
+
+  
+  
+  //Async await is difficult
 
   //In order to get the username, I need to access my username collection, because firebase doesnt allow access to the auth module if you're not
   //running an admin sdk. So everytime a user is created the username, and later profile picture is stored into a DB, inside a collection called usernames.
@@ -61,27 +75,38 @@ const BlogTemplate = (props) => {
   const [comments, setComments] = useState([]);
   //second state to populate the actual info that will be shown.
   const [newComms, setNewComms] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(null);
 
 
   //Initialization of the variable to get the postID from the blog posts front matter in order to search the DB
   const postID = props.data.markdownRemark.frontmatter.id;
- 
-  //Initial useEffect to do the fetching of the DB only once
-  useEffect(() => {
-   //function to fetch comment data 
-   const fetchData = async () => {
-        //initialize firestore. local scope
-       const db = app.firestore();
 
-       //Must do error handling, for the case the document does not exists obviously.
-       const commentRef = await db.collection("comments").doc(postID).get();
-       const data = await db.collection("comments").get();
-       
-       setComments(commentRef.data().comments);
+  //initialize DB?
+  const db = app.firestore();
 
+
+  //Fetch Data function
+     //function to fetch comment data 
+     const fetchData = async () => {
+      //initialize firestore. local scope
      
-   }
+
+     //Must do error handling, for the case the document does not exists obviously.
+     const commentRef = await db.collection("comments").doc(postID).get();    
+     setComments(commentRef.data().comments);
+
+   
+ }
+
+
+  //Initial useEffect to do the fetching of the DB only once
+
+
+
+
+  useEffect(() => {
+    setLoading(true);
+
    //carrt out actual function
    fetchData();
 
@@ -91,7 +116,7 @@ const BlogTemplate = (props) => {
 
   //create function for finding username in the username collection
   const findName = async (email) => {
-    const db = app.firestore();
+    
     const usernameRef = await db.collection("usernames");
     return usernameRef.doc(email).get();
 
@@ -122,9 +147,10 @@ const BlogTemplate = (props) => {
         let data = await constructComments();
         //once we get the Data we will pass it into the newComms state.
         setNewComms(data);
+        
       }
 
-        run().then(setLoading(false));
+        run();
      
 
  
@@ -134,13 +160,18 @@ const BlogTemplate = (props) => {
   //just modifying the original commentcount variable to show the actual length of the comments array.
   comments && (commentCount = comments.length);
 
-  
-
+  //Loading . Set loading false if newComms is bigger than, but also case could be doc not found == no comments. So do that as well
+  useEffect(() => {
+    //   
+    if(newComms.length >= 1) {
+      setLoading(false);
+    }
+   
+  }, [newComms])
 
 
   let commentsDisplay;
   if(newComms !== undefined) {
-    
     commentsDisplay = newComms.map((commentario) => {
       const { email, username, comment, image, id } = commentario;
       // por ahora no hay manera de sacar el username a través de firebase sin meterse en firebase functions o otro workaround mas facil es guardar el user en una base 
@@ -171,6 +202,62 @@ const BlogTemplate = (props) => {
   
 console.log(loading);
 
+
+const [text, setText] = useState("");
+
+ const onSubmit = async (e) => {
+   e.preventDefault();
+   try {
+
+    await db.collection("comments").doc(postID).update({
+      comments: firebase.firestore.FieldValue.arrayUnion({
+        comment: text,
+        email: currentUser.email,
+        id: Math.floor(Math.random() * 10000)
+      })
+
+    });
+     console.log("Comment Succeeded");
+     setText("");
+     
+   } catch (error) {
+      
+    console.error(error);
+
+
+   }
+
+
+ }
+
+
+
+
+  // Define leave comment block 
+
+  const newComment = (
+    <section className="new-comment">
+    <form onSubmit={e => onSubmit(e).then(fetchData())}>
+      <label>Leave a comment:</label>
+      <textarea value={text} onChange={e => setText(e.target.value)}/>
+      <button>Submit</button>
+  </form>
+  </section>
+  )
+
+  // Define Sign In block
+
+  const signIn = (
+    <section>
+      You are not logged in! <Link to="/login">Sign in</Link> to leave a comment
+    </section>
+  )
+
+
+
+
+
+
  return (
     <Layout>
         <section className='post-main'>
@@ -179,7 +266,7 @@ console.log(loading);
         <div className="post-sub-data-container">
         <p className='post-date'> posted on {props.data.markdownRemark.frontmatter.date}</p>
         <p className="comment-info">comments: {commentCount}</p>
-        {JSON.stringify(loading)}
+
         </div>
 
         </div>
@@ -190,9 +277,11 @@ console.log(loading);
         </section>
         <section className="post-comments">
 
-          {commentsDisplay}
+          {loading ? <Spinner text="loading comments" /> : commentsDisplay}
          
         </section>
+        
+        {loading ? null : (currentUser ? newComment : signIn)}
         <Link className='goback' to="/blog">Go back to posts</Link>
     </Layout>
  )
