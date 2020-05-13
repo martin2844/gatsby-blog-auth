@@ -13,6 +13,9 @@
 
 .post-comments {
     .comment {
+        .comment-content {
+            width: 100%;
+        }
         .profile-pic{
             margin-right: 40px;
             .picture {
@@ -62,4 +65,12 @@
             cursor: pointer;
         }
     }
+}
+
+.delete-comment { 
+    font-weight: bold;
+    color: red;
+    font-size: 12px;
+    text-align: right;
+    cursor: pointer;
 }

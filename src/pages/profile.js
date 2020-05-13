@@ -59,7 +59,8 @@ const Profile = () => {
                     console.log("username === undefind, writing name to DB")
                     await db.collection("usernames").doc(currentUser.email).set({
                         email: currentUser.email,
-                        username: currentUser.displayName
+                        username: currentUser.displayName,
+                        profilePic: currentUser.photoURL || "https://limitlesstravellers.com/wp-content/plugins/wp-ulike/assets/img/no-thumbnail.png"
                     });
                 }
                     
@@ -67,7 +68,7 @@ const Profile = () => {
             
 
   
-        }).catch(err => console.err(err));
+        }).catch(err => console.error(err));
 
         // ALSO set users image into state for displaying it.
         if(currentUser && currentUser.photoURL !== null) {
@@ -92,6 +93,9 @@ const Profile = () => {
      try {
         if(randomURL) {
             await app.auth().currentUser.updateProfile({photoURL: randomURL});
+            await db.collection("usernames").doc(currentUser.email).update({
+                profilePic: randomURL
+            })
             console.log("new image?")
             setDisplayImage(randomURL);
         }

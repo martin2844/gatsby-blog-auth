@@ -64,7 +64,7 @@ const BlogTemplate = (props) => {
 
 
 
-  // Initiate var for comment count info.
+  // Ie.firestore.FieldValue.arrayRemove("east_coast")nitiate var for comment count info.
   let commentCount = null;
 
 
@@ -133,7 +133,8 @@ const BlogTemplate = (props) => {
             comment: comment.comment,
             email: comment.email,
             username: username.data().username,
-            id: comment.id
+            id: comment.id,
+            image: username.data().profilePic
           }
         )
       })
@@ -170,6 +171,18 @@ const BlogTemplate = (props) => {
   }, [newComms])
 
 
+  //delete comment function
+  const deleteComment = (e, comment, email) => {
+    console.log(e.target.id);
+    const ID = parseInt(e.target.id);
+
+    db.collection("comments").doc(postID).update({
+      comments: firebase.firestore.FieldValue.arrayRemove({id: ID, email: email, comment: comment})
+    }).then(fetchData()).catch(error => console.error(error));
+   
+  }
+
+
   let commentsDisplay;
   if(newComms !== undefined) {
     commentsDisplay = newComms.map((commentario) => {
@@ -190,7 +203,7 @@ const BlogTemplate = (props) => {
           <div className="comment-content">
             <h4><a href={`emailto:${email}`}>{username}</a></h4>
             <p>{comment}</p>
-
+            {currentUser.email === email && <p id={id} comment={comment} onClick={e => deleteComment(e, comment, email)} className="delete-comment"> Delete Comment</p>}
           </div>
          
 
