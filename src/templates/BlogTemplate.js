@@ -76,6 +76,7 @@ const BlogTemplate = (props) => {
   //second state to populate the actual info that will be shown.
   const [newComms, setNewComms] = useState([]);
   const [loading, setLoading] = useState(null);
+  const [noComms, setNoComms] = useState(false);
 
 
   //Initialization of the variable to get the postID from the blog posts front matter in order to search the DB
@@ -85,36 +86,44 @@ const BlogTemplate = (props) => {
   const db = app.firestore();
 
 
-  //Fetch Data function
+  //@@@ Fetch Comment Data function
      //function to fetch comment data 
      const fetchData = async () => {
       //initialize firestore. local scope
+     //Must do error handling, for the case the document does not exists obviously.
+     try {
+
+      const commentRef = await db.collection("comments").doc(postID).get();
+
+      if(commentRef.data() === undefined) {
+        db.collection("comments").doc(postID).set({comments: []});
+        throw "Undefined document, but Dont worry, I've 'created' one for you";
+      } else if (Object.keys(commentRef.data()).length === 0 && commentRef.data().constructor === Object) {
+        db.collection("comments").doc(postID).set({comments: []});
+        throw "The document was defined, but there was no data, dont worry, Ive put Data in for you.";
+      } else if(commentRef.data().comments.length === 0) {
+        setNoComms(true);
+        throw "No comments for this post \n But worry shall you not, this document exists, be the first one to comment \n go on!";
+      } else {
+        setComments(commentRef.data().comments);
+      }
      
 
-     //Must do error handling, for the case the document does not exists obviously.
-     const commentRef = await db.collection("comments").doc(postID).get();    
-     setComments(commentRef.data().comments);
-
-   
+     } catch (error) {
+       console.error(error);
+     }
+     
  }
 
-
+ 
   //Initial useEffect to do the fetching of the DB only once
-
-
-
-
   useEffect(() => {
     setLoading(true);
-
-   //carrt out actual function
-   fetchData();
-
-
-
+   //carry out actual function
+   fetchData().catch("help");
   }, []);
 
-  //create function for finding username in the username collection
+  //@@@ function for finding username in the username collection
   const findName = async (email) => {
     
     const usernameRef = await db.collection("usernames");
@@ -126,6 +135,9 @@ const BlogTemplate = (props) => {
  //Create async function to construct the comment objects using a map from the previously created comments state. since each comment will have a pending promise
  //we will use promise.all inside the async function to return them once they are all promised.
     const constructComments = async () => {
+      
+      // only map out if comments exist.
+      if(comments) {
       let promises = comments.map(async (comment) => {
         let username = await findName(comment.email);
         return (
@@ -139,6 +151,7 @@ const BlogTemplate = (props) => {
         )
       })
       return await Promise.all(promises)
+    }
     }
 
     //Use effect to run only when the comments change, that is to say, when comments change from initial empty state to fully populated
@@ -163,28 +176,23 @@ const BlogTemplate = (props) => {
 
   //Loading . Set loading false if newComms is bigger than, but also case could be doc not found == no comments. So do that as well
   useEffect(() => {
-    //   
-    if(newComms.length >= 1) {
+    //
+
+    if(newComms !== undefined && newComms.length >= 1 ) {
       setLoading(false);
+      setNoComms(false);
+
+    } else if (newComms !== undefined && newComms.length === 0 ) {
+      setLoading(false);
+      setNoComms(true);
     }
    
   }, [newComms])
 
-
-  //delete comment function
-  const deleteComment = (e, comment, email) => {
-    console.log(e.target.id);
-    const ID = parseInt(e.target.id);
-
-    db.collection("comments").doc(postID).update({
-      comments: firebase.firestore.FieldValue.arrayRemove({id: ID, email: email, comment: comment})
-    }).then(fetchData()).catch(error => console.error(error));
-   
-  }
-
-
+  // @@@ Comment display block
+  console.log(noComms);
   let commentsDisplay;
-  if(newComms !== undefined) {
+  if(newComms !== undefined && noComms === false) {
     commentsDisplay = newComms.map((commentario) => {
       const { email, username, comment, image, id } = commentario;
       // por ahora no hay manera de sacar el username a través de firebase sin meterse en firebase functions o otro workaround mas facil es guardar el user en una base 
@@ -210,14 +218,26 @@ const BlogTemplate = (props) => {
         </div>
       )
     })
+  } else {
+    commentsDisplay = ( 
+      <div>no comments</div>
+    )
   }
- 
-  
-console.log(loading);
+
+  //@@@ Delete a comment function
+  const deleteComment = (e, comment, email) => {
+    console.log(e.target.id);
+    const ID = parseInt(e.target.id);
+
+    db.collection("comments").doc(postID).update({
+      comments: firebase.firestore.FieldValue.arrayRemove({id: ID, email: email, comment: comment})
+    }).then(fetchData()).catch(error => console.error(error));
+   
+  }
 
 
-const [text, setText] = useState("");
-
+//@@@ Post a comment function - onSubmit
+ const [text, setText] = useState("");
  const onSubmit = async (e) => {
    e.preventDefault();
    try {
@@ -246,7 +266,7 @@ const [text, setText] = useState("");
 
 
 
-  // Define leave comment block 
+  // @@@ Define leave comment block 
 
   const newComment = (
     <section className="new-comment">
@@ -258,7 +278,7 @@ const [text, setText] = useState("");
   </section>
   )
 
-  // Define Sign In block
+  // @@@ Define Sign In block
 
   const signIn = (
     <section>
