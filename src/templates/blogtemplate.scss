@@ -1,14 +1,32 @@
 .post-content-container {
     max-width: calc(100vw - 5rem);
+    h1, h2, h3, h4 {
+        line-height: 1;
+    }
+    p {
+        line-height: 1.5;
+    }
 }
+
+.post-title-content {
+    text-align: center;
+}
+
 .post-sub-data-container {
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
+    justify-content: center;
     p {
         margin-right: 20px;
         margin-top: -20px;
     }
+}
+
+.white-test {
+    white-space: pre-wrap;
+    font-size: .9rem;
+    line-height: 2;
 }
 
 .post-comments {
@@ -31,7 +49,9 @@
                     margin-left: 20px;
                     color: #d0cbd6;
                     font-size: .8rem;
+                    white-space: pre-wrap;
                 }
+             
                 h4 {
                     letter-spacing: -1px;
                 }
@@ -68,13 +88,25 @@
         flex-wrap: nowrap;
         label {
             font-size: 1.4rem;
+            border-bottom: 1px solid #d0cbd6;
+            border-top: 1px solid #d0cbd6;
+            h6 {
+                border-bottom: 3px solid #d0cbd6;
+                width: 140px;
+                padding-bottom: 1rem;
+                margin-bottom: 0;
+                margin-top: 1rem;
+            }
             
+           
+
         }
         textarea {
-            width: 50%;
-            margin: 15px 40px;
+            width: 100%;
+            margin-top:10px;
+            margin-bottom: 10px;
             min-height: 150px;
-            border: solid 1px rebeccapurple;        
+            border: solid 1px #d0cbd6;       
         }
         button {
             background-color: rebeccapurple;
@@ -85,6 +117,7 @@
             border: none;
             margin-bottom: 20px;
             cursor: pointer;
+            margin-left: auto;
         }
     }
 }

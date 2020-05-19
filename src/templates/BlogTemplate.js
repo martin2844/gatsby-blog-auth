@@ -228,7 +228,7 @@ const BlogTemplate = (props) => {
           </div>
           <div className="comment-content">
             <div className="top"><h4><a href={`emailto:${email}`}>{username}</a></h4><p>{datePosted.substr(0, datePosted.indexOf(" "))}</p></div>
-            <p>{comment}</p>
+            <div className="white-test">{comment}</div>
             {allowDelete && <p id={id} comment={comment} dateposted={datePosted} onClick={e => deleteComment(e, comment, email, datePosted)} className="delete-comment"> Delete Comment</p>}
           </div>
          
@@ -291,7 +291,7 @@ const BlogTemplate = (props) => {
   const newComment = (
     <section className="new-comment">
     <form onSubmit={e => onSubmit(e).then(fetchData())}>
-      <label>Leave a comment:</label>
+      <label><h6>Leave a comment:</h6></label>
       <textarea value={text} onChange={e => setText(e.target.value)}/>
       <button>Submit</button>
   </form>
@@ -306,7 +306,6 @@ const BlogTemplate = (props) => {
 
  return (
     <Layout>
-          {JSON.stringify(loading)}
         <section className='post-main'>
         <div className='post-title-container'>
         <h1 className='post-title-content'>{props.data.markdownRemark.frontmatter.title}</h1>
@@ -317,9 +316,6 @@ const BlogTemplate = (props) => {
         </div>
 
         </div>
-  
-
-
         <div className='post-content-container' dangerouslySetInnerHTML={{__html: props.data.markdownRemark.html}}></div>
         </section>
         <section className="post-comments">
