@@ -195,6 +195,16 @@ const BlogTemplate = (props) => {
   if(newComms !== undefined && noComms === false) {
     commentsDisplay = newComms.map((commentario) => {
       const { email, username, comment, image, id } = commentario;
+      let allowDelete = false;
+      if(currentUser){
+
+        if(currentUser.email === email) {
+          allowDelete = true;
+        }
+
+   
+
+      }
       // por ahora no hay manera de sacar el username a través de firebase sin meterse en firebase functions o otro workaround mas facil es guardar el user en una base 
       // de datos, collection, separada cuando alguien se registra y cuando cambia el username lo actualiza. Y eso si es publico.
       let imageSRC;
@@ -211,7 +221,7 @@ const BlogTemplate = (props) => {
           <div className="comment-content">
             <h4><a href={`emailto:${email}`}>{username}</a></h4>
             <p>{comment}</p>
-            {currentUser.email === email && <p id={id} comment={comment} onClick={e => deleteComment(e, comment, email)} className="delete-comment"> Delete Comment</p>}
+            {allowDelete && <p id={id} comment={comment} onClick={e => deleteComment(e, comment, email)} className="delete-comment"> Delete Comment</p>}
           </div>
          
 
