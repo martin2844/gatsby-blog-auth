@@ -146,7 +146,8 @@ const BlogTemplate = (props) => {
             email: comment.email,
             username: username.data().username,
             id: comment.id,
-            image: username.data().profilePic
+            image: username.data().profilePic,
+            datePosted: comment.datePosted
           }
         )
       })
@@ -179,12 +180,18 @@ const BlogTemplate = (props) => {
     //
 
     if(newComms !== undefined && newComms.length >= 1 ) {
-      setLoading(false);
       setNoComms(false);
+        setTimeout(() => {
+          setLoading(false);
+        }, 2000);
+        
+
 
     } else if (newComms !== undefined && newComms.length === 0 ) {
-      setLoading(false);
       setNoComms(true);
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
     }
    
   }, [newComms])
@@ -194,7 +201,7 @@ const BlogTemplate = (props) => {
   let commentsDisplay;
   if(newComms !== undefined && noComms === false) {
     commentsDisplay = newComms.map((commentario) => {
-      const { email, username, comment, image, id } = commentario;
+      const { email, username, comment, image, id, datePosted } = commentario;
       let allowDelete = false;
       if(currentUser){
 
@@ -215,32 +222,36 @@ const BlogTemplate = (props) => {
       }
       return (
         <div key={id} className="comment">
+
           <div className="profile-pic">
             <img className="picture" src={imageSRC} />
           </div>
           <div className="comment-content">
-            <h4><a href={`emailto:${email}`}>{username}</a></h4>
+            <div className="top"><h4><a href={`emailto:${email}`}>{username}</a></h4><p>{datePosted.substr(0, datePosted.indexOf(" "))}</p></div>
             <p>{comment}</p>
-            {allowDelete && <p id={id} comment={comment} onClick={e => deleteComment(e, comment, email)} className="delete-comment"> Delete Comment</p>}
+            {allowDelete && <p id={id} comment={comment} dateposted={datePosted} onClick={e => deleteComment(e, comment, email, datePosted)} className="delete-comment"> Delete Comment</p>}
           </div>
          
 
         </div>
       )
     })
+
   } else {
     commentsDisplay = ( 
       <div>no comments</div>
     )
   }
 
+ 
+
   //@@@ Delete a comment function
-  const deleteComment = (e, comment, email) => {
+  const deleteComment = (e, comment, email, datePosted) => {
     console.log(e.target.id);
     const ID = parseInt(e.target.id);
-
+  
     db.collection("comments").doc(postID).update({
-      comments: firebase.firestore.FieldValue.arrayRemove({id: ID, email: email, comment: comment})
+      comments: firebase.firestore.FieldValue.arrayRemove({id: ID, email: email, comment: comment, datePosted: datePosted})
     }).then(fetchData()).catch(error => console.error(error));
    
   }
@@ -256,7 +267,8 @@ const BlogTemplate = (props) => {
       comments: firebase.firestore.FieldValue.arrayUnion({
         comment: text,
         email: currentUser.email,
-        id: Math.floor(Math.random() * 10000)
+        id: Math.floor(Math.random() * 10000),
+        datePosted: new Date().toLocaleString("es", {hour12: false})
       })
 
     });
@@ -274,8 +286,6 @@ const BlogTemplate = (props) => {
  }
 
 
-
-
   // @@@ Define leave comment block 
 
   const newComment = (
@@ -288,13 +298,6 @@ const BlogTemplate = (props) => {
   </section>
   )
 
-  // @@@ Define Sign In block
-
-  const signIn = (
-    <section>
-      You are not logged in! <Link to="/login">Sign in</Link> to leave a comment
-    </section>
-  )
 
 
 
@@ -303,6 +306,7 @@ const BlogTemplate = (props) => {
 
  return (
     <Layout>
+          {JSON.stringify(loading)}
         <section className='post-main'>
         <div className='post-title-container'>
         <h1 className='post-title-content'>{props.data.markdownRemark.frontmatter.title}</h1>
@@ -319,12 +323,22 @@ const BlogTemplate = (props) => {
         <div className='post-content-container' dangerouslySetInnerHTML={{__html: props.data.markdownRemark.html}}></div>
         </section>
         <section className="post-comments">
+        <div className="top-comment-bar">
+             <span>
+                 <h5 className="underline-hero">{commentCount} Comments</h5>
+             </span>
+             <span>
+                  {currentUser ? null : <Link to="/login"><h5>Log in to comment</h5></Link>}
+             </span> 
+        </div>
+
 
           {loading ? <Spinner text="loading comments" /> : commentsDisplay}
          
         </section>
+
+        {currentUser ? newComment : null }
         
-        {loading ? null : (currentUser ? newComment : signIn)}
         <Link className='goback' to="/blog">Go back to posts</Link>
     </Layout>
  )

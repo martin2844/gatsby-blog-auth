@@ -13,25 +13,47 @@
 
 .post-comments {
     .comment {
+        
+        padding:15px 5rem;
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
         .comment-content {
             width: 100%;
+            padding-top: 1rem;
+            .top {
+                display: flex;
+                flex-direction: row;
+                align-items: baseline;
+                p {
+                    margin-top: 0;
+                    margin-left: 20px;
+                    color: #d0cbd6;
+                    font-size: .8rem;
+                }
+                h4 {
+                    letter-spacing: -1px;
+                }
+            }
+            
         }
         .profile-pic{
             margin-right: 40px;
+            
             .picture {
                 width: 80px;
                 border-radius: 50px;
             }
         }
-        background-color: darkgrey;
-        padding:15px 20px;
-        margin-bottom: 20px;
-        display: flex;
-        flex-direction: row;
-        align-items: center;
+        a {
+            text-decoration: none;
+            color: black;
+        }
         h4 {
             margin-top: 0;
             margin-bottom: 0;
+
         }
         p {
             margin-bottom: 0;
@@ -73,4 +95,22 @@
     font-size: 12px;
     text-align: right;
     cursor: pointer;
+}
+
+.top-comment-bar {
+    border-bottom: solid 1px #d0cbd6;
+    border-top: solid 1px #d0cbd6;
+    margin-bottom: 1rem;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: baseline;
+    span h5, span a {
+        padding-bottom: 1rem;
+        margin-bottom: 0;
+        border-bottom: solid 3px #d0cbd6;
+        text-decoration: none;
+        text-align: justify;
+
+    }
 }

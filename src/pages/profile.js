@@ -9,6 +9,8 @@ import { GlobalDispatchContext, GlobalStateContext, AuthContext } from '../confi
 const Profile = () => {
 
     const [displayImage, setDisplayImage] = useState(null);
+    const [change, displayChange] = useState(false);
+    const [newName, setNewName] = useState("");
 
     //BUILD BYPASS
     let currentUser;
@@ -42,6 +44,7 @@ const Profile = () => {
 
 
         }
+
         checkName().then( async () => {
 
 
@@ -55,14 +58,22 @@ const Profile = () => {
 
                    
                 // If no results do following block
-                if(usernameEntry === undefined) {
+                if(usernameEntry === undefined || usernameEntry.email === undefined || usernameEntry.profilePic === undefined) {
                     console.log("username === undefind, writing name to DB")
                     await db.collection("usernames").doc(currentUser.email).set({
                         email: currentUser.email,
                         username: currentUser.displayName,
                         profilePic: currentUser.photoURL || "https://limitlesstravellers.com/wp-content/plugins/wp-ulike/assets/img/no-thumbnail.png"
                     });
+                }   
+
+                //check if
+                if(usernameEntry.profilePic !== currentUser.photoURL){
+                    await db.collection("usernames").doc(currentUser.email).set({
+                        profilePic: currentUser.photoURL
+                    })
                 }
+                
                     
             }  
             
@@ -109,6 +120,34 @@ const Profile = () => {
     const mo = new Intl.DateTimeFormat('en', { month: 'short' }).format(d)
     const da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(d)
 
+
+    //handleChange of username
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        console.log(newName)
+        try {
+            await app.auth().currentUser.updateProfile({displayName: newName});
+            console.log("new name set in user auth module");
+            await db.collection("usernames").doc(currentUser.email).set({
+                username: newName,
+            });
+            console.log("new name set in DB");
+        } catch (error) {
+            console.error(error);
+        }
+    }
+ 
+    //New Name form 
+
+    let newDispName = (
+        <form onSubmit={(e) => handleSubmit(e)}>
+            <input value={newName} type="text" onChange={e => setNewName(e.target.value)}></input>
+            <button>change</button>
+        </form>
+
+    )
+
+
     return (
         <Layout>
 
@@ -117,7 +156,8 @@ const Profile = () => {
 
             <section className="user-section">
               <h4>Tu nombre de display: {name}</h4>
-              <button>Cambiar</button>
+              <button onClick={() => displayChange(!change)} >Cambiar</button>
+              {change && newDispName}
 
               <h4>Tu imagen {currentUser ? <img src={displayImage}/> : null}</h4>
               <button>Cambiar:</button>
