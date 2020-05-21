@@ -5,6 +5,8 @@ import app from '../config/base.js';
 import axios from 'axios';
 import { GlobalDispatchContext, GlobalStateContext, AuthContext } from '../config/context';
 
+import './styles/profile.scss';
+
 
 const Profile = () => {
 
@@ -17,6 +19,10 @@ const Profile = () => {
     let getUser = useContext(AuthContext);
     if(getUser) {
         currentUser = getUser.currentUser;
+    }
+    
+    if(currentUser !== undefined && currentUser !== null) {
+        console.log(currentUser.metadata.creationTime)
     }
 
     const [name, setName] = useState(null);
@@ -115,6 +121,15 @@ const Profile = () => {
      }
     }
 
+
+    //get users comments?
+    const fetchComments = async () => {
+       const commentRef = await db.collection("comments")
+       return commentRef.where('postID', '==', 2).where('email', '==', '123@123.com').get();
+    }
+
+    fetchComments().then(x => console.log(x));
+
     const d = new Date();
     const ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(d)
     const mo = new Intl.DateTimeFormat('en', { month: 'short' }).format(d)
@@ -150,19 +165,41 @@ const Profile = () => {
 
     return (
         <Layout>
-
+            <section className="profile-top">
             { name ? <Title subtitle={`Bienvenido ${name}`} sub2={`${da}-${mo}-${ye}`} /> : null}
+            {currentUser ? <img className="profile-pic" src={displayImage}/> : null}
+            </section>
+            
+
 
 
             <section className="user-section">
-              <h4>Tu nombre de display: {name}</h4>
-              <button onClick={() => displayChange(!change)} >Cambiar</button>
-              {change && newDispName}
 
-              <h4>Tu imagen {currentUser ? <img src={displayImage}/> : null}</h4>
-              <button>Cambiar:</button>
-              <button onClick={ () => setNewProfile() }>Poner una random</button>
+              <div className="user-data">
+                    <div className="display-name">
+                          <h5>Tu nombre de display: {name}</h5>
+                          <button onClick={() => displayChange(!change)} >Cambiar</button>
+                           {change && newDispName}
 
+                    </div>
+           
+              <h5>Tu imagen:</h5>
+              {currentUser ? <img src={displayImage}/> : null}
+              <div>        
+                <button>Cambiar:</button>
+                <button onClick={ () => setNewProfile() }>Poner una random</button>
+              </div>
+      
+
+
+              </div>
+             
+             <div className="user-comments">
+                <h5>Ultimos comentarios</h5>
+
+             </div>
+
+             
             </section>
 
 

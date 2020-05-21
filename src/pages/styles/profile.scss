@@ -1,0 +1,22 @@
+.profile-top {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .profile-pic {
+        border-radius:  50%;
+    }
+
+}
+
+
+.user-section {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: center;
+    .user-data, .user-comments {
+        margin:4rem 2rem;
+        border: solid 1px #d0cbd6;
+        padding: 2rem;
+    }
+}

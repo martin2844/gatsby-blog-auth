@@ -66,9 +66,13 @@
                 border-radius: 50px;
             }
         }
-        a {
+        a.light {
             text-decoration: none;
             color: black;
+        }
+        a.dark{
+            text-decoration: none;
+            color: white;
         }
         h4 {
             margin-top: 0;

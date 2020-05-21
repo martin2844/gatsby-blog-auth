@@ -9,7 +9,7 @@ import '@firebase/firestore'
 
 //Basic firebase package
 import app from '../config/base.js';
-import { AuthContext } from '../config/context';
+import { AuthContext, GlobalStateContext } from '../config/context';
 
 
 import './blogtemplate.scss';
@@ -42,6 +42,11 @@ query (
 
 
 const BlogTemplate = (props) => {
+
+     const state = useContext(GlobalStateContext) || {
+       toggleDark: true
+     }
+
 
      //BUILD BYPASS
      let currentUser;
@@ -197,7 +202,7 @@ const BlogTemplate = (props) => {
   }, [newComms])
 
   // @@@ Comment display block
-  console.log(noComms);
+
   let commentsDisplay;
   if(newComms !== undefined && noComms === false) {
     commentsDisplay = newComms.map((commentario) => {
@@ -227,7 +232,7 @@ const BlogTemplate = (props) => {
             <img className="picture" src={imageSRC} />
           </div>
           <div className="comment-content">
-            <div className="top"><h4><a href={`emailto:${email}`}>{username}</a></h4><p>{datePosted.substr(0, datePosted.indexOf(" "))}</p></div>
+            <div className="top"><h4><a className={state.toggleDark ? "dark" : "light"} href={`emailto:${email}`}>{username}</a></h4><p>{datePosted.substr(0, datePosted.indexOf(" "))}</p></div>
             <div className="white-test">{comment}</div>
             {allowDelete && <p id={id} comment={comment} dateposted={datePosted} onClick={e => deleteComment(e, comment, email, datePosted)} className="delete-comment"> Delete Comment</p>}
           </div>
@@ -262,17 +267,44 @@ const BlogTemplate = (props) => {
  const onSubmit = async (e) => {
    e.preventDefault();
    try {
-
+    const daDate = new Date().toLocaleString("es", {hour12: false})
     await db.collection("comments").doc(postID).update({
       comments: firebase.firestore.FieldValue.arrayUnion({
         comment: text,
         email: currentUser.email,
         id: Math.floor(Math.random() * 10000),
-        datePosted: new Date().toLocaleString("es", {hour12: false})
+        datePosted: daDate
       })
 
     });
+
      console.log("Comment Succeeded");
+
+     //Setting up comment count
+     const usernameRef = await db.collection('usernames').doc(currentUser.email).get();
+     const usernameEntry = usernameRef.data();
+     console.log(usernameEntry);
+     if(usernameEntry.commentCount === undefined || usernameEntry.commentCount === null) {
+         await db.collection("usernames").doc(currentUser.email).update({
+           commentCount: 1,
+           latestComment: {
+             postID: postID,
+             comment: text,
+             datePosted: daDate
+           }
+         });
+
+     } else {
+      await db.collection("usernames").doc(currentUser.email).update({
+        commentCount: usernameEntry.commentCount + 1,
+        latestComment: {
+          postID: postID,
+          comment: text,
+          datePosted: daDate
+        }
+      });
+
+     }
      setText("");
      
    } catch (error) {
