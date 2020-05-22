@@ -4,16 +4,50 @@ import Title from '../layout/title';
 import app from '../config/base.js';
 import axios from 'axios';
 import { GlobalDispatchContext, GlobalStateContext, AuthContext } from '../config/context';
-
+import {Link, graphql, useStaticQuery} from 'gatsby';
 import './styles/profile.scss';
 
 
 const Profile = () => {
 
+
+const postsQuery = useStaticQuery(graphql`
+query {
+    posts: allMarkdownRemark(sort: { order: DESC, fields: [frontmatter___date]}) {
+      edges{
+        node {
+          frontmatter {
+            title
+            date
+            sinopsis
+            tags
+            id
+          }
+          fields {
+              slug
+          }
+        }
+      }
+    }
+  
+  } 
+`)
+
+  console.log(postsQuery.posts.edges);
+
     const [displayImage, setDisplayImage] = useState(null);
     const [change, displayChange] = useState(false);
     const [newName, setNewName] = useState("");
+    const [commentData, setCommentData] = useState({
+        commentCount: null,
+        latestComment: {
+            comment: null,
+            datePosted: null,
+            postID: null
+        }
+    })
 
+    
     //BUILD BYPASS
     let currentUser;
     let getUser = useContext(AuthContext);
@@ -57,7 +91,7 @@ const Profile = () => {
             // Do checking here, if user does not have a name in DB write it down, so search first
             console.log("entered .then")
             if(currentUser) {
-
+                //get username DB data
                 const usernameRef = await db.collection('usernames').doc(currentUser.email).get();
                 const usernameEntry = usernameRef.data();
                 console.log(usernameEntry);
@@ -73,18 +107,40 @@ const Profile = () => {
                     });
                 }   
 
-                //check if
+                //check if username DB entry's pic is different than actual currentUser object picture, if different update
                 if(usernameEntry.profilePic !== currentUser.photoURL){
                     await db.collection("usernames").doc(currentUser.email).set({
                         profilePic: currentUser.photoURL
                     })
                 }
-                
+                console.log(usernameEntry.commentCount);
+                if(usernameEntry.commentCount) {
+                    //filter posts to get post information
+                    let postTitleContainer = postsQuery.posts.edges.filter(posts => {
+                        let theID = posts.node.frontmatter.id;
+                        return theID === usernameEntry.latestComment.postID;
+                    })
                     
-            }  
+                    //destructure variables
+                    let { commentCount, latestComment } = usernameEntry;
+                    let { comment, datePosted, postID } = latestComment;
+                   //set state for latest comment data
+                    setCommentData({
+                        commentCount: commentCount,
+                        latestComment: {
+                            comment: comment,
+                            datePosted: datePosted,
+                            postID: postID,
+                            title: postTitleContainer[0].node.frontmatter.title,
+                            slug: postTitleContainer[0].node.fields.slug
+                        }
+                })
+               
+                }
+              
             
 
-  
+        }
         }).catch(err => console.error(err));
 
         // ALSO set users image into state for displaying it.
@@ -128,7 +184,7 @@ const Profile = () => {
        return commentRef.where('postID', '==', 2).where('email', '==', '123@123.com').get();
     }
 
-    fetchComments().then(x => console.log(x));
+    
 
     const d = new Date();
     const ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(d)
@@ -161,7 +217,21 @@ const Profile = () => {
         </form>
 
     )
+    console.log(commentData)
 
+    let commentDisplay = (
+        <div> 
+            <h5>Dejaste un total de {commentData.commentCount} comentarios</h5>
+                  <p>Tu ultimo comentario fue en el post <Link to={`/blog/${commentData.latestComment.slug}`}>{commentData.latestComment.title}</Link></p>
+                
+            <div className="last-comment">
+                <p>{commentData.latestComment.datePosted}</p>
+                <p>{commentData.latestComment.comment}</p>
+                </div>
+            
+
+        </div>
+    )
 
     return (
         <Layout>
@@ -195,7 +265,7 @@ const Profile = () => {
               </div>
              
              <div className="user-comments">
-                <h5>Ultimos comentarios</h5>
+                {commentData.commentCount ? commentDisplay : <p>No comentaste todavia!</p>}
 
              </div>
 

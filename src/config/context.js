@@ -1,11 +1,10 @@
 import React, { useState, useEffect }  from "react"
 import app from './base';
-
+import {graphql, useStaticQuery} from 'gatsby';
 
 export const GlobalStateContext = React.createContext();
 export const GlobalDispatchContext = React.createContext();
 export const AuthContext = React.createContext();
-
 
 
 
@@ -46,6 +45,7 @@ const GlobalContextProvider = ({ children }) => {
   }, []);
 
   return (
+
       <AuthContext.Provider value={{currentUser}}>
     <GlobalStateContext.Provider value={state}>
       <GlobalDispatchContext.Provider value={dispatch}>
@@ -53,6 +53,7 @@ const GlobalContextProvider = ({ children }) => {
       </GlobalDispatchContext.Provider>
     </GlobalStateContext.Provider>
     </AuthContext.Provider>
+    
   )
 }
 
