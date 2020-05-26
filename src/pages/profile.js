@@ -5,6 +5,7 @@ import app from '../config/base.js';
 import axios from 'axios';
 import { GlobalDispatchContext, GlobalStateContext, AuthContext } from '../config/context';
 import {Link, graphql, useStaticQuery} from 'gatsby';
+import Spinner from '../layout/Spinner';
 import './styles/profile.scss';
 
 
@@ -34,7 +35,6 @@ query {
 `)
 
   console.log(postsQuery.posts.edges);
-
     const [displayImage, setDisplayImage] = useState(null);
     const [change, displayChange] = useState(false);
     const [newName, setNewName] = useState("");
@@ -177,13 +177,6 @@ query {
      }
     }
 
-
-    //get users comments?
-    const fetchComments = async () => {
-       const commentRef = await db.collection("comments")
-       return commentRef.where('postID', '==', 2).where('email', '==', '123@123.com').get();
-    }
-
     
 
     const d = new Date();
@@ -217,7 +210,7 @@ query {
         </form>
 
     )
-    console.log(commentData)
+
 
     let commentDisplay = (
         <div> 
@@ -265,7 +258,8 @@ query {
               </div>
              
              <div className="user-comments">
-                {commentData.commentCount ? commentDisplay : <p>No comentaste todavia!</p>}
+                {commentData.commentCount === null ? <Spinner text="loading comments" /> : (commentData.commentCount >= 1 ? commentDisplay : <p>No comentaste todavia!</p>)}
+               
 
              </div>
 

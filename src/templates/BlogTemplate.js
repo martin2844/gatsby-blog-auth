@@ -80,7 +80,7 @@ const BlogTemplate = (props) => {
   const [comments, setComments] = useState([]);
   //second state to populate the actual info that will be shown.
   const [newComms, setNewComms] = useState([]);
-  const [loading, setLoading] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [noComms, setNoComms] = useState(false);
 
 
@@ -108,6 +108,7 @@ const BlogTemplate = (props) => {
         throw "The document was defined, but there was no data, dont worry, Ive put Data in for you.";
       } else if(commentRef.data().comments.length === 0) {
         setNoComms(true);
+        setLoading(false);
         throw "No comments for this post \n But worry shall you not, this document exists, be the first one to comment \n go on!";
       } else {
         setComments(commentRef.data().comments);
@@ -196,7 +197,7 @@ const BlogTemplate = (props) => {
       setNoComms(true);
       setTimeout(() => {
         setLoading(false);
-      }, 1000);
+      }, 2000);
     }
    
   }, [newComms])
@@ -235,14 +236,13 @@ const BlogTemplate = (props) => {
             <div className="top"><h4><a className={state.toggleDark ? "dark" : "light"} href={`emailto:${email}`}>{username}</a></h4><p>{datePosted.substr(0, datePosted.indexOf(" "))}</p></div>
             <div className="white-test">{comment}</div>
             {allowDelete && <p id={id} comment={comment} dateposted={datePosted} onClick={e => deleteComment(e, comment, email, datePosted)} className="delete-comment"> Delete Comment</p>}
-          </div>
-         
-
+          </div>null
         </div>
       )
     })
-
+    console.log("finished map");
   } else {
+    console.log("entered else");
     commentsDisplay = ( 
       <div>no comments</div>
     )
@@ -343,7 +343,7 @@ const BlogTemplate = (props) => {
         <h1 className='post-title-content'>{props.data.markdownRemark.frontmatter.title}</h1>
         <div className="post-sub-data-container">
         <p className='post-date'> posted on {props.data.markdownRemark.frontmatter.date}</p>
-        <p className="comment-info">comments: {commentCount}</p>
+        <p className="comment-info">{loading ? "counting comments" : `comments: ${commentCount}`}</p>
 
         </div>
 
