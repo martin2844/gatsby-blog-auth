@@ -1,0 +1,41 @@
+.top-bar {
+    background: #f0f0f0;
+    padding: 0 80px;
+    justify-content: space-between;
+    div {
+        padding: 15px 0;
+    }
+
+
+}
+
+.center-bar {
+    padding: 20px 80px;
+    background-color: white;
+
+}
+
+
+.bottom-bar {
+    padding: 0 80px;
+    background-color: #98B880;
+ ul {
+     margin: 0;
+     list-style: none;
+     padding: 0;
+     padding: 9px 0;
+     li {
+         margin-right: 20px;
+         color: #fff;
+         a {
+             color: #fff;
+         }
+     }
+ }
+}
+
+.tuts {
+     position: relative;
+     top: 100px;
+     color: black; 
+    }

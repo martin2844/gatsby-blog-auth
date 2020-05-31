@@ -114,6 +114,8 @@ query {
                     })
                 }
                 console.log(usernameEntry.commentCount);
+
+
                 if(usernameEntry.commentCount) {
                     //filter posts to get post information
                     let postTitleContainer = postsQuery.posts.edges.filter(posts => {
@@ -136,6 +138,8 @@ query {
                         }
                 })
                
+                } else {
+                    setCommentData({...commentData, commentCount: 0});
                 }
               
             
@@ -225,6 +229,8 @@ query {
 
         </div>
     )
+
+    console.log(commentData)
 
     return (
         <Layout>
