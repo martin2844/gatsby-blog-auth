@@ -1,0 +1,29 @@
+.card-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+ 
+}
+
+.postcard-main {
+    max-width: 368px;
+    box-shadow: rgba(0,0,0,.05) 0 1px 1px 0;
+    background: white;
+    margin: 20px;
+}
+
+.postcard-img{
+    max-width: 368px;
+    max-height: 191px;
+   img {
+    object-fit: contain;
+    max-width: 368px;
+    max-height: 191px;
+   }
+
+    
+}
+
+.postcard-content {
+    padding: 40px 30px 20px;
+}
