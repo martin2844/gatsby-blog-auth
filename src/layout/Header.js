@@ -39,9 +39,13 @@ const Header = () => {
                   </div>
             </div>
             <div className="bottom-bar">
-                <ul className="flex-row-center">
-                    <li>
+                <ul className="flex-row-center no-pad">
+                    <li className="tutorial-link">
                         <Link to="/tutoriales">Tutoriales</Link>
+                        <ul className="dropdownNav">
+                            <li>item</li>
+                            <li>item2 </li>
+                        </ul>
                     </li>
                     <li>
                       <Link to="/tutoriales">Contacto</Link> 
