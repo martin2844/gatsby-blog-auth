@@ -77,19 +77,19 @@ query {
             let slugMatchJPG = posts.node.fields.slug + '.jpg';
             // console.log(image);
             if (originalName === slugMatchJPG) {
-                console.log("jpg")
+                // console.log("jpg")
                 return slugMatchJPG;
             } else if (originalName === slugMatchPNG) {
-                console.log("png")
+                // console.log("png")
                 return slugMatchPNG;
             } else {
-                console.log("nomatch")
+                // console.log("nomatch")
                 return
             }
 
 
         })
-        console.log(theImageFilter)
+        // console.log(theImageFilter)
         let theImage;
         // iffy because reading node from undefined crashes gatsby.
         if (theImageFilter.length !== 0) {
@@ -111,7 +111,9 @@ query {
         let theme = "dark";
         state.toggleDark ? theme = "dark" : theme = "light";
 
-        return ( < PostCard slug = { posts.node.fields.slug }
+        return ( < PostCard
+            key = {posts.node.fields.slug}
+            slug = { posts.node.fields.slug }
             image = { theImage }
             title = { posts.node.frontmatter.title }
             date = { posts.node.frontmatter.date }
@@ -136,7 +138,7 @@ query {
             let arrayFilter;
             if (thePosts) { //if thePosts exists, begin filter using tag which is filtered word.
                 arrayFilter = postsQuery.posts.edges.filter((post) => {
-                    console.log(filterWord)
+                    // console.log(filterWord)
 
                     return post.node.frontmatter.tags.includes(filterWord);
 

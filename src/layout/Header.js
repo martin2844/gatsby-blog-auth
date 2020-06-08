@@ -1,9 +1,58 @@
 import React, {useContext} from 'react';
-import { Link } from 'gatsby';
+import { Link, useStaticQuery } from 'gatsby';
 import './header.scss';
 import {GlobalStateContext, AuthContext} from '../config/context';
 
 const Header = () => {
+
+
+    const articleQuery = useStaticQuery(graphql `
+    query {
+        posts: allMarkdownRemark(sort: { order: DESC, fields: [frontmatter___date]}) {
+          edges{
+            node {
+              frontmatter {
+                tags
+                category
+              }
+              fields {
+                  slug
+              }
+            }
+          }
+        }        
+      } 
+    `)
+
+    // console.log(articleQuery.posts.edges);
+    //Extract all info from graphql
+    const info = articleQuery.posts.edges;
+    // Create a new set to map out categories without repeating them
+    const categories = new Set();
+    
+    //Fill out the categories set
+    info.forEach((post) => {
+        categories.add(post.node.frontmatter.category);
+    })
+
+    //convert to array to be able to map
+    let newCat = [...categories];
+
+    //For each category, search the posts and create a unique tag combo, which will fill out the cat menu.
+    newCat.map((cat) => {
+        //Create a new set to get all available tags without repeating for a category.
+        console.log(cat);
+        const tags = new Set();
+        //Filter the posts for this category to extract the tags
+        let onlyThisCatsPost = info.filter(node => node.node.frontmatter.category === cat);
+        //Run through posts and extract all of the tags into the new set
+        onlyThisCatsPost.forEach((post) => {
+            post.node.frontmatter.tags.forEach(tag => tags.add(tag));
+        });
+
+        //Now with this we can map the newCat Array into JSX for displaying it afterwards.
+        console.log(tags);
+    });
 
     const state = useContext(GlobalStateContext) || {
         user: "hello world"

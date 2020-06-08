@@ -17,18 +17,20 @@
 
 
 .bottom-bar {
-    padding: 0 80px;
     background-color: #98B880;
+    padding: 0 80px;
  ul {
      margin: 0;
      list-style: none;
      padding: 0;
+     
      li {
          margin-right: 20px;
          color: #fff;
-         padding: 9px 0;
+         padding: 10px 0;
          a {
              color: #fff;
+             padding: 10px 0;
              
          }
      }
@@ -52,7 +54,8 @@
 
 
 ul.dropdownNav {
-    margin-top: 8px;
+    margin-top: 10px;
+    padding: 20px;
     position: absolute;
     background-color: #8CA96D;
     display: none;
