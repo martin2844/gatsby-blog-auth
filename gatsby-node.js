@@ -19,11 +19,16 @@ module.exports.onCreateNode = ({node, actions}) => {
 module.exports.createPages = async ({graphql, actions}) => {
     const {createPage} = actions;
     const blogTemplate = path.resolve('./src/templates/BlogTemplate.js');
+    const catTemplate = path.resolve('./src/templates/CatTemplate.js');
     const res = await graphql(`
     query {
         allMarkdownRemark {
           edges{
             node {
+              frontmatter {
+                tags
+                category
+              }
               fields {
                 slug
               }
@@ -39,6 +44,13 @@ module.exports.createPages = async ({graphql, actions}) => {
             context: {
                 slug: edge.node.fields.slug
             }
+        });
+        createPage({
+          component:  catTemplate,
+          path: `category/${edge.node.frontmatter.category}`,
+          context: {
+            category: edge.node.frontmatter.category
+          }
         })
     } )
 

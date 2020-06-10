@@ -5,7 +5,7 @@ import Spinner from '../layout/Spinner';
 import firebase from "firebase/app";
 
 
-import '@firebase/firestore'
+import '@firebase/firestore';
 
 //Basic firebase package
 import app from '../config/base.js';

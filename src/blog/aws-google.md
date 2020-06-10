@@ -6,7 +6,7 @@ date: '2019-12-20'
 sinopsis: 'If you want to deploy a MERN app to AWS, and you have windows as your OS, this is for you.'
 tags: [AWS, deploy, FrontBack, Tag, gist, jest]
 id: "67"
-category: "Devops"
+category: "devops"
 
 
 

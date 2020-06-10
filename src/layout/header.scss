@@ -43,9 +43,36 @@
      color: black; 
     }
 
+.tutorial-link {
+    .trickster {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+    .trickster::after {
+            content:'';
+            display:block;
+            width:0;
+            height:0;
+            position: relative;
+            z-index: 2;
+            top: 217px;
+            left: 110px;
+            border-style: solid;
+            border-width: 0 5px 5px 5px;
+            border-color: transparent transparent #f0f0f0 transparent;
+    }
+}
 
 .tutorial-link:hover .dropdownNav {
     display: block;
+}
+
+.tutorial-link:hover {
+    .trickster::after {
+        
+        border-color: transparent transparent #8CA96D transparent;
+    }
 }
 
 .tutorial-link:hover .dropdownNav:hover {
@@ -64,4 +91,41 @@ ul.dropdownNav {
 
 .no-pad {
     padding:0;
+}
+
+.topic-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.cat-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    h4 {
+        text-transform: capitalize;
+        margin-right: 20px;
+    }
+    hr {
+        width: 100%;
+        border: solid .5px #ccddb8;
+    }
+}
+
+.tag-container {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    justify-content: flex-start;
+
+    .tag {
+        padding: 5px 10px;
+        flex-basis: 20%;
+        color: rgba(255,255,255,.8);
+        cursor: pointer;
+        &:hover {
+            color: #fff;
+            background-color: #859F67;
+        }
+    }
 }
