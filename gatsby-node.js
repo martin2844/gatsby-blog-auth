@@ -37,7 +37,12 @@ module.exports.createPages = async ({graphql, actions}) => {
         }
       }
     `)
+
+      
+    const tagg = new Set();
+ 
     res.data.allMarkdownRemark.edges.forEach( (edge) => {
+      edge.node.frontmatter.tags.forEach(tag => tagg.add(tag));
         createPage({
             component: blogTemplate,
             path: `/tutorial/${edge.node.fields.slug}`,
@@ -47,14 +52,26 @@ module.exports.createPages = async ({graphql, actions}) => {
         });
         createPage({
           component:  catTemplate,
-          path: `category/${edge.node.frontmatter.category}`,
+          path: `/category/${edge.node.frontmatter.category}`,
           context: {
-            category: edge.node.frontmatter.category
+            title: edge.node.frontmatter.category
           }
         })
     } )
 
+    const tags = [...tagg];
+    tags.forEach((tag) => {
+      createPage({
+        component: catTemplate,
+        path: `/tag/${tag}`,
+        context: {
+          title: tag
+        }
+      })
+    });
+
 }
+
 
 
 

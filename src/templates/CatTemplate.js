@@ -34,7 +34,7 @@ const CatTemplate = ({data, pageContext}) => {
    
     return (
         <Layout>
-            <h1>{pageContext.category}</h1>
+            <h1>{pageContext.title}</h1>
             asdasd
         </Layout>
     )
