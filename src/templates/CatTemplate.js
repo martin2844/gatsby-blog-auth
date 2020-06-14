@@ -6,11 +6,11 @@ import {graphql, Link} from 'gatsby';
 
 //export query so gatsby can grab it as a prop
 export const query = graphql`
-query($category: String) {
+query($title: String) {
     allMarkdownRemark(
       limit: 2000
       sort: { fields: [frontmatter___date], order: DESC }
-      filter: { frontmatter: { category: { in: [$category] } } }
+      filter: { frontmatter: { category: { in: [$title] } } }
     ) {
       totalCount
       edges {
@@ -27,11 +27,11 @@ query($category: String) {
   }
 `
 
-console.log(query)
+
 
 
 const CatTemplate = ({data, pageContext}) => {
-   
+    console.log(data)
     return (
         <Layout>
             <h1>{pageContext.title}</h1>
