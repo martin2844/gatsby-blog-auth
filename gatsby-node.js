@@ -16,10 +16,14 @@ module.exports.onCreateNode = ({node, actions}) => {
     
 }
 
+// this action calls to the gatsby api that creates pages. 
 module.exports.createPages = async ({graphql, actions}) => {
     const {createPage} = actions;
+    //here we import our templates for page creation.
     const blogTemplate = path.resolve('./src/templates/BlogTemplate.js');
-    const catTemplate = path.resolve('./src/templates/CatTemplate.js');
+    const CatTemplate = path.resolve('./src/templates/CatTemplate.js');
+    const TagTemplate = path.resolve('./src/templates/TagTemplate.js');
+    //here we query gatsby's internal graphql api to source all of our markdown files.
     const res = await graphql(`
     query {
         allMarkdownRemark {
@@ -38,11 +42,18 @@ module.exports.createPages = async ({graphql, actions}) => {
       }
     `)
 
-      
+    //Here we create a new SET to keep all of our tags extracted from posts without repeating itself
     const tagg = new Set();
- 
+    //Here we create a new set to keep all of our categories.
+    const catt = new Set();
+    
+
     res.data.allMarkdownRemark.edges.forEach( (edge) => {
+      //Tags is an array inside frontmatter so we can loop it and add each individual item to the newly created tagg set.
       edge.node.frontmatter.tags.forEach(tag => tagg.add(tag));
+      //category is a string, we want to add it into a set to make sure we dont have repeated categories. Since its just a string, we only
+      //need to add it directly from the source.
+      catt.add(edge.node.frontmatter.category);
         createPage({
             component: blogTemplate,
             path: `/tutorial/${edge.node.fields.slug}`,
@@ -50,22 +61,28 @@ module.exports.createPages = async ({graphql, actions}) => {
                 slug: edge.node.fields.slug
             }
         });
-        createPage({
-          component:  catTemplate,
-          path: `/category/${edge.node.frontmatter.category}`,
-          context: {
-            title: edge.node.frontmatter.category
-          }
-        })
     } )
 
+    //Spread the set to be able to apply array prototypes to it.
     const tags = [...tagg];
+    //And for each item in the array create a page.
     tags.forEach((tag) => {
       createPage({
-        component: catTemplate,
+        component: TagTemplate,
         path: `/tag/${tag}`,
         context: {
           title: tag
+        }
+      })
+    });
+    const cats = [...catt];
+    //Same as above but for categories.
+    cats.forEach((cat) => {
+      createPage({
+        component: CatTemplate,
+        path: `/category/${cat}`,
+        context: {
+          title: cat
         }
       })
     });

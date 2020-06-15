@@ -54,7 +54,7 @@ const Header = () => {
         });
         //Now with this we can map the newCat Array into JSX for displaying it afterwards.
         let mapTag = [...tags];
-        let mapping = mapTag.map(tag => <span key={tag} className="tag">{tag}</span>)
+        let mapping = mapTag.map(tag => <Link key={tag} to={`/tag/${tag}`}  className="tag"><span >{tag}</span></Link>)
         return(
           <div key={cat} className="topic-container">
               <div className="cat-container">
