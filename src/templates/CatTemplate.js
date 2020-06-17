@@ -127,9 +127,9 @@ const CatTemplate = ({data, pageContext}) => {
 
     return (
         <Layout>
+            <h5 class="bread-crumbs"><Link to="/tutoriales"> Tutoriales </Link>   /  <Link to="/category">CATEGORY</Link>  /  {pageContext.title}</h5>
             <h1 className="catntag-title" >{pageContext.title}</h1>
-            asdasd
-            {posts}
+            <div className = "card-container" > { posts } </div>
         </Layout>
     )
 }

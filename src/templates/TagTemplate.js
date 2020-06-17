@@ -36,8 +36,9 @@ const TagTemplate = ({data, pageContext}) => {
     console.log(data)
     return (
         <Layout>
-               <h1 className="catntag-title" >{pageContext.title}</h1>
-            asdasd
+          
+        <h1 className="catntag-title" >{pageContext.title}</h1>
+      
         </Layout>
     )
 }
