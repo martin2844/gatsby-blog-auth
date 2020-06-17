@@ -6,5 +6,6 @@
 4. Index Page - planning, just the latest 10-12 tuts - some more info below - maybe courses in the future
 5. Idea 30 dias de react
 6. Cat and Tag pages - Cat Page first
+7. Prism JS
 
 

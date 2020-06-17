@@ -32,7 +32,7 @@ const Category = () => {
 
     return (
         <Layout>
-        <h5 class="bread-crumbs"><Link to="/tutoriales"> Tutoriales </Link>   /  CATEGORIAS </h5>
+        <h5 className="bread-crumbs"><Link to="/tutoriales"> Tutoriales </Link>   /  CATEGORIAS </h5>
          {categoryMap}
         </Layout>
     )

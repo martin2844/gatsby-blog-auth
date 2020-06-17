@@ -12,3 +12,12 @@
     margin-right: 20px;
     font-size: 2rem;
 }
+
+.tag-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    a {
+        margin-top: 20px;
+    }
+}
