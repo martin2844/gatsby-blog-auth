@@ -23,27 +23,29 @@ const Header = () => {
         let firstBar = pathname.indexOf("/");
         let lastBar = pathname.lastIndexOf("/");
         let firstTerm;
-        if(location.pathname.indexOf("tag") === 1) {
+      
+        if(location.pathname.indexOf("tag") > -1) {
+            // Si el location tiene Tag, estamos en un tag page, o en el tag page general
            firstTerm = "Tutoriales";
            secondTerm = "Tag";
-        } else if(location.pathname.indexOf("category") === 1) {
+        } else if(location.pathname.indexOf("category") > 1) {
+          // Si el location tiene category, estamos o dentro de un category page general, o dentro del cateogry specific
             if(location.pathname === "/tutoriales/category") {
               firstTerm = "Tutoriales";
               secondTerm = "Category";
             }
            firstTerm = "Tutoriales";
            secondTerm = "Category";
-           thirdTerm = "La categoria que va"
-        } else if(location.pathname.indexOf("tutorial") === 1) {
-                if(location.pathname.indexOf("tutoriales") === 1) {
+           thirdTerm = "La categoria que va";
+        } else if(location.pathname === "/tutoriales") {
+          // Si el location es solo tutoriales, estamos en la pagina general
                   firstTerm = "Tutoriales";
                   secondTerm = "No Cat";
-                } else {
-                  firstTerm = "Tutoriales";
-                  secondTerm = "Category";
-                  thirdTerm = "La categoria que va";
-                  fourthTerm = "tutorial name"
-                }
+            
+        } else if (location.pathname.indexOf("tutoriales") > -1 && location.pathname.indexOf("category") === -1 && location.pathname.indexOf("tag") === -1){
+          // si el location tiene tutoriales, pero no tiene category y tag estamos en un tutorial
+          console.log("inisde a tut")
+
         }
         console.log(firstTerm, secondTerm, thirdTerm);
 
