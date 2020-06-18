@@ -1,5 +1,5 @@
 import React from 'react';
-import Layout from '../layout/Layout';
+import Layout from '../../layout/Layout';
 import { Link, graphql, useStaticQuery } from 'gatsby';
 
 
@@ -25,14 +25,14 @@ const Category = () => {
     })
     const tagMap = [...tags].map(tag => {
         return(
-        <Link className="categoryMap" key={tag} to={`/tag/${tag}`}>{tag.slice(0,1).toUpperCase()}{tag.substring(1,tag.length)}</Link>
+        <Link className="categoryMap" key={tag} to={`/tutoriales/${tag}`}>{tag.slice(0,1).toUpperCase()}{tag.substring(1,tag.length)}</Link>
         )
     })
 
 
     return (
         <Layout>
-        <h5 className="bread-crumbs"><Link to="/tutoriales"> Tutoriales </Link>   /  TAG </h5>
+        <div className="bread-crumbs-container"><h5 className="bread-crumbs"><Link to="/tutoriales"> Tutoriales </Link>   /  TAG </h5></div>
         <div className="tag-container">
         {tagMap}
         </div>

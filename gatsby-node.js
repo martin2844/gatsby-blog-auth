@@ -56,7 +56,7 @@ module.exports.createPages = async ({graphql, actions}) => {
       catt.add(edge.node.frontmatter.category);
         createPage({
             component: blogTemplate,
-            path: `/tutorial/${edge.node.fields.slug}`,
+            path: `/tutoriales/${edge.node.frontmatter.category}/${edge.node.fields.slug}`,
             context: {
                 slug: edge.node.fields.slug
             }
@@ -69,7 +69,7 @@ module.exports.createPages = async ({graphql, actions}) => {
     tags.forEach((tag) => {
       createPage({
         component: TagTemplate,
-        path: `/tag/${tag}`,
+        path: `/tutoriales/tag/${tag}`,
         context: {
           title: tag
         }
@@ -80,7 +80,7 @@ module.exports.createPages = async ({graphql, actions}) => {
     cats.forEach((cat) => {
       createPage({
         component: CatTemplate,
-        path: `/category/${cat}`,
+        path: `/tutoriales/category/${cat}`,
         context: {
           title: cat
         }

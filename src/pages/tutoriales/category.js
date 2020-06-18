@@ -1,5 +1,5 @@
 import React from 'react';
-import Layout from '../layout/Layout';
+import Layout from '../../layout/Layout';
 import { Link, graphql, useStaticQuery } from 'gatsby';
 
 
@@ -25,7 +25,7 @@ const Category = () => {
     })
     const categoryMap = [...categories].map(cat => {
         return(
-        <Link className="categoryMap" key={cat} to={`/category/${cat}`}>{cat.slice(0,1).toUpperCase()}{cat.substring(1,cat.length)}</Link>
+        <Link className="categoryMap" key={cat} to={`/tutoriales/category/${cat}`}>{cat.slice(0,1).toUpperCase()}{cat.substring(1,cat.length)}</Link>
         )
     })
 

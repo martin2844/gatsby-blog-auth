@@ -1,10 +1,53 @@
-import React, {useContext} from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import { Link, useStaticQuery } from 'gatsby';
 import './header.scss';
 import {GlobalStateContext, AuthContext} from '../config/context';
+import { globalHistory as history } from '@reach/router';
 
 const Header = () => {
 
+  const { location } = history;
+  const { pathname } = location;
+  const [crumbs, setCrumbs] = useState({
+    first: null,
+    second: null,
+    third: null,
+  })
+    useEffect(() => {
+      console.log("location changed");
+      console.log(location.pathname);
+      let secondTerm;
+      let thirdTerm;
+      let fourthTerm;
+        //define Bars from locations
+        let firstBar = pathname.indexOf("/");
+        let lastBar = pathname.lastIndexOf("/");
+        let firstTerm;
+        if(location.pathname.indexOf("tag") === 1) {
+           firstTerm = "Tutoriales";
+           secondTerm = "Tag";
+        } else if(location.pathname.indexOf("category") === 1) {
+            if(location.pathname === "/tutoriales/category") {
+              firstTerm = "Tutoriales";
+              secondTerm = "Category";
+            }
+           firstTerm = "Tutoriales";
+           secondTerm = "Category";
+           thirdTerm = "La categoria que va"
+        } else if(location.pathname.indexOf("tutorial") === 1) {
+                if(location.pathname.indexOf("tutoriales") === 1) {
+                  firstTerm = "Tutoriales";
+                  secondTerm = "No Cat";
+                } else {
+                  firstTerm = "Tutoriales";
+                  secondTerm = "Category";
+                  thirdTerm = "La categoria que va";
+                  fourthTerm = "tutorial name"
+                }
+        }
+        console.log(firstTerm, secondTerm, thirdTerm);
+
+    }, [location])
 
     const articleQuery = useStaticQuery(graphql `
     query {
@@ -54,11 +97,11 @@ const Header = () => {
         });
         //Now with this we can map the newCat Array into JSX for displaying it afterwards.
         let mapTag = [...tags];
-        let mapping = mapTag.map(tag => <Link key={tag} to={`/tag/${tag}`}  className="tag"><span >{tag}</span></Link>)
+        let mapping = mapTag.map(tag => <Link key={tag} to={`/tutoriales/tag/${tag}`}  className="tag"><span >{tag}</span></Link>)
         return(
           <div key={cat} className="topic-container">
               <div className="cat-container">
-                  <Link to={`/category/${cat}`}><h4>{cat}</h4></Link>
+                  <Link to={`/tutoriales/category/${cat}`}><h4>{cat}</h4></Link>
                   <hr/>
                </div>
             <div className="tag-container">

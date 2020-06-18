@@ -13,7 +13,7 @@ const PostCard = (props) => {
                 <div className="postcard-content">
                     <div className="card-meta"><Link to={`/category/${category}`}>{category}</Link> <span> / {date} </span></div>
                     <div className="card-content">
-                            <Link to={`/tutorial/${slug}`} ><h3>{title}</h3></Link>
+                            <Link to={`/tutoriales/${category}/${slug}`} ><h3>{title}</h3></Link>
                             <p>{sinopsis}</p>
                     </div>
                 </div>

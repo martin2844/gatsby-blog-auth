@@ -129,7 +129,7 @@ const TagTemplate = ({data, pageContext}) => {
 
     return (
         <Layout>
-        <h5 class="bread-crumbs"><Link to="/tutoriales"> Tutoriales </Link>   /  <Link to="/tag">tag</Link>  /  {pageContext.title}</h5>
+        <h5 className="bread-crumbs"><Link to="/tutoriales"> Tutoriales </Link>   /  <Link to="/tutoriales/tag">tag</Link>  /  {pageContext.title}</h5>
         <h1 className="catntag-title" >{pageContext.title}</h1>
         <div className = "card-container" > { posts } </div>
         </Layout>
