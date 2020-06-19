@@ -1,0 +1,49 @@
+.card-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+ 
+}
+
+.postcard-main {
+    max-width: 300px;
+    box-shadow: rgba(0,0,0,.05) 0 1px 1px 0;
+    background: white;
+    margin: 20px;
+}
+
+.postcard-img{
+    
+    max-width: 300px;
+    max-height: 190px;
+    transition: opacity ease-in-out .2s;
+    cursor: pointer;
+    &:hover{
+        opacity: .8;
+    }
+    
+    div {
+        max-width: 300px;
+        max-height: 190px;
+    }
+
+   img {
+    object-fit: contain;
+    max-width: 300px;
+    max-height: 190px;
+   }
+
+    
+}
+
+.postcard-content {
+    padding: 40px 30px 20px;
+}
+
+.card-meta {
+    text-transform: uppercase;
+    font-size: .9rem;
+    font-family: 'Ubuntu', Helvetica, Arial, sans-serif;
+
+  
+}

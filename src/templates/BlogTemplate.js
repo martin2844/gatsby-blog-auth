@@ -5,7 +5,7 @@ import Spinner from '../layout/Spinner';
 import firebase from "firebase/app";
 
 
-import '@firebase/firestore'
+import '@firebase/firestore';
 
 //Basic firebase package
 import app from '../config/base.js';
@@ -236,7 +236,7 @@ const BlogTemplate = (props) => {
             <div className="top"><h4><a className={state.toggleDark ? "dark" : "light"} href={`emailto:${email}`}>{username}</a></h4><p>{datePosted.substr(0, datePosted.indexOf(" "))}</p></div>
             <div className="white-test">{comment}</div>
             {allowDelete && <p id={id} comment={comment} dateposted={datePosted} onClick={e => deleteComment(e, comment, email, datePosted)} className="delete-comment"> Delete Comment</p>}
-          </div>null
+          </div>
         </div>
       )
     })

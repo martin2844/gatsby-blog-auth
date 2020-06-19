@@ -1,42 +1,178 @@
-import React, {useContext} from 'react'
+import React, { useContext, useState } from 'react'
 import Layout from '../layout/Layout'
 import app from '../config/base';
-
-import {GlobalDispatchContext, GlobalStateContext, AuthContext} from '../config/context';
+import PostCard from '../layout/postCard';
+import { Link, graphql, useStaticQuery } from 'gatsby';
+import Img from 'gatsby-image';
+import { GlobalDispatchContext, GlobalStateContext, AuthContext } from '../config/context';
 
 const Index = () => {
 
     const state = useContext(GlobalStateContext) || {
-      user: "hello world"
+        toggleDark: true
+    }
+
+
+    const postsQuery = useStaticQuery(graphql `
+query {
+    posts: allMarkdownRemark(sort: { order: DESC, fields: [frontmatter___date]}) {
+      edges{
+        node {
+          frontmatter {
+            title
+            date
+            sinopsis
+            tags
+            category
+          }
+          fields {
+              slug
+          }
+        }
       }
-
-      let currentUser;
-      let test = useContext(AuthContext);
-      if(test) {
-          currentUser = test.currentUser;
+    }
+    
+   images: allFile(sort: {fields: [name], order: ASC}, filter: { sourceInstanceName: { eq: "thumbs" } }) {
+      edges {
+        node {
+          childImageSharp {
+            fixed(width: 368) {
+              ...GatsbyImageSharpFixed
+              originalName
+            }
+          }
+        }
       }
-      //conditional testing.
-      let logged = (<div>YOU ARE LOGGED</div>)
-      let notLogged = (<div>YOU ARE NOT LOGGED</div>)
-      console.log(currentUser);
-    return (
-        <Layout>
+    }
 
-            "hello world"
-           <button onClick={() => app.auth().signOut()} >Sign out</button>
-           {currentUser ? logged : notLogged}
-           
-           <div>
-           Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed porta ullamcorper mi, et euismod diam sodales sed. Curabitur maximus lacus a lorem malesuada, ut commodo orci ullamcorper. Curabitur efficitur pulvinar porta. Phasellus aliquet feugiat dui, ac varius sem tincidunt ac. Phasellus eu condimentum tortor, non varius nulla. Quisque elementum nisi in nunc efficitur, non gravida nibh rutrum. Aliquam congue tortor at dapibus tempor. Nulla purus dolor, cursus vel sem sit amet, luctus placerat orci. Aenean lacinia tellus urna, at auctor sapien fringilla sed. Curabitur eget fermentum arcu. Sed leo nunc, sagittis non augue ut, commodo imperdiet ipsum. Nam a iaculis ante, quis pretium mauris. Vivamus nec accumsan velit, et semper nulla. Ut semper sollicitudin orci non placerat. Sed dui libero, sollicitudin nec hendrerit non, posuere vel ipsum. Nullam posuere, nibh elementum fermentum fermentum, ante odio sollicitudin nunc, quis imperdiet enim ligula nec dolor.
+    
+  } 
+`)
 
-Etiam ipsum eros, vestibulum in velit vel, ullamcorper posuere magna. Proin pretium suscipit finibus. Aliquam et pretium augue, et finibus nisl. Integer pretium libero dictum dapibus tristique. Proin vestibulum mauris et neque blandit pretium. Donec id interdum nulla. Aenean hendrerit pellentesque enim a vehicula.
 
-Duis augue erat, consectetur et augue efficitur, maximus ultricies ligula. Pellentesque fermentum risus ut commodo faucibus. Proin sit amet augue id mauris auctor pharetra blandit vitae ligula. Fusce vel aliquet magna. Donec non sem lorem. Pellentesque quam enim, imperdiet et nibh eu, posuere vulputate eros. Mauris gravida lacus in nisl ornare pellentesque.
 
-Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Fusce condimentum odio ut lacus dapibus vestibulum. Sed a lacus viverra, bibendum arcu et, molestie nisl. In libero enim, bibendum non ultricies id, malesuada a dolor. Vestibulum ac lectus rhoncus, commodo eros et, faucibus nibh. Integer rhoncus arcu non massa euismod varius. Aenean dictum tellus dolor, a eleifend lorem tristique tempor. Donec dictum, leo ut hendrerit tristique, nibh eros rhoncus ipsum, id tristique orci nibh viverra tortor. Quisque aliquam imperdiet est ut posuere. Aenean non tempor dui, nec tempor purus. Ut suscipit metus arcu. Fusce et odio varius, rhoncus lectus interdum, mattis quam. Pellentesque pharetra eleifend urna, nec feugiat quam dapibus vitae.
+    // use state to declare global filter tags.
+    const [filterTags, setFilterTags] = useState([]);
 
-Etiam bibendum vestibulum nibh, id tempor felis aliquam sed. Duis dui tortor, blandit sed leo scelerisque, volutpat placerat magna. Proin bibendum dui ut finibus fermentum. In quam sem, iaculis nec facilisis id, semper non purus. Suspendisse interdum justo in felis porta consequat. Pellentesque tincidunt posuere ultricies. Donec gravida orci non dolor tincidunt pellentesque.
-           </div>
+    // put all posts on state, filter with tags, via filterThePosts.
+    const [thePosts, filterThePosts] = useState(postsQuery.posts.edges);
+    // console.log(thePosts);
+
+    // image query
+
+    //Extract images from queries
+    const postImages = postsQuery.images.edges
+        //What happens when there is no image. 
+    let noImage = postImages.filter((image) => {
+        return image.node.childImageSharp.fixed.originalName === "no-image.png";
+    })
+
+    //Begin posts mapping - or tut mapping
+    const posts = thePosts.map((posts) => {
+        // filter from image query which image belongs to which posts
+        // the image name must match the slug of the post
+        let theImageFilter = postImages.filter((image) => {
+            let { originalName } = image.node.childImageSharp.fixed;
+            let slugMatchPNG = posts.node.fields.slug + '.png';
+            let slugMatchJPG = posts.node.fields.slug + '.jpg';
+            // console.log(image);
+            if (originalName === slugMatchJPG) {
+                // console.log("jpg")
+                return slugMatchJPG;
+            } else if (originalName === slugMatchPNG) {
+                // console.log("png")
+                return slugMatchPNG;
+            } else {
+                // console.log("nomatch")
+                return
+            }
+
+
+        })
+        // console.log(theImageFilter)
+        let theImage;
+        // iffy because reading node from undefined crashes gatsby.
+        if (theImageFilter.length !== 0) {
+            theImage = theImageFilter[0].node.childImageSharp.fixed;
+        } else {
+            theImage = noImage[0].node.childImageSharp.fixed;
+        }
+
+
+
+        let { tags } = posts.node.frontmatter;
+        //iffy in case a post misses tags.
+        if (tags) {
+            tags.forEach((tag) => {
+                filterTags.indexOf(tag) === -1 ? setFilterTags([...filterTags, tag]) : console.log('');
+            })
+        }
+
+        let theme = "dark";
+        state.toggleDark ? theme = "dark" : theme = "light";
+
+        return ( < PostCard
+            key = {posts.node.fields.slug}
+            slug = { posts.node.fields.slug }
+            image = { theImage }
+            title = { posts.node.frontmatter.title }
+            date = { posts.node.frontmatter.date }
+            category = { posts.node.frontmatter.category }
+            sinopsis = { posts.node.frontmatter.sinopsis }
+            />
+
+
+
+
+        )
+
+    });
+
+    //begin tag map.
+
+    const displayTags = filterTags.map((tag) => {
+        let runTheFilter = (e) => {
+            //filter the posts is working, must try and reset state before each time a tag is clicked
+            let filterWord = e.target.getAttribute('name');
+            // console.log(filterWord);
+            let arrayFilter;
+            if (thePosts) { //if thePosts exists, begin filter using tag which is filtered word.
+                arrayFilter = postsQuery.posts.edges.filter((post) => {
+                    // console.log(filterWord)
+
+                    return post.node.frontmatter.tags.includes(filterWord);
+
+
+                })
+            }
+
+            //  console.log(arrayFilter);
+            filterThePosts(arrayFilter);
+        }
+
+        return ( <div className = 'filter-tag'
+            key = { tag }
+            name = { tag }
+            onClick = { e => runTheFilter(e) } > { tag } </div>
+        )
+    })
+
+    const cleanTags = (e) => {
+        filterThePosts(postsQuery.posts.edges);
+    }
+
+
+
+
+
+
+
+    return ( 
+    <Layout>
+        <div className = "card-container" > { posts } </div>
+
+
+
         </Layout>
     )
 }

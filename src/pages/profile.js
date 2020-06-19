@@ -114,6 +114,8 @@ query {
                     })
                 }
                 console.log(usernameEntry.commentCount);
+
+
                 if(usernameEntry.commentCount) {
                     //filter posts to get post information
                     let postTitleContainer = postsQuery.posts.edges.filter(posts => {
@@ -136,6 +138,8 @@ query {
                         }
                 })
                
+                } else {
+                    setCommentData({...commentData, commentCount: 0});
                 }
               
             
@@ -226,9 +230,12 @@ query {
         </div>
     )
 
+    console.log(commentData)
+
     return (
         <Layout>
             <section className="profile-top">
+            <button onClick={() => app.auth().signOut()} >Sign out</button>
             { name ? <Title subtitle={`Bienvenido ${name}`} sub2={`${da}-${mo}-${ye}`} /> : null}
             {currentUser ? <img className="profile-pic" src={displayImage}/> : null}
             </section>

@@ -4,8 +4,9 @@
 title: 'Test 3'
 date: '2019-12-20'
 sinopsis: 'Nuevo Sitio'
-tags: [Arqui, blog, tag]
+tags: [COca, pizza, mono]
 id: "3"
+category: "inspiration"
 
 
 ---

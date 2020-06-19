@@ -3,7 +3,6 @@ import {Link, graphql, useStaticQuery} from 'gatsby';
 import Img from 'gatsby-image';
 import Layout from "../layout/Layout";
 import Title from '../layout/title';
-
 import {GlobalDispatchContext, GlobalStateContext, AuthContext} from '../config/context';
 
 
@@ -12,7 +11,7 @@ import {GlobalDispatchContext, GlobalStateContext, AuthContext} from '../config/
 import './styles/blog.scss';
 
 
-const Blog = () => {
+const Tutoriales = () => {
 
   const state = useContext(GlobalStateContext) || {
     toggleDark: true
@@ -81,7 +80,18 @@ const posts = thePosts.map((posts) => {
     let { originalName } = image.node.childImageSharp.fluid;
     let slugMatchPNG = posts.node.fields.slug + '.png';
     let slugMatchJPG = posts.node.fields.slug + '.jpg';
-    return originalName === (slugMatchPNG || slugMatchJPG);
+    // console.log(image);
+    if (originalName === slugMatchJPG) {
+        // console.log("jpg")
+        return slugMatchJPG;
+    } else if (originalName === slugMatchPNG) {
+        // console.log("png")
+        return slugMatchPNG;
+    } else {
+        // console.log("nomatch")
+        return
+    }
+
 
   })
 
@@ -180,4 +190,4 @@ const cleanTags = (e) => {
     )
 }
 
-export default Blog
+export default Tutoriales
