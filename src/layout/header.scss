@@ -37,6 +37,18 @@
  }
 }
 
+.sub-bottom-bar {
+    padding: 10px 80px;
+    background-color: white;
+    span {
+        color: #888;
+    }
+    .separator {
+        color: #ddd;
+        margin: 0 15px;
+    }
+}
+
 .tuts {
      position: relative;
      top: 100px;

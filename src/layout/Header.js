@@ -12,45 +12,82 @@ const Header = () => {
     first: null,
     second: null,
     third: null,
+    fourth: null,
+    fifth: null
   })
     useEffect(() => {
       console.log("location changed");
       console.log(location.pathname);
-      let secondTerm;
-      let thirdTerm;
-      let fourthTerm;
         //define Bars from locations
         let firstBar = pathname.indexOf("/");
         let lastBar = pathname.lastIndexOf("/");
-        let firstTerm;
+  
       
         if(location.pathname.indexOf("tag") > -1) {
             // Si el location tiene Tag, estamos en un tag page, o en el tag page general
-           firstTerm = "Tutoriales";
-           secondTerm = "Tag";
+           if(location.pathname === "/tutoriales/category") { 
+            setCrumbs({
+              first: "Home",
+              second: "Tutoriales",
+              third: "Tag",
+              fourth: null,
+              fifth: null
+            })
+           } else {
+            setCrumbs({
+              first: "Home",
+              second: "Tutoriales",
+              third: "Tag",
+              fourth: "Tag que va",
+              fifth: null
+            })
+           }
+       
         } else if(location.pathname.indexOf("category") > 1) {
           // Si el location tiene category, estamos o dentro de un category page general, o dentro del cateogry specific
             if(location.pathname === "/tutoriales/category") {
-              firstTerm = "Tutoriales";
-              secondTerm = "Category";
+              setCrumbs({
+                first: "Home",
+                second: "Tutoriales",
+                third: "Category",
+                fourth: null,
+                fifth: null
+              })
+            } else {
+              setCrumbs({
+                first: "Home",
+                second: "Tutoriales",
+                third: "Category",
+                fourth: "La categoria que va",
+                fifth: null
+              })
             }
-           firstTerm = "Tutoriales";
-           secondTerm = "Category";
-           thirdTerm = "La categoria que va";
+       
         } else if(location.pathname === "/tutoriales") {
           // Si el location es solo tutoriales, estamos en la pagina general
-                  firstTerm = "Tutoriales";
-                  secondTerm = "No Cat";
+                  setCrumbs({
+                    first: "Home",
+                    second: "Tutoriales",
+                    third: null,
+                    fourth: null,
+                    fifth: null
+                  })
             
         } else if (location.pathname.indexOf("tutoriales") > -1 && location.pathname.indexOf("category") === -1 && location.pathname.indexOf("tag") === -1){
           // si el location tiene tutoriales, pero no tiene category y tag estamos en un tutorial
-          console.log("inisde a tut")
+          setCrumbs({
+            first: "Home",
+            second: "Tutoriales",
+            third: "Category",
+            fourth: "La categoria que va",
+            fifth: "El titulo q va"
+          })
 
         }
-        console.log(firstTerm, secondTerm, thirdTerm);
+       
 
     }, [location])
-
+    console.log(crumbs);
     const articleQuery = useStaticQuery(graphql `
     query {
         posts: allMarkdownRemark(sort: { order: DESC, fields: [frontmatter___date]}) {
@@ -125,7 +162,19 @@ const Header = () => {
             currentUser = test.currentUser;
         }
 
-
+    const subBottomBar = (
+      <div className="sub-bottom-bar">
+          {crumbs.first ? <span><Link to="/">{crumbs.first}</Link></span> : null}
+          {crumbs.second ? <span className="separator"> {">"} </span> : null}
+          {crumbs.second ? <span>{crumbs.second}</span> : null}
+          {crumbs.third ? <span className="separator"> {">"} </span> : null}
+          {crumbs.third ? <span>{crumbs.third}</span> : null}
+          {crumbs.fourth ? <span className="separator" > {">"} </span> : null}
+          {crumbs.fourth ? <span>{crumbs.fourth}</span> : null}
+          {crumbs.fifth ? <span className="separator" > {">"} </span> : null}
+          {crumbs.fifth ? <span>{crumbs.fifth}</span> : null}
+      </div>
+    )
 
     return (
         <section className="header-main">
@@ -166,6 +215,7 @@ const Header = () => {
                 </ul>
 
             </div>
+            {crumbs.first ? subBottomBar : null}
         </section>
     )
 }
