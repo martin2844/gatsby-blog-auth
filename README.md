@@ -5,7 +5,9 @@ This is basically a gatsby blog, but it has some quite nice added extra perks.
 This blog features:
 
 * Gatsby Image
-* Markdown posts, you own all your content.
+* Markdown posts, you own all your content
+* Pagination for blog posts
+* Blog posts thumbs
 * Tag and Category navigation
 * Breadcrumbs
 * Post comments
@@ -22,6 +24,7 @@ This blog features:
 5. Idea 30 dias de react
 6. Cat and Tag pages - Cat Page first
 7. Prism JS
-8. State management for breadcrumbs 
+8. State management for breadcrumbs
+9. Breadcrumbs to global state. Now working.
 
 

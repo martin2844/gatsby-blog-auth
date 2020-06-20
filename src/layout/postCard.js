@@ -11,7 +11,7 @@ const PostCard = (props) => {
         <article className="postcard-main">
             <div className="postcard-img"><Img fixed={image} /></div>
                 <div className="postcard-content">
-                    <div className="card-meta"><Link to={`/category/${category}`}>{category}</Link> <span> / {date} </span></div>
+                    <div className="card-meta"><Link to={`/tutoriales/category/${category}`}>{category}</Link> <span> / {date} </span></div>
                     <div className="card-content">
                             <Link to={`/tutoriales/${category}/${slug}`} ><h3>{title}</h3></Link>
                             <p>{sinopsis}</p>

@@ -25,7 +25,7 @@ const Category = () => {
     })
     const tagMap = [...tags].map(tag => {
         return(
-        <Link className="categoryMap" key={tag} to={`/tutoriales/${tag}`}>{tag.slice(0,1).toUpperCase()}{tag.substring(1,tag.length)}</Link>
+        <Link className="categoryMap" key={tag} to={`/tutoriales/tag/${tag}`}>{tag.slice(0,1).toUpperCase()}{tag.substring(1,tag.length)}</Link>
         )
     })
 

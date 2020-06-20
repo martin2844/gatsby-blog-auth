@@ -9,7 +9,7 @@ import { GlobalDispatchContext, GlobalStateContext, AuthContext } from '../confi
 const Index = () => {
 
     const state = useContext(GlobalStateContext) || {
-        toggleDark: true
+        toggleDark: true,
     }
 
 
@@ -104,7 +104,7 @@ query {
         //iffy in case a post misses tags.
         if (tags) {
             tags.forEach((tag) => {
-                filterTags.indexOf(tag) === -1 ? setFilterTags([...filterTags, tag]) : console.log('');
+                filterTags.indexOf(tag) === -1 && setFilterTags([...filterTags, tag]);
             })
         }
 

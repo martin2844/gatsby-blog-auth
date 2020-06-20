@@ -1,9 +1,9 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import Layout from '../layout/Layout';
 import {graphql, Link} from 'gatsby';
 import { GlobalDispatchContext, GlobalStateContext, AuthContext } from '../config/context';
 import PostCard from '../layout/postCard';
-
+import { globalHistory as history } from '@reach/router';
 
 import './catntag.scss';
 
@@ -52,12 +52,19 @@ query($title: String) {
 
 
 const TagTemplate = ({data, pageContext}) => {
-  console.log(data.images);
-  console.log(pageContext);
+
+  const { location } = history;
+  const { pathname } = location;
+
   const state = useContext(GlobalStateContext) || {
       toggleDark: true
   }
-
+  const dispatch = useContext(GlobalDispatchContext);
+  useEffect(()=> {
+    dispatch({type: "CRUMB_4_SET", payload: pageContext.title
+    })
+  }, [location.pathname])
+  
 
   // put all posts on state, filter with tags, via filterThePosts.
   const [thePosts, filterThePosts] = useState(data.allMarkdownRemark.edges);
@@ -72,7 +79,7 @@ const TagTemplate = ({data, pageContext}) => {
 
     //Begin posts mapping - or tut mapping
     const posts = thePosts.map((posts) => {
-        console.log(posts)
+        // console.log(posts)
       // filter from image query which image belongs to which posts
       // the image name must match the slug of the post
       let theImageFilter = postImages.filter((image) => {
@@ -129,7 +136,6 @@ const TagTemplate = ({data, pageContext}) => {
 
     return (
         <Layout>
-        <h5 className="bread-crumbs"><Link to="/tutoriales"> Tutoriales </Link>   /  <Link to="/tutoriales/tag">tag</Link>  /  {pageContext.title}</h5>
         <h1 className="catntag-title" >{pageContext.title}</h1>
         <div className = "card-container" > { posts } </div>
         </Layout>

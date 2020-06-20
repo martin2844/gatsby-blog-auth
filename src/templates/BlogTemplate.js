@@ -3,13 +3,13 @@ import Layout from '../layout/Layout';
 import {graphql, Link} from 'gatsby';
 import Spinner from '../layout/Spinner';
 import firebase from "firebase/app";
-
+import { globalHistory as history } from '@reach/router';
 
 import '@firebase/firestore';
 
 //Basic firebase package
 import app from '../config/base.js';
-import { AuthContext, GlobalStateContext } from '../config/context';
+import { AuthContext, GlobalStateContext, GlobalDispatchContext } from '../config/context';
 
 
 import './blogtemplate.scss';
@@ -32,6 +32,8 @@ query (
         date
         sinopsis
         id
+        category
+        tags
       }
       html
     }
@@ -42,11 +44,20 @@ query (
 
 
 const BlogTemplate = (props) => {
+  const { location } = history;
+  const { pathname } = location;
 
-     const state = useContext(GlobalStateContext) || {
-       toggleDark: true
-     }
-
+  const state = useContext(GlobalStateContext) || {
+      toggleDark: true
+  }
+  const dispatch = useContext(GlobalDispatchContext);
+  useEffect(()=> {
+    dispatch({type: "CRUMB_4_SET", payload: props.data.markdownRemark.frontmatter.category
+    });
+    dispatch({type: "CRUMB_5_SET", payload: props.data.markdownRemark.frontmatter.title
+  })
+  }, [location.pathname])
+  
 
      //BUILD BYPASS
      let currentUser;
@@ -240,9 +251,9 @@ const BlogTemplate = (props) => {
         </div>
       )
     })
-    console.log("finished map");
+    // console.log("finished map");
   } else {
-    console.log("entered else");
+    // console.log("entered else");
     commentsDisplay = ( 
       <div>no comments</div>
     )
@@ -252,7 +263,7 @@ const BlogTemplate = (props) => {
 
   //@@@ Delete a comment function
   const deleteComment = (e, comment, email, datePosted) => {
-    console.log(e.target.id);
+    // console.log(e.target.id);
     const ID = parseInt(e.target.id);
   
     db.collection("comments").doc(postID).update({
@@ -278,12 +289,12 @@ const BlogTemplate = (props) => {
 
     });
 
-     console.log("Comment Succeeded");
+    //  console.log("Comment Succeeded");
 
      //Setting up comment count
      const usernameRef = await db.collection('usernames').doc(currentUser.email).get();
      const usernameEntry = usernameRef.data();
-     console.log(usernameEntry);
+    //  console.log(usernameEntry);
      if(usernameEntry.commentCount === undefined || usernameEntry.commentCount === null) {
          await db.collection("usernames").doc(currentUser.email).update({
            commentCount: 1,

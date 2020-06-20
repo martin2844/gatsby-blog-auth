@@ -2,18 +2,15 @@ import React, { useContext } from 'react';
 import './main-rules.scss';
 import './Layout.scss';
 import Header from './Header';
-import {GlobalDispatchContext, GlobalStateContext, AuthContext} from '../config/context';
+import {GlobalDispatchContext, GlobalStateContext} from '../config/context';
 
 const Layout = (props) => {
 
     
-    const dispatch = useContext(GlobalDispatchContext);
+
     const state = useContext(GlobalStateContext) || {
         toggleDark: true
       }
-
-    
-
 
     return (
         <React.Fragment>

@@ -1,6 +1,5 @@
 import React, { useState, useEffect }  from "react"
 import app from './base';
-import {graphql, useStaticQuery} from 'gatsby';
 
 export const GlobalStateContext = React.createContext();
 export const GlobalDispatchContext = React.createContext();
@@ -10,7 +9,14 @@ export const AuthContext = React.createContext();
 
 // From global state reducers
 const initialState = {
-    toggleDark: true
+    toggleDark: true,
+    crumbs: {
+      first: null,
+      second: null,
+      third: null,
+      fourth: null,
+      fifth: null
+    }
 }
 
 
@@ -20,15 +26,43 @@ function reducer(state, action) {
       return {
         ...state,
         toggleDark: !state.toggleDark
-       
       }
     }
+    break;
     case "CHANGE_ANIMATION": {
         return {
           ...state,
           
         }
       }
+    break;
+    case "CRUMB_SET": {
+      return {
+        ...state,
+        crumbs: action.payload
+      }
+    }
+    break;
+    case "CRUMB_4_SET": {
+      return {
+        ...state,
+        crumbs: {
+          ...state.crumbs,
+          fourth: action.payload
+        }
+      }
+    }
+    break;
+    case "CRUMB_5_SET": {
+      return {
+        ...state,
+        crumbs: {
+          ...state.crumbs,
+          fifth: action.payload
+        }
+      }
+    }
+    break;
     default:
       throw new Error("Bad Action Type")
   }
@@ -41,7 +75,6 @@ const GlobalContextProvider = ({ children }) => {
 
   useEffect(() => {
       app.auth().onAuthStateChanged(setCurrentUser);
-      console.log(app.auth().onAuthStateChanged(setCurrentUser))
   }, []);
 
   return (

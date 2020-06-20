@@ -1,93 +1,108 @@
-import React, {useContext, useState, useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import { Link, useStaticQuery } from 'gatsby';
 import './header.scss';
-import {GlobalStateContext, AuthContext} from '../config/context';
+import {GlobalStateContext, AuthContext, GlobalDispatchContext} from '../config/context';
 import { globalHistory as history } from '@reach/router';
 
 const Header = () => {
+  // First we will define our dispatch function to hoist crumbs to global state.
+  // Crumbs are hoisted on global state because its the only easy way to access the fourth and fifth crumbs if we needed them
+  const dispatch = useContext(GlobalDispatchContext);
+  const state = useContext(GlobalStateContext) || {
+    toggleDark: true,
+    crumbs: {
+      first: null,
+      second: null,
+      third: null,
+      fourth: null,
+      fifth: null
+    }
+  }
 
+  // Location and Pathname will give us the actual path we see in our browser, useful because the path follows the crumbs
   const { location } = history;
   const { pathname } = location;
-  const [crumbs, setCrumbs] = useState({
-    first: null,
-    second: null,
-    third: null,
-    fourth: null,
-    fifth: null
-  })
+
+    // use effect, to change crumbs only when location.pathname changes
     useEffect(() => {
-      console.log("location changed");
-      console.log(location.pathname);
-        //define Bars from locations
-        let firstBar = pathname.indexOf("/");
-        let lastBar = pathname.lastIndexOf("/");
-  
+      // console.log("location changed");
+      // console.log(location.pathname);
+       
+      // @@@@@@@@@@@@@@ BEGIN CRUMB LOGIC 
       
         if(location.pathname.indexOf("tag") > -1) {
             // Si el location tiene Tag, estamos en un tag page, o en el tag page general
-           if(location.pathname === "/tutoriales/category") { 
-            setCrumbs({
+           if(location.pathname === "/tutoriales/tag/") { 
+            dispatch({type: "CRUMB_SET", payload: {
               first: "Home",
               second: "Tutoriales",
               third: "Tag",
               fourth: null,
               fifth: null
-            })
+            }});
            } else {
-            setCrumbs({
+            dispatch({type: "CRUMB_SET", payload: {
               first: "Home",
               second: "Tutoriales",
               third: "Tag",
-              fourth: "Tag que va",
+              fourth: "",
               fifth: null
-            })
+            }});
            }
        
-        } else if(location.pathname.indexOf("category") > 1) {
+        } else if(location.pathname.indexOf("category") > -1) {
           // Si el location tiene category, estamos o dentro de un category page general, o dentro del cateogry specific
-            if(location.pathname === "/tutoriales/category") {
-              setCrumbs({
+            if(location.pathname === "/tutoriales/category/") {
+              dispatch({type: "CRUMB_SET", payload: {
                 first: "Home",
                 second: "Tutoriales",
                 third: "Category",
                 fourth: null,
                 fifth: null
-              })
+              }});
             } else {
-              setCrumbs({
+              dispatch({type: "CRUMB_SET", payload: {
                 first: "Home",
                 second: "Tutoriales",
                 third: "Category",
-                fourth: "La categoria que va",
+                fourth: "",
                 fifth: null
-              })
+              }});
             }
        
         } else if(location.pathname === "/tutoriales") {
           // Si el location es solo tutoriales, estamos en la pagina general
-                  setCrumbs({
-                    first: "Home",
-                    second: "Tutoriales",
-                    third: null,
-                    fourth: null,
-                    fifth: null
-                  })
+          dispatch({type: "CRUMB_SET", payload: {
+            first: "Home",
+            second: "Tutoriales",
+            third: null,
+            fourth: null,
+            fifth: null
+          }});
             
         } else if (location.pathname.indexOf("tutoriales") > -1 && location.pathname.indexOf("category") === -1 && location.pathname.indexOf("tag") === -1){
           // si el location tiene tutoriales, pero no tiene category y tag estamos en un tutorial
-          setCrumbs({
+          dispatch({type: "CRUMB_SET", payload: {
             first: "Home",
             second: "Tutoriales",
             third: "Category",
-            fourth: "La categoria que va",
-            fifth: "El titulo q va"
-          })
+            fourth: "cat q va",
+            fifth: "tut q va"
+          }});
 
+        } else if (location.pathname === "/") {
+          dispatch({type: "CRUMB_SET", payload: {
+            first: null,
+            second: null,
+            third: null,
+            fourth: null,
+            fifth: null
+          }});
         }
-       
+     // @@@@@@@@@@@@@@ END CRUMBS LOGIC 
+    }, [pathname])
 
-    }, [location])
-    console.log(crumbs);
+    // Begin static query in order to get all of the tags and categories from blog posts to generate a menu
     const articleQuery = useStaticQuery(graphql `
     query {
         posts: allMarkdownRemark(sort: { order: DESC, fields: [frontmatter___date]}) {
@@ -107,6 +122,7 @@ const Header = () => {
     `)
 
     // console.log(articleQuery.posts.edges);
+
     //Extract all info from graphql
     const info = articleQuery.posts.edges;
     // Create a new set to map out categories without repeating them
@@ -126,7 +142,7 @@ const Header = () => {
     //For each category, search the posts and create a unique tag combo, which will fill out the cat menu.
     let display = newCat.map((cat) => {
         //Create a new set to get all available tags without repeating for a category.
-        console.log(cat);
+        // console.log(cat);
         const tags = new Set();
         //Filter the posts for this category to extract the tags
         let onlyThisCatsPost = info.filter(node => node.node.frontmatter.category === cat);
@@ -152,30 +168,36 @@ const Header = () => {
         )
     });
 
-    const state = useContext(GlobalStateContext) || {
-        user: "hello world"
-        }
 
+        // Declare an empty let to store our firebase user.
         let currentUser;
+        // Get user from global context, which gets from firebase config
         let test = useContext(AuthContext);
+        // iffy because on first render context is not loaded and test is undefined
         if(test) {
             currentUser = test.currentUser;
         }
+    
 
+    // Define a const which will contain the crumbs bar, which has some logic to define wether crumbs exists or not.
     const subBottomBar = (
       <div className="sub-bottom-bar">
-          {crumbs.first ? <span><Link to="/">{crumbs.first}</Link></span> : null}
-          {crumbs.second ? <span className="separator"> {">"} </span> : null}
-          {crumbs.second ? <span>{crumbs.second}</span> : null}
-          {crumbs.third ? <span className="separator"> {">"} </span> : null}
-          {crumbs.third ? <span>{crumbs.third}</span> : null}
-          {crumbs.fourth ? <span className="separator" > {">"} </span> : null}
-          {crumbs.fourth ? <span>{crumbs.fourth}</span> : null}
-          {crumbs.fifth ? <span className="separator" > {">"} </span> : null}
-          {crumbs.fifth ? <span>{crumbs.fifth}</span> : null}
+          {state.crumbs.first ? <span><Link to="/">{state.crumbs.first}</Link></span> : null}
+          {state.crumbs.second ? <span className="separator"> {">"} </span> : null}
+          {state.crumbs.second && !state.crumbs.third ? <span>{state.crumbs.second}</span> : null}
+          {state.crumbs.second && state.crumbs.third ? <span><Link to={`${state.crumbs.second.toLowerCase()}`}>{state.crumbs.second}</Link></span> : null}
+          {state.crumbs.third ? <span className="separator"> {">"} </span> : null}
+          {state.crumbs.third && !state.crumbs.fourth ? <span>{state.crumbs.third}</span> : null}
+          {state.crumbs.third && state.crumbs.fourth ? <span><Link to={`${state.crumbs.second.toLowerCase()}/${state.crumbs.third.toLowerCase()}`}>{state.crumbs.third}</Link></span> : null}
+          {state.crumbs.fourth ? <span className="separator" > {">"} </span> : null}
+          {state.crumbs.fourth && !state.crumbs.fifth ? <span>{state.crumbs.fourth}</span> : null}
+          {state.crumbs.fourth && state.crumbs.fifth ? <span><Link to={`${state.crumbs.second.toLowerCase()}/${state.crumbs.third.toLowerCase()}/${state.crumbs.fourth}`}>{state.crumbs.fourth}</Link></span> : null}
+          {state.crumbs.fifth ? <span className="separator" > {">"} </span> : null}
+          {state.crumbs.fifth ? <span>{state.crumbs.fifth}</span> : null}
       </div>
     )
-
+    
+    // Begin MAIN JSX return
     return (
         <section className="header-main">
             <div className="top-bar flex-row-center">
@@ -215,7 +237,7 @@ const Header = () => {
                 </ul>
 
             </div>
-            {crumbs.first ? subBottomBar : null}
+            {state.crumbs.first ? subBottomBar : null}
         </section>
     )
 }
