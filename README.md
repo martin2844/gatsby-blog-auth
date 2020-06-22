@@ -26,5 +26,6 @@ This blog features:
 7. Prism JS
 8. State management for breadcrumbs
 9. Breadcrumbs to global state. Now working.
+10. Pagination working on url level. Must add page numbers on the bottom. 
 
 

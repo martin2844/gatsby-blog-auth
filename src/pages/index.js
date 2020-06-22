@@ -169,7 +169,7 @@ query {
 
     return ( 
     <Layout>
-        <div className = "card-container" > { posts } </div>
+        <div className="card-container"> { posts } </div>
 
 
 

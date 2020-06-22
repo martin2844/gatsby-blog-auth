@@ -4,24 +4,19 @@ import Img from 'gatsby-image';
 import Layout from "../layout/Layout";
 import Title from '../layout/title';
 import {GlobalDispatchContext, GlobalStateContext, AuthContext} from '../config/context';
+import PostCard from '../layout/postCard';
 
 
 
+import '../pages/styles/blog.scss';
 
-import './styles/blog.scss';
-
-
-const Tutoriales = () => {
-
-  const state = useContext(GlobalStateContext) || {
-    toggleDark: true
-  }
-
-
-
-    const postsQuery = useStaticQuery(graphql`
-query {
-    posts: allMarkdownRemark(sort: { order: DESC, fields: [frontmatter___date]}) {
+export const postsQuery = graphql`
+query($skip: Int!, $limit: Int!) {
+    posts: allMarkdownRemark(
+      sort: { order: DESC, fields: [frontmatter___date]}
+      limit: $limit
+      skip: $skip
+      ) {
       edges{
         node {
           frontmatter {
@@ -29,6 +24,7 @@ query {
             date
             sinopsis
             tags
+            category
           }
           fields {
               slug
@@ -41,8 +37,8 @@ query {
       edges {
         node {
           childImageSharp {
-            fluid(maxWidth: 500) {
-              ...GatsbyImageSharpFluid
+            fixed(width: 368) {
+              ...GatsbyImageSharpFixed
               originalName
             }
           }
@@ -52,8 +48,18 @@ query {
 
     
   } 
-`)
+`
 
+
+const Tutoriales = (props) => {
+
+  const state = useContext(GlobalStateContext) || {
+    toggleDark: true
+  }
+
+
+
+const postsQuery = props.data;
 
 // use state to declare global filter tags.
 const [filterTags, setFilterTags] = useState([]);
@@ -69,7 +75,7 @@ const postImages = postsQuery.images.edges
 
 //What happens when there is no image. 
 let noImage = postImages.filter((image) => {
-  return image.node.childImageSharp.fluid.originalName === "no-image.png";
+  return image.node.childImageSharp.fixed.originalName === "no-image.png";
 })
 
 //Begin posts map
@@ -77,7 +83,7 @@ const posts = thePosts.map((posts) => {
   // filter from image query which image belongs to which posts
   // the image name must match the slug of the post
   let theImageFilter = postImages.filter( (image) => {
-    let { originalName } = image.node.childImageSharp.fluid;
+    let { originalName } = image.node.childImageSharp.fixed;
     let slugMatchPNG = posts.node.fields.slug + '.png';
     let slugMatchJPG = posts.node.fields.slug + '.jpg';
     // console.log(image);
@@ -98,9 +104,9 @@ const posts = thePosts.map((posts) => {
   let theImage;
   // iffy because reading node from undefined crashes gatsby.
   if (theImageFilter.length !== 0) {
-    theImage = theImageFilter[0].node.childImageSharp.fluid;
+    theImage = theImageFilter[0].node.childImageSharp.fixed;
   } else {
-    theImage = noImage[0].node.childImageSharp.fluid;
+    theImage = noImage[0].node.childImageSharp.fixed;
   }
 
   
@@ -116,20 +122,16 @@ const posts = thePosts.map((posts) => {
     let theme = "dark";
     state.toggleDark ? theme = "dark": theme = "light";
 
-    return ( <ul className={`post-container ${theme}`}>
-            
-                <div className='post-container-img'><Link className='no-decor' to={`/blog/${posts.node.fields.slug}`}  ><Img fluid={theImage} /></Link></div>
+    return ( < PostCard
+      key = {posts.node.fields.slug}
+      slug = { posts.node.fields.slug }
+      image = { theImage }
+      title = { posts.node.frontmatter.title }
+      date = { posts.node.frontmatter.date }
+      category = { posts.node.frontmatter.category }
+      sinopsis = { posts.node.frontmatter.sinopsis }
+      />
 
-                <div className='post-container-text'>
-                
-                  <Link className='no-decor' to={`/blog/${posts.node.fields.slug}`}  >
-                  <h1 className='post-title'>{posts.node.frontmatter.title}</h1> 
-                  <p className='post-date'>{posts.node.frontmatter.date}</p>
-                  </Link>
-                  <div className='post-sinopsis'><p>{posts.node.frontmatter.sinopsis} </p><Link className='read-more' to={`/blog/${posts.node.fields.slug}`}>...Leer más</Link></div>
-
-                  </div>
-            </ul>
            
     )
     
@@ -172,8 +174,7 @@ const cleanTags = (e) => {
 
     return (
         <Layout>
-            <Title title="Blog" sub1="puede que sea un enfasis" sub2="la fecha"/>
-            <section className='section-blog-posts'>
+            {/* <section className='section-blog-posts'>
                 <div className='tags-section'>
                    <h1>Search By tags</h1>
                    {displayTags}
@@ -185,7 +186,9 @@ const cleanTags = (e) => {
                 <div className='posts-section'>
                    {posts}
                </div>
-             </section>
+             </section> */}
+
+            <div className="card-container"> { posts } </div>
         </Layout>
     )
 }
