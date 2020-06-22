@@ -27,5 +27,6 @@ This blog features:
 8. State management for breadcrumbs
 9. Breadcrumbs to global state. Now working.
 10. Pagination working on url level. Must add page numbers on the bottom. 
+11. Page no's added to bottom. Must add Prev and Next buttons, and style it a bit better. Must add follwoing format < 1 2 3 ... 188 >
 
 

@@ -7,8 +7,6 @@
     }
 }
 
-
-
 .post-container {
     display: flex;
     flex-direction: row;
@@ -40,5 +38,15 @@
         width: 150px;
         margin-right: 200px;
         
+    }
+}
+
+
+.pagination-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    span {
+        margin: 20px 10px;
     }
 }

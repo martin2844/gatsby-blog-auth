@@ -5,7 +5,7 @@ import Layout from "../layout/Layout";
 import Title from '../layout/title';
 import {GlobalDispatchContext, GlobalStateContext, AuthContext} from '../config/context';
 import PostCard from '../layout/postCard';
-
+import Pagination from '../layout/pagination';
 
 
 import '../pages/styles/blog.scss';
@@ -60,6 +60,7 @@ const Tutoriales = (props) => {
 
 
 const postsQuery = props.data;
+console.log(props.pageContext)
 
 // use state to declare global filter tags.
 const [filterTags, setFilterTags] = useState([]);
@@ -189,6 +190,7 @@ const cleanTags = (e) => {
              </section> */}
 
             <div className="card-container"> { posts } </div>
+            <Pagination currentPage={props.pageContext.currentPage} totalPages={props.pageContext.numPages}/>
         </Layout>
     )
 }
