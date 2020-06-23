@@ -1,0 +1,15 @@
+.button {
+    padding: 15px 40px;
+    background-color: grey;
+    border-radius: 2px;
+    transition-duration: .2s;
+    transition-timing-function: ease;
+    transition-property: background-color;
+    &.green {
+        background-color: #9ab782;
+        color: white;
+    &:hover {
+        background-color: #bbceab;
+    }
+    }
+}

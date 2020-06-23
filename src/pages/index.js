@@ -5,6 +5,7 @@ import PostCard from '../layout/postCard';
 import { Link, graphql, useStaticQuery } from 'gatsby';
 import Img from 'gatsby-image';
 import { GlobalDispatchContext, GlobalStateContext, AuthContext } from '../config/context';
+import Button from '../layout/Button';
 
 const Index = () => {
 
@@ -15,7 +16,10 @@ const Index = () => {
 
     const postsQuery = useStaticQuery(graphql `
 query {
-    posts: allMarkdownRemark(sort: { order: DESC, fields: [frontmatter___date]}) {
+    posts: allMarkdownRemark(
+        sort: { order: DESC, fields: [frontmatter___date]}
+        limit: 12
+        ) {
       edges{
         node {
           frontmatter {
@@ -169,7 +173,11 @@ query {
 
     return ( 
     <Layout>
-        <div className="card-container"> { posts } </div>
+        <div className="card-container"> 
+        { posts } 
+        <Button to="/tutoriales/2" text="Más tutoriales" color="green" />
+        </div>
+        
 
 
 

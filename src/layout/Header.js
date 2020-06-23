@@ -27,9 +27,9 @@ const Header = () => {
     useEffect(() => {
       // console.log("location changed");
       // console.log(location.pathname);
-       
+      //Regex for number check on pagination of tut page
+      const reg = /\/tutoriales\/\d+/;
       // @@@@@@@@@@@@@@ BEGIN CRUMB LOGIC 
-      
         if(location.pathname.indexOf("tag") > -1) {
             // Si el location tiene Tag, estamos en un tag page, o en el tag page general
            if(location.pathname === "/tutoriales/tag/") { 
@@ -70,7 +70,7 @@ const Header = () => {
               }});
             }
        
-        } else if(location.pathname === "/tutoriales") {
+        } else if(location.pathname === "/tutoriales/" || location.pathname === "/tutoriales" ) {
           // Si el location es solo tutoriales, estamos en la pagina general
           dispatch({type: "CRUMB_SET", payload: {
             first: "Home",
@@ -80,6 +80,15 @@ const Header = () => {
             fifth: null
           }});
             
+        } else if  (reg.test(location.pathname)){
+          dispatch({type: "CRUMB_SET", payload: {
+            first: "Home",
+            second: "Tutoriales",
+            third: null,
+            fourth: null,
+            fifth: null
+          }});
+
         } else if (location.pathname.indexOf("tutoriales") > -1 && location.pathname.indexOf("category") === -1 && location.pathname.indexOf("tag") === -1){
           // si el location tiene tutoriales, pero no tiene category y tag estamos en un tutorial
           dispatch({type: "CRUMB_SET", payload: {
