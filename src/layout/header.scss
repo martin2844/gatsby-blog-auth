@@ -68,11 +68,15 @@
             height:0;
             position: relative;
             z-index: 2;
-            top: 217px;
-            left: 110px;
+            top: 216px;
+            left: 108px;
             border-style: solid;
-            border-width: 0 5px 5px 5px;
+            border-width: 0 8px 8px 8px;
             border-color: transparent transparent #f0f0f0 transparent;
+    }
+
+    .trickster.crumbs::after {
+        border-color: transparent transparent #fff transparent;
     }
 }
 
@@ -94,11 +98,12 @@
 
 ul.dropdownNav {
     margin-top: 10px;
-    padding: 20px;
+    padding: 0 20px 20px;
     position: absolute;
     background-color: #8CA96D;
     display: none;
     z-index: 2;
+    margin-right: 50px;
 }
 
 .no-pad {
@@ -117,6 +122,9 @@ ul.dropdownNav {
     h4 {
         text-transform: capitalize;
         margin-right: 20px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        width: 100%;
     }
     hr {
         width: 100%;
@@ -139,5 +147,25 @@ ul.dropdownNav {
             color: #fff;
             background-color: #859F67;
         }
+    }
+}
+
+
+@media screen and (max-width: 800px) {
+   
+ .tag-container {
+     max-width: 500px;
+ }
+    
+}
+
+
+@media screen and (max-width: 500px) {
+    .top-bar {
+        justify-content: center;
+    }
+
+    .sub-bottom-bar, .bottom-bar {
+        display: none;
     }
 }

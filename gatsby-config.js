@@ -29,6 +29,13 @@ module.exports = {
       },
       
     },
+    {
+      resolve: 'gatsby-source-filesystem',
+      options: {
+        name: 'layout-img',
+        path: path.join(__dirname, `src`, `layout`,`layout-img`),
+      }
+    },
     `gatsby-plugin-sharp`,
     `gatsby-transformer-sharp`,
     {
@@ -38,6 +45,7 @@ module.exports = {
         path: `${__dirname}/src/`
       }
     },
+
     {
     resolve: 'gatsby-transformer-remark',
     options: {

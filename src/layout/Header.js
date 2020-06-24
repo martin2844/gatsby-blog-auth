@@ -3,6 +3,7 @@ import { Link, useStaticQuery } from 'gatsby';
 import './header.scss';
 import {GlobalStateContext, AuthContext, GlobalDispatchContext} from '../config/context';
 import { globalHistory as history } from '@reach/router';
+import Img from 'gatsby-image';
 
 const Header = () => {
   // First we will define our dispatch function to hoist crumbs to global state.
@@ -127,6 +128,18 @@ const Header = () => {
             }
           }
         }
+        images: allFile(filter: {sourceInstanceName: {eq: "layout-img"}}) {
+          edges {
+            node {
+              childImageSharp {
+                fixed(width: 55) {
+                  ...GatsbyImageSharpFixed
+                  originalName
+                }
+              }
+            }
+          }
+        }
       }
     `)
 
@@ -205,7 +218,9 @@ const Header = () => {
           {state.crumbs.fifth ? <span>{state.crumbs.fifth}</span> : null}
       </div>
     )
-    
+    const logosrc = articleQuery.images.edges.filter(img => img.node.childImageSharp.fixed.originalName === "codigomate.png");
+    const logo = logosrc[0].node.childImageSharp.fixed;
+
     // Begin MAIN JSX return
     return (
         <section className="header-main">
@@ -219,7 +234,9 @@ const Header = () => {
             </div>
             <div className="center-bar">
                   <div className="Logo flex-row-center">
+                      
                         <Link className="flex-row-center" to="/">
+                        <Img fixed={logo} style={{marginTop: "-5px", marginRight: "10px"}}/>
                         <h2 style={{color: "#6A635A"}}>codigo</h2>
                         <h2 style={{color: "#89837A"}}>Mate</h2>
                         </Link>
@@ -232,16 +249,16 @@ const Header = () => {
                 <ul className="flex-row-center no-pad">
                     <li className="tutorial-link">
                         <Link to="/tutoriales">Tutoriales</Link>
-                        <div className="trickster"></div>
+                        <div className={state.crumbs.first ? "trickster crumbs" : "trickster"}></div>
                         <ul className="dropdownNav">
                             {display}
                         </ul>
                     </li>
                     <li>
-                      <Link to="/tutoriales">Contacto</Link>
+                      <Link to="/cursos">Cursos</Link>
                     </li>
                     <li>
-                      <Link to="/tutoriales">Acerca de</Link>
+                      <Link to="/about">Acerca de</Link>
                     </li>
                 </ul>
 

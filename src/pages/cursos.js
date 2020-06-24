@@ -1,11 +1,11 @@
-import React from 'react';
+import React from 'react'
 import Layout from '../layout/Layout';
-const About = () => {
+const Cursos = () => {
     return (
         <Layout>
-            
+            asdasd
         </Layout>
     )
 }
 
-export default About
+export default Cursos
