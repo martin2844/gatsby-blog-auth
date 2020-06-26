@@ -4,7 +4,7 @@ date: "2019-06-26"
 sinopsis: "¿Qué es JSON? ¿Cómo se estructura un archivo JSON? ¿Para qué sirve un JSON? ¿Qué tiene que ver el JSON con las APIs? En este breve tutorial vamos a ver todo esto y más con un ejemplo real de una API. Vamos a entender JSON y su relación cercana con las APIS."
 tags: [Javascript]
 category: "Front-End"
-id: "68"
+id: "2"
 ---
 
 

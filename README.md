@@ -13,7 +13,8 @@ This blog features:
 * Post comments
 * User interaction by firebase including comments on posts, user dashboard with user avatar and user display names.
 * All home made components, no component libraries for UI
-
+* Smart 404.js page, thanks to [Sam Larsen](https://sld.codes/articles/Rethinking-404-Pages)
+* Mobile Side bar menu
 
 ### History
 
@@ -30,4 +31,4 @@ This blog features:
 11. Page no's added to bottom. Must add Prev and Next buttons, and style it a bit better. Must add follwoing format < 1 2 3 ... 188 >
 12. Created regex check for paginated breadcrumbs. Created Custom Buttton component.
 13. Some media queries, added logo
-
+14. Added mobile menu - still needs some retouching

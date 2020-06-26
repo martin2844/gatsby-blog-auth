@@ -2,13 +2,13 @@ import React from 'react';
 import { Link } from 'gatsby';
 import './Button.scss';
 
-const Button = ({to, href, color, text}) => {
+const Button = ({to, href, color, text, children}) => {
 
     if(to && !href) {
         return (
             <Link to={to}>
             <div className={`button ${color}`}>
-            {text}    
+            {text || children}    
     
             </div>
             </Link>
@@ -18,7 +18,7 @@ const Button = ({to, href, color, text}) => {
         return(
             <a href={href}>
             <div className={`button ${color}`}>
-                 {text}    
+                 {text || children}    
 
             </div>
             </a>
@@ -27,7 +27,7 @@ const Button = ({to, href, color, text}) => {
     } else {
         return(
             <div>
-                Cant double link properties
+                Cant double link properties or missing to or href prop
             </div>
         )
     }

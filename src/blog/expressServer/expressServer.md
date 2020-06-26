@@ -5,7 +5,7 @@ date: "2019-06-29"
 sinopsis: "En este tutorial vas aprender como armar tu primer server web local usando NodeJS y Express. Es muy simple y rápido, pero también es muy útil. En menos de 15 minutos vas a tener un server corriendo de forma local, sirviendo todos tus archivos html y más. "
 tags: [Nodejs]
 category: "Back-end"
-id: "89"
+id: "3"
 ---
 
 Como hacer un server en menos de 15 minutos.

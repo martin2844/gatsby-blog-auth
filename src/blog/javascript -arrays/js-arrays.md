@@ -4,7 +4,7 @@ date: "2019-06-14"
 sinopsis: "En este tutorial vas a poder ver en detalle 8 metodos muy utiles para arrays, Filter, map, some, includes, every, forEach, reduce, find. Esta es la primera parte, en la segunda parte cubriremos más metodos aplicables a Arrays, que resultan utiles en muchos casos diversos"
 tags: [Javascript]
 category: "Front-End"
-id: "78"
+id: "1"
 ---
 
 

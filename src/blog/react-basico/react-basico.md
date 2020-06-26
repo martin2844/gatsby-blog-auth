@@ -5,7 +5,7 @@ title: 'React para principiantes'
 date: '2020-07-1'
 sinopsis: 'Como y por donde empezar con React?'
 tags: [React, Principiantes]
-id: "5"
+id: "4"
 category: "Front-End"
 
 
@@ -119,3 +119,130 @@ ReactDOM.render(
 // Learn more about service workers: https://bit.ly/CRA-PWA
 serviceWorker.unregister();
 ```
+
+
+## Dale! Arranquemos a programar!
+
+Bueno, si nos fijamos en el código anterior vemos que se importa App dentro de este archivo que luego inyecta eso al ID root.
+Esa APP es nuestro archivo app.js. Allí es donde entraremos para empezar a crear código en react.
+
+Dentro de este archivo veremos lo siguiente, que teniendo concoimientos veremos que es muy parecido al HTML, con algunas diferencias, vean:
+
+```javascript
+import React from 'react';
+import logo from './logo.svg';
+import './App.css';
+
+function App() {
+  return (
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
+    </div>
+  );
+}
+
+export default App;
+```
+
+
+Podemos dividir este codigo en tres partes.
+
+La primera parte son todas las importaciones 
+
+```javascript
+
+import React from 'react';
+import logo from './logo.svg';
+import './App.css';
+
+```
+
+Importamos React de la libreria react, luego importamos el logo.svg que simplemente el logo que vemos girar en nuestra aplicacion que os mostre previamente la pantalla, que si han iniciado el server con npm start estaria alocado en la url localhost:3000.
+Finalmente estamos importando un archivo css que va a traer todos los estilos.
+
+En la segunda parte tenemos una función Javascript:
+
+```javascript
+
+function App() {
+  return (
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>
+          Edit <code>src/App.js</code> and save to reload.
+        </p>
+        <a
+          className="App-link"
+          href="https://reactjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Learn React
+        </a>
+      </header>
+    </div>
+  );
+}
+
+````
+
+Esta función se llama App, y simplemente devuelve algo, que a primera visa es HTML. Y si, es HTML pero tiene otro nombre aquí en React. Se llama JSX. Es muy similar al HTML pero permite integrar javascript directo sin necesidad de utilizar  ` <script> `  tags. 
+
+Otra gran diferencia es que el atributo class, pasa a llamarse className.
+
+Hay más diferencias que las iremos viendo a la par. 
+
+Finalmente encontramos la siguiente expresion
+
+```javascript 
+
+export default App;
+
+```
+
+Esto lo que hace, es indicar que esto es una función para exportar, y esto nos permite, como vimos antes importarla en otro archivo. En el caso de create-react-app la importamos en index.js la cual va a inyectar este componente en el html.
+
+Entonces, vamos a borrar todo, y vamos a escribir nuestro primer componente en React.
+
+
+Simplemente borren todo menos la primera etiqueta del div, luego vamos a escribir "Hola mundo" dentro del mismo, y le vamos a agregar una clase.
+
+```javascript
+import React from 'react';
+
+function App() {
+  return (
+    <div className="hola">
+        <h1>Hola Mundo</h1>
+    </div>
+  );
+}
+
+export default App;
+
+```
+
+Esto nos va a dar este resultado:
+![html](./hola-mundo.png)
+
+y si inspeccionamos en la consola, podemos ver como babel y webpack traducen todo nuestro javascript a html. Fijense que `className="hola"` pasó a ser `class="hola"`
+
+![html](./inspect-hola.png)
+
+También podemos ver el div root al cual estamos inyectando el JSX.
+Estó concluye una breve introducción a React. Se imaginaran que con esto ya podemos hacer lo que se imaginen.
+En la proxima sección veremos como crear componentes reutilizables, la diferencia entre componentes de clases y componentes funcionales y más!

@@ -5,6 +5,8 @@
     transition-duration: .2s;
     transition-timing-function: ease;
     transition-property: background-color;
+    max-width: 150px;
+    text-align: center;
     &.green {
         background-color: #9ab782;
         color: white;

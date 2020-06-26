@@ -1,0 +1,65 @@
+.mobile-btn {
+    display: none;
+    position: absolute;
+    top: 5px;
+    left: 0;
+    background-color: #bbceab;
+    border-radius: 2px;
+    max-height: 43px;
+    max-width: 43px;
+    transition: 0.5s;
+    &:hover {
+        background-color: #bbceab;
+        cursor: pointer;
+    }
+    svg {
+        margin-left: -2px;
+        margin-top: -2px;
+    }
+}
+
+
+.mobile-god {
+    display: none;
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #bbceab;
+    z-index: 80;
+    overflow-y: hidden;
+    transition: 0.5s;
+  
+}
+
+
+@media screen and (max-width: 500px) {
+    .mobile-btn {
+        display: block;
+    }
+    
+    .mobile-god {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        a {
+            transition: all .3s ease-in-out .9s;
+        }
+        a:nth-child(2) {
+            transition: all .3s ease-in-out .5s;
+        }
+        a:nth-child(3) {
+            transition: all .3s ease-in-out .7s;
+        }
+
+        svg {
+            align-self: flex-end;
+            max-height: 30px;
+            max-width: 30px;
+            margin: 10px 20px;
+            cursor: pointer;
+        }
+    }
+    
+}

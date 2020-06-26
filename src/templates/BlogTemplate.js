@@ -246,7 +246,7 @@ const BlogTemplate = (props) => {
           <div className="comment-content">
             <div className="top"><h4><a className={state.toggleDark ? "dark" : "light"} href={`emailto:${email}`}>{username}</a></h4><p>{datePosted.substr(0, datePosted.indexOf(" "))}</p></div>
             <div className="white-test">{comment}</div>
-            {allowDelete && <p id={id} comment={comment} dateposted={datePosted} onClick={e => deleteComment(e, comment, email, datePosted)} className="delete-comment"> Delete Comment</p>}
+            {allowDelete && <p id={id} comment={comment} dateposted={datePosted} onClick={e => deleteComment(e, comment, email, datePosted)} className="delete-comment"> Borrar Comentario</p>}
           </div>
         </div>
       )
@@ -255,7 +255,7 @@ const BlogTemplate = (props) => {
   } else {
     // console.log("entered else");
     commentsDisplay = ( 
-      <div>no comments</div>
+      <div>sin comentarios</div>
     )
   }
 
@@ -334,7 +334,7 @@ const BlogTemplate = (props) => {
   const newComment = (
     <section className="new-comment">
     <form onSubmit={e => onSubmit(e).then(fetchData())}>
-      <label><h6>Leave a comment:</h6></label>
+      <label><h6>Dejá un comentario:</h6></label>
       <textarea value={text} onChange={e => setText(e.target.value)}/>
       <button>Submit</button>
   </form>
@@ -353,7 +353,7 @@ const BlogTemplate = (props) => {
         <div className='post-title-container'>
         <h1 className='post-title-content'>{props.data.markdownRemark.frontmatter.title}</h1>
         <div className="post-sub-data-container">
-        <p className='post-date'> posted on {props.data.markdownRemark.frontmatter.date}</p>
+        <p className='post-date'> posteado el {props.data.markdownRemark.frontmatter.date}</p>
         <p className="comment-info">{loading ? "counting comments" : `comments: ${commentCount}`}</p>
 
         </div>
@@ -364,21 +364,21 @@ const BlogTemplate = (props) => {
         <section className="post-comments">
         <div className="top-comment-bar">
              <span>
-                 <h5 className="underline-hero">{commentCount} Comments</h5>
+                 <h5 className="underline-hero">{commentCount} Comentarios</h5>
              </span>
              <span>
-                  {currentUser ? null : <Link to="/login"><h5>Log in to comment</h5></Link>}
+                  {currentUser ? null : <Link to="/login"><h5>Logueate para dejar un comentario</h5></Link>}
              </span> 
         </div>
 
 
-          {loading ? <Spinner text="loading comments" /> : commentsDisplay}
+          {loading ? <Spinner text="cargando comentarios" /> : commentsDisplay}
          
         </section>
 
         {currentUser ? newComment : null }
         
-        <Link className='goback' to="/blog">Go back to posts</Link>
+        <Link className='goback' to="/tutoriales">Volver a los tutoriales</Link>
     </Layout>
  )
 }
