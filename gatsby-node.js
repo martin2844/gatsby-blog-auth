@@ -55,6 +55,7 @@ module.exports.createPages = async ({graphql, actions}) => {
 
 
     res.data.allMarkdownRemark.edges.forEach( (edge) => {
+      console.log("@@@@@@@@@", edge.node.fields.slug)
       //Tags is an array inside frontmatter so we can loop it and add each individual item to the newly created tagg set.
       edge.node.frontmatter.tags.forEach(tag => tagg.add(tag));
       //category is a string, we want to add it into a set to make sure we dont have repeated categories. Since its just a string, we only

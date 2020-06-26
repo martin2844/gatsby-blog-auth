@@ -26,7 +26,7 @@ En react, para hacer una analogía, es como si construyeramos bloques de codigo,
 
 ### Lo que vamos hacer
 
-Vamos a codear una aplicación de 0 para guardar contactos, de tipo SPA, en la cual vamos a poder crear, editar y borrar tarjetas de contactos.
+Vamos a codear una aplicación de 0 para guardar **contactos**, de tipo SPA, en la cual vamos a poder crear, editar y borrar tarjetas de contactos.
 
 *insertar gif*
 

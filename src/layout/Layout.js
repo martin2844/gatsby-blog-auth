@@ -17,7 +17,7 @@ const Layout = (props) => {
         <React.Fragment>
         <MobileMenu />
         <Header />
-        <div className={state.toggleDark ? "main-container dark" : "main-container"}>
+        <div id="main" className={state.toggleDark ? "main-container dark" : "main-container"}>
 
             
          {props.children}
