@@ -9,10 +9,12 @@ const MobileMenu = () => {
 
     const [toggle, setToggle] = useState(false);
     console.log(toggle);
-    if(document){
+    try {
         toggle ? document.body.style.overflow = 'hidden' : document.body.style.overflow = 'unset';
+    } catch (error) {
+        console.log(error);
     }
-   
+ 
  
 
     const mobileGod = (
