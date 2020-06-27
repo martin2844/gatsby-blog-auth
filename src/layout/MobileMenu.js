@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'gatsby';
 import './mobilegod.scss';
-import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'body-scroll-lock';
+
 
 
 
@@ -11,11 +11,8 @@ const MobileMenu = () => {
     
     
     const [toggle, setToggle] = useState(false);
-    console.log(toggle);
     try {
-        const targetElement = document.getElementById('mobile-god');
         toggle ? document.body.style.overflow = 'hidden' : document.body.style.overflow = 'unset';
-        toggle ? disableBodyScroll(targetElement) : enableBodyScroll(targetElement);
     } catch (error) {
         console.log(error);
     }

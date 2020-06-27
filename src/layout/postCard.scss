@@ -4,6 +4,12 @@
     align-items: flex-start;
     flex-wrap: wrap;
     justify-content: center;
+    a {
+        flex-basis: 100%;
+        .button {
+            margin: 0 auto;
+        }
+    }
 }
 
 .postcard-main {

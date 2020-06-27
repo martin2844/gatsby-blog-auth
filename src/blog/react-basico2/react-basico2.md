@@ -2,8 +2,8 @@
 
 
 title: 'React para principiantes 2'
-date: '2020-07-1'
-sinopsis: 'Como y por donde empezar con React?'
+date: '2020-07-2'
+sinopsis: 'Ya sabemos que es react, vamos a escribir nuestro primer componente, veremos exportaciones e importaciones y algunas utilidades del javascript puro'
 tags: [React, Principiantes]
 id: "5"
 category: "Front-End"

@@ -3,11 +3,10 @@
 
 title: 'React para principiantes'
 date: '2020-07-1'
-sinopsis: 'Como y por donde empezar con React?'
+sinopsis: '¿Qué es React y para que sirve? ¿Cómo y por donde empezar con React? Veremos como arrancar con create-react-app'
 tags: [React, Principiantes]
 id: "4"
 category: "Front-End"
-
 
 ---
 
