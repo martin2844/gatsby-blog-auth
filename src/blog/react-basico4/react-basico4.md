@@ -2,8 +2,8 @@
 
 
 title: 'React para principiantes 4'
-date: '2020-07-4'
-sinopsis: 'Ya tenemos lo principal hecho, ahora vamos con el CRUD, es decir la funcion de create - read - update - delete'
+date: '2020-07-04'
+sinopsis: 'Ya tenemos lo principal hecho, ahora vamos con el CRUD, es decir la funcion de create - read - update - delete. Veremos el manejo de estado en react'
 tags: [React, Principiantes]
 id: "7"
 category: "Front-End"
@@ -277,3 +277,144 @@ Ya tenemos registrado los cambios cada vez que escribimos algo, fijense la conso
 ![html](./cambios.png)
 
 Ahora nos queda hacer que el boton de Agregar funcione!
+
+Vamos a hacer una nueva función que se va llamar onSubmit. Esta función va hacer que el boton agregar funcione, y va a llevar toda la logica de agregar el nuevo contacto a nuestro estado.
+
+La forma de implementarlo es muy parecido al onChange que pusimos en cada input solo que va en el Form tag, así:
+
+`<Form onSubmit={e => onSubmit(e)}>` 
+
+Basicamente, nuestro form acepta una prop llamada onsubmit, que dispará lo que tenga adentro cada vez que apretemos agregar. Nosotros estamos diciendole que cuando alguien aprete agregar corra la función onSubmit() que aun no hemos definido. Asi qué vamos a definirla.
+
+Son 3 cosas las que debemos hacer con esta función:
+
+1. Prevenir el comportamiento por default de un Form. Hagan la prueba y apreten el boton agregar, verán que la página se recarga. Nosotros no queremos que suceda eso.
+2. Vamos agregar nuestro nuevo contacto a nuestra lista de contactos existente
+3. Vamos a limpiar nuestro estado de manejo de inputs para que no quede información allí una vez que agregamos un contacto. Si no hacemos esto y queremos agregar más de uno vamos a tener que manualmente limpiar los campos.
+
+Entonces quedaría la función asi:
+
+```JSX
+
+
+ const onSubmit = (e) => { 
+   //El prevent default es lo que mencioné arriba en el punto 1.
+   e.preventDefault();
+   // Hacemos un spread del viejo contact list y agregamos el nuevo, esto es que el estado es inmutable en React y es un concepto para luego, pero basicamente no podemos modificar el estado directamente, debemos hacer una copia y luego modificarlo.
+   setContactList([
+     ...contactList,
+     {
+       name: data.name,
+       lastname: data.lastname,
+       phone: data.phone
+     }
+   ]);
+   //Finalmente borramos los campos de data para que el form quede vacío.
+   setData({
+    name: "",
+    lastname: "",
+    phone: ""
+   });
+ }
+
+```
+Está función va arriba del return del JSX, por si eso no es obvio y debería funcionar! Ya podemos agregar contactos:
+
+![html](./contact-state.gif)
+
+Ahora, asi quedaría todo el JSX por ahora:
+```JSX
+import React, {useState} from 'react';
+import Tarjeta from './Tarjeta';
+import contacts from './contacts.js';
+import './App.css'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+
+
+
+function App() {
+  
+  //Estado para registrar que estamos escribiendo en los formularios de agregar nuevos contactos.
+  const [data, setData] = useState({
+    name: "",
+    lastname: "",
+    phone: ""
+  });
+
+  //Función para agregar al estado cada cosa que se va escribiendo en los formularios, esta funcion se adjunta a cada input
+  const onChange = (e) => {
+    setData({
+      //hacemos un spread de la data que ya existia para poder guardar mas de un componente en nuestro objeto
+      ...data,
+      [e.target.name]: e.target.value
+    })
+  }
+  //Fijense este console log, va a cambiar cada vez que escribamos algo en nuestros forms.
+  console.log(data);
+
+
+
+  //Estado que maneja nuestra lista de contactos
+  const [contactList, setContactList] = useState(contacts)
+  //Mapeo que crea una tarjeta por cada contacto
+  const contactsMap = contactList.map((contact) => {
+    return(
+      <Tarjeta key={contact.phone} name={contact.name} lastname={contact.lastname} phone={contact.phone} />
+    )
+  })
+
+
+ const onSubmit = (e) => {
+   e.preventDefault();
+   setContactList([
+     ...contactList,
+     {
+       name: data.name,
+       lastname: data.lastname,
+       phone: data.phone
+     }
+   ]);
+
+   setData({
+    name: "",
+    lastname: "",
+    phone: ""
+   });
+ }
+
+
+  //Devolución o return del JSX que crea nuestro HTML a inyectar.
+  return (
+    <div>
+    <section className="contacts-container">
+        {contactsMap}
+    </section>
+    <section className="new-contact">
+      <Form onSubmit={e => onSubmit(e)}>
+         <FormGroup>
+           <Label for="name">Nombre</Label>
+           <Input onChange={e => onChange(e)}  type="text" name="name" id="name" value={data.name}  />
+          </FormGroup>
+          <FormGroup>
+           <Label for="lastname">Apellido</Label>
+           <Input onChange={e => onChange(e)}  type="text" name="lastname" id="lastname" value={data.lastname}/>
+          </FormGroup>
+          <FormGroup>
+           <Label for="phone">Telefono</Label>
+           <Input onChange={e => onChange(e)}  type="text" name="phone" id="phone" value={data.phone} />
+          </FormGroup>
+          <Button color="primary">Agregar</Button>
+      </Form>
+    </section>
+    </div>
+  );
+}
+
+export default App;
+```
+
+Si damos refresh la data nueva que agregamos se borra, para poder hacer que la data se guarde tenemos varias opciones, esto sería hacer que la data persista, o el concepto de data persistance.
+
+Eso lo veremos en el proximo capitulo.
+

@@ -2,7 +2,7 @@
 
 
 title: 'React para principiantes 2'
-date: '2020-07-2'
+date: '2020-07-02'
 sinopsis: 'Ya sabemos que es react, vamos a escribir nuestro primer componente, veremos exportaciones e importaciones y algunas utilidades del javascript puro'
 tags: [React, Principiantes]
 id: "5"

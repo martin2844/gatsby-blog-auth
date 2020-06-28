@@ -2,7 +2,7 @@
 
 
 title: 'React para principiantes'
-date: '2020-07-1'
+date: '2020-07-01'
 sinopsis: '¿Qué es React y para que sirve? ¿Cómo y por donde empezar con React? Veremos como arrancar con create-react-app'
 tags: [React, Principiantes]
 id: "4"
