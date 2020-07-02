@@ -80,7 +80,7 @@ const BlogTemplate = (props) => {
 
 
 
-  // Ie.firestore.FieldValue.arrayRemove("east_coast")nitiate var for comment count info.
+  // Initiate var for comment count info.
   let commentCount = null;
 
 

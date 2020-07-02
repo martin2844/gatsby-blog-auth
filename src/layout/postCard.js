@@ -6,7 +6,23 @@ import './postCard.scss';
 
 
 const PostCard = (props) => {
-    const {slug, image, date, sinopsis, title, category} = props
+    const {slug, image, date, sinopsis, title, category, course} = props
+    console.log(course);
+    if(course) {
+        return(
+            <article className="postcard-main">
+            {/* <div className="postcard-img"><Link to={`/tutoriales/${category}/${slug}`} ><Img fixed={image} /></Link></div> */}
+                <div className="postcard-content">
+                    <div className="card-meta"><Link to={`/tutoriales/category/${category}`}>{category}</Link> <span> / {date} </span></div>
+                    <div className="card-content">
+                            <Link to={`/tutoriales/${category}/${slug}`} ><h3>{title}</h3></Link>
+                            <p>{sinopsis}</p>
+                    </div>
+                </div>
+            
+        </article>
+        )
+    }
     return (
         <article className="postcard-main">
             <div className="postcard-img"><Link to={`/tutoriales/${category}/${slug}`} ><Img fixed={image} /></Link></div>

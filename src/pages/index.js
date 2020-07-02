@@ -6,6 +6,7 @@ import { Link, graphql, useStaticQuery } from 'gatsby';
 import Img from 'gatsby-image';
 import { GlobalDispatchContext, GlobalStateContext, AuthContext } from '../config/context';
 import Button from '../layout/Button';
+import courses from '../courses/cursos';
 
 const Index = () => {
 
@@ -166,21 +167,26 @@ query {
     }
 
 
-
+    const courseCards = courses.map((course) => {
+        return(
+            <PostCard title={course.name} category={course.category} type={course.type} course />
+        )
+    })
 
 
 
 
     return ( 
     <Layout>
-        <div className="card-container"> 
+        <section className="card-container"> 
         { posts } 
+        <hr className="hr-god" />
         <Button to="/tutoriales/2" text="Más tutoriales" color="green" />
-        </div>
-        
+        </section>
+        <section className="courses-section">
 
-
-
+        {courseCards}
+        </section>
         </Layout>
     )
 }
