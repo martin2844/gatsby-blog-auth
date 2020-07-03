@@ -30,6 +30,14 @@ module.exports = {
       
     },
     {
+      resolve: `gatsby-source-filesystem`,
+      options: {
+        name: `cthumbs`,
+        path: path.join(__dirname, `src`, `courses`,`thumbs`),
+      },
+      
+    },
+    {
       resolve: 'gatsby-source-filesystem',
       options: {
         name: 'layout-img',

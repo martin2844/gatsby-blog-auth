@@ -11,10 +11,9 @@ const PostCard = (props) => {
     if(course) {
         return(
             <article className="postcard-main">
-            {/* <div className="postcard-img"><Link to={`/tutoriales/${category}/${slug}`} ><Img fixed={image} /></Link></div> */}
-                <div className="postcard-content">
-                    <div className="card-meta"><Link to={`/tutoriales/category/${category}`}>{category}</Link> <span> / {date} </span></div>
-                    <div className="card-content">
+            <div className="postcard-img"><Link to={`/tutoriales/${category}/${slug}`} ><Img fixed={image} /></Link></div>
+                <div className="postcard-content course">
+                    <div className="card-content course">
                             <Link to={`/tutoriales/${category}/${slug}`} ><h3>{title}</h3></Link>
                             <p>{sinopsis}</p>
                     </div>

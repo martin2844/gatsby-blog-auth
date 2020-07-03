@@ -7,6 +7,7 @@ import Img from 'gatsby-image';
 import { GlobalDispatchContext, GlobalStateContext, AuthContext } from '../config/context';
 import Button from '../layout/Button';
 import courses from '../courses/cursos';
+import Jumbotron from '../layout/Jumbotron';
 
 const Index = () => {
 
@@ -50,11 +51,24 @@ query {
       }
     }
 
+    cimages: allFile(sort: {fields: [name], order: ASC}, filter: { sourceInstanceName: { eq: "cthumbs" } }) {
+        edges {
+          node {
+            childImageSharp {
+              fixed(width: 368) {
+                ...GatsbyImageSharpFixed
+                originalName
+              }
+            }
+          }
+        }
+      }
+
     
   } 
 `)
 
-
+  
 
     // use state to declare global filter tags.
     const [filterTags, setFilterTags] = useState([]);
@@ -168,8 +182,19 @@ query {
 
 
     const courseCards = courses.map((course) => {
+        let courseImg;
+        let courseThumb = postsQuery.cimages.edges.filter((img) => {
+            let name = img.node.childImageSharp.fixed.originalName
+            return name.substr(0, name.lastIndexOf(".")) === course.thumb
+        });
+        if(courseThumb.length !== 0) {
+            courseImg = courseThumb[0].node.childImageSharp.fixed
+        } else {
+            courseImg = noImage[0].node.childImageSharp.fixed;
+        }
+        
         return(
-            <PostCard title={course.name} category={course.category} type={course.type} course />
+            <PostCard key={course.name} title={course.name} category={course.category} type={course.type}  course image={courseImg}/>
         )
     })
 
@@ -179,13 +204,16 @@ query {
     return ( 
     <Layout>
         <section className="card-container"> 
-        { posts } 
-        <hr className="hr-god" />
-        <Button to="/tutoriales/2" text="Más tutoriales" color="green" />
+                { posts } 
+                <hr className="hr-god" />
+                <Button to="/tutoriales/2" text="Más tutoriales" color="green" />
         </section>
         <section className="courses-section">
-
-        {courseCards}
+             <Jumbotron title="Cursos" color="blue" text="Este es un jumbotron de prueba" />
+                 <div className="card-container">
+                    {courseCards}
+                  </div>
+      
         </section>
         </Layout>
     )

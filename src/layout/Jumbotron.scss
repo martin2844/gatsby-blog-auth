@@ -1,0 +1,28 @@
+.jumbotron {
+    padding: 40px;
+    background: white;
+
+
+    margin-bottom: 40px;
+
+    h1 {
+        font-size: 2.8rem;
+        color: black;
+        margin-top: 0;
+    }
+    p{
+        font-size: 1.5em;
+        color: black;
+    }
+  
+}
+
+.jumbotron.blue {
+    background: #8DCACE;
+    h1{
+        color: white;
+    }
+    p {
+        color: white;
+    }
+}
