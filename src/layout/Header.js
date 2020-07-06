@@ -23,7 +23,7 @@ const Header = () => {
   // Location and Pathname will give us the actual path we see in our browser, useful because the path follows the crumbs
   const { location } = history;
   const { pathname } = location;
-
+  console.log(state.crumbs)
     // use effect, to change crumbs only when location.pathname changes
     useEffect(() => {
       // console.log("location changed");
@@ -101,6 +101,14 @@ const Header = () => {
           }});
 
         } else if (location.pathname === "/") {
+          dispatch({type: "CRUMB_SET", payload: {
+            first: null,
+            second: null,
+            third: null,
+            fourth: null,
+            fifth: null
+          }});
+        } else {
           dispatch({type: "CRUMB_SET", payload: {
             first: null,
             second: null,

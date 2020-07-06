@@ -23,6 +23,7 @@ module.exports.createPages = async ({graphql, actions}) => {
     const blogTemplate = path.resolve('./src/templates/BlogTemplate.js');
     const CatTemplate = path.resolve('./src/templates/CatTemplate.js');
     const TagTemplate = path.resolve('./src/templates/TagTemplate.js');
+    const proTemplate = path.resolve('./src/templates/ProCourse.js');
     //here we query gatsby's internal graphql api to source all of our markdown files.
     const res = await graphql(`
     query {
@@ -32,6 +33,7 @@ module.exports.createPages = async ({graphql, actions}) => {
               frontmatter {
                 tags
                 category
+                type
               }
               fields {
                 slug
@@ -55,19 +57,58 @@ module.exports.createPages = async ({graphql, actions}) => {
 
 
     res.data.allMarkdownRemark.edges.forEach( (edge) => {
-      console.log("@@@@@@@@@", edge.node.fields.slug)
+      
       //Tags is an array inside frontmatter so we can loop it and add each individual item to the newly created tagg set.
-      edge.node.frontmatter.tags.forEach(tag => tagg.add(tag));
-      //category is a string, we want to add it into a set to make sure we dont have repeated categories. Since its just a string, we only
-      //need to add it directly from the source.
-      catt.add(edge.node.frontmatter.category);
-        createPage({
-            component: blogTemplate,
-            path: `/tutoriales/${edge.node.frontmatter.category}/${edge.node.fields.slug}`,
+      if(edge.node.frontmatter.type === "paid" || edge.node.frontmatter.type === "paid-preview" || edge.node.frontmatter.type === "free") {
+
+        if(edge.node.frontmatter.type === "paid") {
+          console.log("paid course")
+          createPage({
+            component: proTemplate,
+            path: `/courses/pro/${edge.node.fields.slug}`,
             context: {
                 slug: edge.node.fields.slug
             }
         });
+          return
+        } else if(edge.node.frontmatter.type === "paid-preview") {
+          console.log("a paid course preview")
+          createPage({
+            component: blogTemplate,
+            path: `/courses/preview/${edge.node.fields.slug}`,
+            context: {
+                slug: edge.node.fields.slug
+            }
+        });
+          return
+        } else {
+          console.log("a free course")
+          createPage({
+            component: blogTemplate,
+            path: `/courses/free/${edge.node.fields.slug}`,
+            context: {
+                slug: edge.node.fields.slug
+            }
+        });
+        }
+
+
+
+      } else { 
+        edge.node.frontmatter.tags.forEach(tag => tagg.add(tag));
+        //category is a string, we want to add it into a set to make sure we dont have repeated categories. Since its just a string, we only
+        //need to add it directly from the source.
+        catt.add(edge.node.frontmatter.category);
+          createPage({
+              component: blogTemplate,
+              path: `/tutoriales/${edge.node.frontmatter.category}/${edge.node.fields.slug}`,
+              context: {
+                  slug: edge.node.fields.slug
+              }
+          });
+          console.log("Created page for: @@@@@@@@@  ", edge.node.fields.slug, "@@@@@@@@@")
+      }
+
     } )
 
     //Spread the set to be able to apply array prototypes to it.

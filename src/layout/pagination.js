@@ -13,13 +13,13 @@ const Pagination = ({currentPage, totalPages}) => {
     let numbers = pagesArray.map((no) => {
         if(no === 1) {
             return(
-                <span>
+                <span key={no}>
                      {no === currentPage ? <React.Fragment>{no}</React.Fragment> : <Link to={`/tutoriales/`}>{no}</Link>}
                 </span>
             )
         } else {
             return(
-                <span>
+                <span key={no}>
                     {no === currentPage ? <React.Fragment>{no}</React.Fragment> : <Link to={`/tutoriales/${no}`}>{no}</Link>}
                 </span>
             )

@@ -7,7 +7,7 @@ import { GlobalDispatchContext, GlobalStateContext, AuthContext } from '../confi
 import {Link, graphql, useStaticQuery} from 'gatsby';
 import Spinner from '../layout/Spinner';
 import './styles/profile.scss';
-
+import { checkPro } from '../config/checkPro';
 
 const Profile = () => {
 
@@ -64,7 +64,8 @@ query {
     const db = app.firestore();
 
     //CHECK IF USER HAS DISPLAY NAME, IF NOT SET IT UP FOR HIM
-    useEffect(()=> {
+    // add here check if user has pro status or not
+    useEffect(()=> {      
 
         const checkName = async () => {
 
@@ -104,14 +105,14 @@ query {
                         email: currentUser.email,
                         username: currentUser.displayName,
                         profilePic: currentUser.photoURL || "https://limitlesstravellers.com/wp-content/plugins/wp-ulike/assets/img/no-thumbnail.png"
-                    });
+                    },{ merge: true });
                 }   
 
                 //check if username DB entry's pic is different than actual currentUser object picture, if different update
                 if(usernameEntry.profilePic !== currentUser.photoURL){
                     await db.collection("usernames").doc(currentUser.email).set({
                         profilePic: currentUser.photoURL
-                    })
+                    }, { merge: true })
                 }
                 console.log(usernameEntry.commentCount);
 
@@ -154,7 +155,8 @@ query {
             console.log("no image set a no image thumb")
             setDisplayImage("https://limitlesstravellers.com/wp-content/plugins/wp-ulike/assets/img/no-thumbnail.png")
         }
-
+        //Promodule hook
+        checkPro(currentUser).then(console.log("checked pro succesful")).catch("fuck")
     }, [currentUser]);
 
     //GET RANDOM IMAGE FUNCTION
@@ -198,7 +200,7 @@ query {
             console.log("new name set in user auth module");
             await db.collection("usernames").doc(currentUser.email).set({
                 username: newName,
-            });
+            }, {merge: true});
             console.log("new name set in DB");
         } catch (error) {
             console.error(error);

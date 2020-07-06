@@ -32,3 +32,41 @@ This blog features:
 12. Created regex check for paginated breadcrumbs. Created Custom Buttton component.
 13. Some media queries, added logo
 14. Added mobile menu - still needs some retouching
+
+
+July:
+1. Added merge true to DB handling in profile
+2. Separated pro, paid and free markdown from normal. If md has type then its a course
+3. Added pro categories for user DB
+4. Created checkPro hook.
+5. Added courses createPage
+6. Added course page, must format post display. But post query has correct filter
+
+
+
+
+
+
+
+## Ideas to implement
+
+For the courses section we'll have two types of courses free and paid.
+Courses will be structured in markdown, so on gatsby node on the markdown loop we will have to create an if statement to separate courses from normal blog posts.
+
+If (format === course) {
+
+    if(type === free) {
+         create page @ /courses/free/blblblbl
+    } else {
+       if(type === paid) {
+
+       } else {
+
+       }
+    }
+
+} else {
+    create page @ /tutoriales/
+}
+
+also, .gitignore - avoid pushing paid courses. Actually this would not work since netlify uses git repo to push. Either fork repo when integration is done, and create new private repo with that or make repo private

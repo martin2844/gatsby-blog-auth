@@ -25,6 +25,7 @@ query($skip: Int!, $limit: Int!) {
             sinopsis
             tags
             category
+            type
           }
           fields {
               slug
@@ -81,6 +82,13 @@ let noImage = postImages.filter((image) => {
 
 //Begin posts map
 const posts = thePosts.map((posts) => {
+  //first return if type is paid:
+  if(posts.node.frontmatter.type === "paid" || posts.node.frontmatter.type === "paid-preview" || posts.node.frontmatter.type === "free") {
+    return
+    }
+
+
+
   // filter from image query which image belongs to which posts
   // the image name must match the slug of the post
   let theImageFilter = postImages.filter( (image) => {
