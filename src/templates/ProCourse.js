@@ -4,7 +4,7 @@ import {graphql, Link} from 'gatsby';
 import Spinner from '../layout/Spinner';
 import firebase from "firebase/app";
 import { globalHistory as history } from '@reach/router';
-
+import {checkPro} from '../config/checkPro';
 import '@firebase/firestore';
 
 //Basic firebase package
@@ -34,6 +34,8 @@ query (
         id
         category
         tags
+        type
+        course
       }
       html
     }
@@ -66,10 +68,9 @@ const ProTemplate = (props) => {
      if(getUser) {
          currentUser = getUser.currentUser;
      }
- 
+     checkPro(currentUser).then(x => console.log(x));
 
-  
-  
+     
   //Async await is difficult
 
   //In order to get the username, I need to access my username collection, because firebase doesnt allow access to the auth module if you're not

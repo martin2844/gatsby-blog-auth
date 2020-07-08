@@ -70,3 +70,11 @@ If (format === course) {
 }
 
 also, .gitignore - avoid pushing paid courses. Actually this would not work since netlify uses git repo to push. Either fork repo when integration is done, and create new private repo with that or make repo private
+
+
+## Handle pro
+
+user: pro - not only true but array of numbers corresponding to courses id.
+So on checkpro we'll check if the number inside the array corresponds to the course they are trying to buy or see.
+In /preview/course we'll have the preview of the course if the user is not pro on that course, if the user is pro on that course we will redirect to that course
+Also inside profile we will have your courses, if user has a course, we'll filter paid courses through graphql using state and user's pro data.

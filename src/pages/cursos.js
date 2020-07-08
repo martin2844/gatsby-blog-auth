@@ -15,6 +15,7 @@ const Cursos = () => {
         toggleDark: true,
     }
 
+    
 
     const postsQuery = useStaticQuery(graphql `
 query {
@@ -25,6 +26,7 @@ query {
               tags
               category
               course
+              type
             }
             fields {
               slug
