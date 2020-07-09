@@ -34,6 +34,7 @@ query (
         id
         category
         tags
+        course
       }
       html
     }
@@ -51,12 +52,17 @@ const BlogTemplate = (props) => {
       toggleDark: true
   }
   const dispatch = useContext(GlobalDispatchContext);
-  useEffect(()=> {
-    dispatch({type: "CRUMB_4_SET", payload: props.data.markdownRemark.frontmatter.category
+
+    useEffect(()=> {
+      if(props.data.markdownRemark.frontmatter.course !== true) {
+        dispatch({type: "CRUMB_4_SET", payload: props.data.markdownRemark.frontmatter.category
+      });
+      dispatch({type: "CRUMB_5_SET", payload: props.data.markdownRemark.frontmatter.title
     });
-    dispatch({type: "CRUMB_5_SET", payload: props.data.markdownRemark.frontmatter.title
-  })
-  }, [location.pathname])
+      }
+     
+    }, [location.pathname])
+
   
 
      //BUILD BYPASS

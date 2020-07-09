@@ -41,8 +41,9 @@ July:
 4. Created checkPro hook.
 5. Added courses createPage
 6. Added course page, must format post display. But post query has correct filter
-
-
+7. Courses are now being displayed from the course folder 
+8. Fixed conditional rendering of courses card
+9. Fixed graphql query for posts which are courses
 
 
 

@@ -34,6 +34,7 @@ module.exports.createPages = async ({graphql, actions}) => {
                 tags
                 category
                 type
+                course
               }
               fields {
                 slug
@@ -59,7 +60,7 @@ module.exports.createPages = async ({graphql, actions}) => {
     res.data.allMarkdownRemark.edges.forEach( (edge) => {
       
       //Tags is an array inside frontmatter so we can loop it and add each individual item to the newly created tagg set.
-      if(edge.node.frontmatter.type === "paid" || edge.node.frontmatter.type === "paid-preview" || edge.node.frontmatter.type === "free") {
+      if(edge.node.frontmatter.course) {
 
         if(edge.node.frontmatter.type === "paid") {
           console.log("paid course")

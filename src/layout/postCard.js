@@ -6,34 +6,45 @@ import './postCard.scss';
 
 
 const PostCard = (props) => {
-    const {slug, image, date, sinopsis, title, category, course} = props
+    const {slug, image, date, sinopsis, title, category, course, type} = props
     console.log(course);
-    if(course) {
-        return(
-            <article className="postcard-main">
-            <div className="postcard-img"><Link to={`/tutoriales/${category}/${slug}`} ><Img fixed={image} /></Link></div>
-                <div className="postcard-content course">
-                    <div className="card-content course">
-                            <Link to={`/tutoriales/${category}/${slug}`} ><h3>{title}</h3></Link>
-                            <p>{sinopsis}</p>
-                    </div>
-                </div>
-            
-        </article>
-        )
-    }
-    return (
+
+    let courseCard = (
         <article className="postcard-main">
-            <div className="postcard-img"><Link to={`/tutoriales/${category}/${slug}`} ><Img fixed={image} /></Link></div>
-                <div className="postcard-content">
-                    <div className="card-meta"><Link to={`/tutoriales/category/${category}`}>{category}</Link> <span> / {date} </span></div>
-                    <div className="card-content">
-                            <Link to={`/tutoriales/${category}/${slug}`} ><h3>{title}</h3></Link>
-                            <p>{sinopsis}</p>
-                    </div>
+        <div className="postcard-img"><Link to={`/tutoriales/${category}/${slug}`} ><Img fixed={image} /></Link></div>
+            <div className="postcard-content course">
+                <div className="card-content course">
+                    {type === "free" 
+                    ? 
+                    <Link to={`/courses/free/${slug}`} ><h3>{title}</h3></Link> 
+                    : 
+                    <Link to={`/courses/preview/${slug}-preview`} ><h3>{title}</h3></Link>
+                    }
+                        <p>{sinopsis}</p>
                 </div>
-            
-        </article>
+            </div>
+        
+    </article>
+    )
+
+    let tutCard = (
+        <article className="postcard-main">
+        <div className="postcard-img"><Link to={`/tutoriales/${category}/${slug}`} ><Img fixed={image} /></Link></div>
+            <div className="postcard-content">
+                <div className="card-meta"><Link to={`/tutoriales/category/${category}`}>{category}</Link> <span> / {date} </span></div>
+                <div className="card-content">
+                        <Link to={`/tutoriales/${category}/${slug}`} ><h3>{title}</h3></Link>
+                        <p>{sinopsis}</p>
+                </div>
+            </div>
+        
+    </article>
+    )
+    return (
+        <>
+        {course ? courseCard : tutCard}
+        </>
+
     )
 }
 

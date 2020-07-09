@@ -6,7 +6,6 @@ import { Link, graphql, useStaticQuery } from 'gatsby';
 import Img from 'gatsby-image';
 import { GlobalDispatchContext, GlobalStateContext, AuthContext } from '../config/context';
 import Button from '../layout/Button';
-import courses from '../courses/cursos';
 import Jumbotron from '../layout/Jumbotron';
 
 const Cursos = () => {
@@ -23,6 +22,22 @@ query {
         edges {
           node {
             frontmatter {
+              tags
+              category
+              course
+              type
+            }
+            fields {
+              slug
+            }
+          }
+        }
+      }
+      courses: allMarkdownRemark(sort: {order: DESC, fields: [frontmatter___date]}, filter:{frontmatter: {course: {eq: true},  type:{ne: "paid-preview"}}}) {
+        edges {
+          node {
+            frontmatter {
+              title
               tags
               category
               course
@@ -183,11 +198,12 @@ query {
     }
 
 
-    const courseCards = courses.map((course) => {
+    const courseCards = postsQuery.courses.edges.map((course) => {
+        console.log(course.node)
         let courseImg;
         let courseThumb = postsQuery.cimages.edges.filter((img) => {
             let name = img.node.childImageSharp.fixed.originalName
-            return name.substr(0, name.lastIndexOf(".")) === course.thumb
+            return name.substr(0, name.lastIndexOf(".")) === course.node.fields.slug
         });
         if(courseThumb.length !== 0) {
             courseImg = courseThumb[0].node.childImageSharp.fixed
@@ -196,7 +212,7 @@ query {
         }
         
         return(
-            <PostCard key={course.name} title={course.name} category={course.category} type={course.type}  course image={courseImg}/>
+            <PostCard key={course.node.frontmatter.title} title={course.node.frontmatter.title} category={course.node.frontmatter.category} type={course.node.frontmatter.type}  course image={courseImg}/>
         )
     })
 
