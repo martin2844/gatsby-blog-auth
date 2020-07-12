@@ -43,6 +43,36 @@ function reducer(state, action) {
       }
     }
     break;
+    case "CRUMB_1_SET": {
+      return {
+        ...state,
+        crumbs: {
+          ...state.crumbs,
+          first: action.payload
+        }
+      }
+    }
+    break;
+    case "CRUMB_2_SET": {
+      return {
+        ...state,
+        crumbs: {
+          ...state.crumbs,
+          second: action.payload
+        }
+      }
+    }
+    break;
+    case "CRUMB_3_SET": {
+      return {
+        ...state,
+        crumbs: {
+          ...state.crumbs,
+          third: action.payload
+        }
+      }
+    }
+    break;
     case "CRUMB_4_SET": {
       return {
         ...state,

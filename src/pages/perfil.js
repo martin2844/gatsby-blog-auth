@@ -8,6 +8,8 @@ import {Link, graphql, useStaticQuery} from 'gatsby';
 import Spinner from '../layout/Spinner';
 import './styles/profile.scss';
 import { checkPro } from '../config/checkPro';
+import SetCrumbs from '../config/SetCrumbs';
+import { Redirect } from "@reach/router"
 
 const Profile = () => {
 
@@ -236,6 +238,8 @@ query {
 
     return (
         <Layout>
+            <SetCrumbs  second="Perfil"/>
+            {!currentUser ? <Redirect noThrow to="/login" /> : null}
             <section className="profile-top">
             <button onClick={() => app.auth().signOut()} >Sign out</button>
             { name ? <Title subtitle={`Bienvenido ${name}`} sub2={`${da}-${mo}-${ye}`} /> : null}

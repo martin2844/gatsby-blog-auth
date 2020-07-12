@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react'
 import Layout from '../layout/Layout'
 import app from '../config/base';
+import SetCrumbs from '../config/SetCrumbs';
 import PostCard from '../layout/postCard';
 import { Link, graphql, useStaticQuery } from 'gatsby';
 import Img from 'gatsby-image';
@@ -221,6 +222,7 @@ query {
 
     return ( 
     <Layout>
+        <SetCrumbs first="Home" second="Cursos"/>
         <section className="card-container"> 
                 { posts } 
                 <hr className="hr-god" />   

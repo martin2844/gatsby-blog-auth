@@ -44,6 +44,10 @@ July:
 7. Courses are now being displayed from the course folder 
 8. Fixed conditional rendering of courses card
 9. Fixed graphql query for posts which are courses
+10. Reestructure of links to spanish
+11. SetCrumbs hooks
+12. Crumb contexts 
+13. Success alert @ p.success
 
 
 

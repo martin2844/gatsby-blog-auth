@@ -11,7 +11,15 @@ const PostCard = (props) => {
 
     let courseCard = (
         <article className="postcard-main">
-        <div className="postcard-img"><Link to={`/tutoriales/${category}/${slug}`} ><Img fixed={image} /></Link></div>
+        <div className="postcard-img">
+        {type === "free" ?
+        <Link to={`/courses/free/${slug}`} ><Img fixed={image} /></Link>
+        :
+        <Link to={`/courses/preview/${slug}-preview`} ><Img fixed={image} /></Link>
+        }
+        
+        </div>
+        {type !== "free" ? <h3 className="proverlay">PRO</h3> : null}
             <div className="postcard-content course">
                 <div className="card-content course">
                     {type === "free" 

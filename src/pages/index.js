@@ -100,7 +100,7 @@ query {
     let noImage = postImages.filter((image) => {
         return image.node.childImageSharp.fixed.originalName === "no-image.png";
     })
-    console.log(postsQuery.courses)
+    // console.log(postsQuery.courses)
 
     //Begin posts mapping - or tut mapping
     const posts = thePosts.map((posts) => {
@@ -203,7 +203,7 @@ query {
 
 
     const courseCards = postsQuery.courses.edges.map((course) => {
-        console.log(course.node)
+        // console.log(course.node)
         let courseImg;
         let courseThumb = postsQuery.cimages.edges.filter((img) => {
             let name = img.node.childImageSharp.fixed.originalName

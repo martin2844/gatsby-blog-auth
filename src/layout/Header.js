@@ -257,7 +257,12 @@ const Header = () => {
                 <ul className="flex-row-center no-pad">
                     <li className="tutorial-link">
                         <Link to="/tutoriales">Tutoriales</Link>
+                        {state.crumbs.second === "Tutoriales" || state.crumbs.first === null ?
                         <div className={state.crumbs.first ? "trickster crumbs" : "trickster"}></div>
+                        :
+                        null
+                        }
+                      
                         <ul className="dropdownNav">
                             {display}
                         </ul>
@@ -266,8 +271,13 @@ const Header = () => {
                       <Link to="/cursos">Cursos</Link>
                     </li>
                     <li>
-                      <Link to="/about">Acerca de</Link>
+                      <Link to="/acerca">Acerca de</Link>
                     </li>
+                    {currentUser && 
+                    <li>
+                      <Link to="/perfil">Perfil</Link>
+                    </li>
+                      }
                 </ul>
 
             </div>
