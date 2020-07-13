@@ -48,6 +48,9 @@ July:
 11. SetCrumbs hooks
 12. Crumb contexts 
 13. Success alert @ p.success
+14. Trickster css triangle for profile
+15. Bottom bar header for profile tab
+16. Proverlay on index courses
 
 
 

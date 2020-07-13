@@ -48,7 +48,7 @@ const Login = () => {
         <Layout>
                 <Title title="Login" subtitle="Logueate o registraté" />
         <section className="login-container">
-            {currentUser ? <Redirect noThrow to="/profile" /> : null}
+            {currentUser ? <Redirect noThrow to="/perfil" /> : null}
             <form onSubmit={handleSignIn}>
 
                 <label>Email</label>

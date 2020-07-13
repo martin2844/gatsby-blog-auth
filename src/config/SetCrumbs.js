@@ -13,8 +13,8 @@ const SetCrumbs = ({first, second, third, fourth, fifth}) => {
 
     useEffect(()=> {
         
-        if(second) {
-            dispatch({type: "CRUMB_1_SET", payload: "Home"
+        if(first || second) {
+            dispatch({type: "CRUMB_1_SET", payload: first || "Home"
         })}
     
         if(second) {
