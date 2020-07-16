@@ -51,6 +51,7 @@ July:
 14. Trickster css triangle for profile
 15. Bottom bar header for profile tab
 16. Proverlay on index courses
+17. More updates to header - About dropdown
 
 
 

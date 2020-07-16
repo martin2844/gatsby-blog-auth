@@ -200,6 +200,8 @@ const Header = () => {
     });
 
 
+
+
         // Declare an empty let to store our firebase user.
         let currentUser;
         // Get user from global context, which gets from firebase config
@@ -270,7 +272,7 @@ const Header = () => {
                         {state.crumbs.second === "Tutoriales" || state.crumbs.first === null ?
                         <div className={state.crumbs.first ? "trickster crumbs" : "trickster"}></div>
                         :
-                        null
+                        <div className="trickster hidden"></div>
                         }
                       
                         <ul className="dropdownNav">
@@ -279,9 +281,35 @@ const Header = () => {
                     </li>
                     <li>
                       <Link to="/cursos">Cursos</Link>
+                      {state.crumbs.second === "Cursos" ?
+                        <div className={state.crumbs.first ? "trickster cursos crumbs" : "trickster cursos"}></div>
+                        :
+                        null
+                        }
+                      
                     </li>
-                    <li>
+                    <li className="tutorial-link2">
                       <Link to="/acerca">Acerca de</Link>
+                      {state.crumbs.second === "Acerca" ?
+                        <div className={state.crumbs.first ? "trickster acerca crumbs" : "trickster cursos"}></div>
+                        :
+                        null
+                        } 
+                        <div className="trickster hidden acerca"></div>
+                        <ul className="dropdownNav two">
+                           <div className="topic-container">
+                            <li>
+                              <ul>
+                                <Link to="/acerca/codigomate">Codigo mate</Link>
+                              </ul>
+                              <ul>
+                              <Link to="/acerca/contacto">Contacto</Link>
+                              </ul>
+
+                            </li>
+
+                           </div>    
+                        </ul>
                     </li>
                     {currentUser && 
                     <li>
