@@ -99,6 +99,8 @@
 }
 
 .tutorial-link2 {
+
+
     .trickster.hidden.acerca::after {
         content:'';
         display:none;
@@ -120,12 +122,22 @@
 .trickster.hidden.acerca {
     display: block;
 }   
-    .trickster.acerca.crumbs::after {
-        border-color: transparent transparent #8CA96D transparent !important;
-    }
+
+.trickster.hidden.acerca::after {
+    content:'';
+    display:block;
+    width:0;
+    height:0;
+    position: relative;
+    z-index: 2;
+    top: 216px;
+    left: 265px;
+    border-style: solid;
+    border-width: 0 8px 8px 8px;
+    border-color: transparent transparent #8CA96D transparent;
 }
 
-
+}
 
 
 .tutorial-link:hover {

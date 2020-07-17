@@ -247,7 +247,7 @@ const Header = () => {
             <div className="top-bar flex-row-center">
                  <div className="toggle-mode"></div>
                  {currentUser ?
-                 <div>Bienvenido, <Link to="/profile">{currentUser.displayName}</Link></div>
+                 <div>Bienvenido, <Link to="/perfil">{currentUser.displayName}</Link></div>
                  :
                  <div>¿Tenés una cuenta? <Link to="/login"> Registrate</Link> o <Link to="/login"> Logueate</Link></div>
                  }

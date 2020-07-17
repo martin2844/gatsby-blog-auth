@@ -87,3 +87,12 @@ user: pro - not only true but array of numbers corresponding to courses id.
 So on checkpro we'll check if the number inside the array corresponds to the course they are trying to buy or see.
 In /preview/course we'll have the preview of the course if the user is not pro on that course, if the user is pro on that course we will redirect to that course
 Also inside profile we will have your courses, if user has a course, we'll filter paid courses through graphql using state and user's pro data.
+
+
+
+# Courses 
+
+If user pro - check courses inside user object. You'll get ID of course.
+Map through courses and match id from user to course ID.
+
+When accessing preview if users courses contains c1 - skip preview and redirect to course
