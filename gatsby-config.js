@@ -11,6 +11,10 @@ require("dotenv").config({
 
 module.exports = {
   /* Your site config here */
+  proxy: {
+    prefix: "/api",
+    url: "http://localhost:5000",
+  },
   plugins: [
     `gatsby-plugin-sass`,
     {

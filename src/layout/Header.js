@@ -226,13 +226,13 @@ const Header = () => {
           {state.crumbs.first && state.crumbs.first !== "Perfil" ? <span><Link to="/">{state.crumbs.first}</Link></span> : null}
           {state.crumbs.second ? <span className="separator"> {">"} </span> : null}
           {state.crumbs.second && !state.crumbs.third ? <span>{state.crumbs.second}</span> : null}
-          {state.crumbs.second && state.crumbs.third ? <span><Link to={`${state.crumbs.second.toLowerCase()}`}>{state.crumbs.second}</Link></span> : null}
+          {state.crumbs.second && state.crumbs.third ? <span><Link to={`/${state.crumbs.second.toLowerCase()}`}>{state.crumbs.second}</Link></span> : null}
           {state.crumbs.third ? <span className="separator"> {">"} </span> : null}
           {state.crumbs.third && !state.crumbs.fourth ? <span>{state.crumbs.third}</span> : null}
-          {state.crumbs.third && state.crumbs.fourth ? <span><Link to={`${state.crumbs.second.toLowerCase()}/${state.crumbs.third.toLowerCase()}`}>{state.crumbs.third}</Link></span> : null}
+          {state.crumbs.third && state.crumbs.fourth ? <span><Link to={`/${state.crumbs.second.toLowerCase()}/${state.crumbs.third.toLowerCase()}`}>{state.crumbs.third}</Link></span> : null}
           {state.crumbs.fourth ? <span className="separator" > {">"} </span> : null}
           {state.crumbs.fourth && !state.crumbs.fifth ? <span>{state.crumbs.fourth}</span> : null}
-          {state.crumbs.fourth && state.crumbs.fifth ? <span><Link to={`${state.crumbs.second.toLowerCase()}/${state.crumbs.third.toLowerCase()}/${state.crumbs.fourth}`}>{state.crumbs.fourth}</Link></span> : null}
+          {state.crumbs.fourth && state.crumbs.fifth ? <span><Link to={`/${state.crumbs.second.toLowerCase()}/${state.crumbs.third.toLowerCase()}/${state.crumbs.fourth}`}>{state.crumbs.fourth}</Link></span> : null}
           {state.crumbs.fifth ? <span className="separator" > {">"} </span> : null}
           {state.crumbs.fifth ? <span>{state.crumbs.fifth}</span> : null}
           {state.crumbs.first === "Perfil" && profileTabs }
