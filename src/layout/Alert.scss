@@ -1,0 +1,16 @@
+.alert {
+    display: block;
+    padding: 10px 10px 10px 20px;
+    background: #cecece;
+    border-left: 5px solid #aaa;
+    margin: 20px 0;
+    &.success {
+        background: #d7e7d5;
+        border-left: 5px solid #b5ceb3;
+    }
+    &.fail {
+        background: #f77373;
+        border-left: 5px solid #ff2b2b;
+    }
+}
+

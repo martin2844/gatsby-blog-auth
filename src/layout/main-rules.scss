@@ -40,8 +40,11 @@ a {
 }
 
 .box {
-    padding: 1rem 2rem;
+    padding: 40px 80px;
     background-color: white;
+    &.min {
+        min-height: 650px;
+    }
 }
 
 p.success {
@@ -93,11 +96,26 @@ p.success {
         min-height: 80px;
     }
     button {
+       &.sent{
+           background-color: #98b880;
+           &:hover {
+            background:  #98b880;
+        }
+        &:active {
+            background: #98b880;
+        }
+       }
        justify-self: end;
+       display: flex;
+       justify-content: center;
+       align-items: center;
        background: #89837a;
        color: #fff;
        padding: 7px 25px;
        max-width: 250px;
+       min-width: 100px;
+       min-height: 32px;
+       text-align: center;
        -webkit-appearance: none;
        cursor: pointer;
        box-shadow: none;
