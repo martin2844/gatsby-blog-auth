@@ -19,7 +19,7 @@ const Test = () => {
             console.log("testing");
         } else {
             console.log("produ");
-            axios.post("/heroku/sendmail/codigomate");
+            axios.post("https://api-codigomate.herokuapp.com/api/sendmail/codigomate");
         }
        
     } 
@@ -35,7 +35,7 @@ const Test = () => {
         if(process.env.GATSBY_PRODUCTION === "false") {
             axios.post("/api/payment/new/", course).then(response => console.log(response));
         } else {
-            axios.post("http://www.api.codigomate.com/api/payment/new/", course).then(response => console.log(response));
+            axios.post("https://api-codigomate.herokuapp.com/api/payment/new/", course).then(response => console.log(response));
         }
        
     } 
