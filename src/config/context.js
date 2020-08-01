@@ -28,21 +28,18 @@ function reducer(state, action) {
         toggleDark: !state.toggleDark
       }
     }
-    break;
     case "CHANGE_ANIMATION": {
         return {
           ...state,
           
         }
       }
-    break;
     case "CRUMB_SET": {
       return {
         ...state,
         crumbs: action.payload
       }
     }
-    break;
     case "CRUMB_1_SET": {
       return {
         ...state,
@@ -52,7 +49,6 @@ function reducer(state, action) {
         }
       }
     }
-    break;
     case "CRUMB_2_SET": {
       return {
         ...state,
@@ -62,7 +58,6 @@ function reducer(state, action) {
         }
       }
     }
-    break;
     case "CRUMB_3_SET": {
       return {
         ...state,
@@ -72,7 +67,6 @@ function reducer(state, action) {
         }
       }
     }
-    break;
     case "CRUMB_4_SET": {
       return {
         ...state,
@@ -82,7 +76,6 @@ function reducer(state, action) {
         }
       }
     }
-    break;
     case "CRUMB_5_SET": {
       return {
         ...state,
@@ -92,7 +85,6 @@ function reducer(state, action) {
         }
       }
     }
-    break;
     default:
       throw new Error("Bad Action Type")
   }

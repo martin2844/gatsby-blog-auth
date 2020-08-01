@@ -119,6 +119,7 @@ const Header = () => {
           }});
         }
      // @@@@@@@@@@@@@@ END CRUMBS LOGIC 
+     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pathname])
 
     // Begin static query in order to get all of the tags and categories from blog posts to generate a menu

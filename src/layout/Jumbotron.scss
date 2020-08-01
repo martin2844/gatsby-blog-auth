@@ -8,7 +8,8 @@
     h1 {
         font-size: 2.8rem;
         color: black;
-        margin-top: 0   ;
+        margin-top: 0;
+        margin-bottom: 0;
     }
     p{
         font-size: 1.5em;
@@ -25,4 +26,27 @@
     p {
         color: white;
     }
+}
+
+@media screen and (max-width: 500px) {
+
+
+    .jumbotron {
+        padding: 20px;
+        margin-bottom: 20px;
+    
+        h1 {
+            font-size: 1.8rem;
+            color: black;
+            margin-top: 0;
+            margin-bottom: 0;
+        }
+        p{
+            margin-top: 0;
+            font-size: 1.4rem;
+            color: black;
+        }
+      
+    }
+    
 }

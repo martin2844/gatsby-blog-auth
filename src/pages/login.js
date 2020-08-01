@@ -3,7 +3,8 @@ import Layout from '../layout/Layout';
 import Title from '../layout/title';
 import app from '../config/base.js';
 import { AuthContext } from '../config/context';
-
+import Jumbotron from '../layout/Jumbotron';
+import './styles/login.scss';
 
 //import navigate to navigate to page after successfully login or creating user.
 import { navigate, Redirect } from "@reach/router"
@@ -46,27 +47,29 @@ const Login = () => {
 
     return (
         <Layout>
-                <Title title="Login" subtitle="Logueate o registraté" />
+                 {currentUser ? <Redirect noThrow to="/perfil" /> : null}
         <section className="login-container">
-            {currentUser ? <Redirect noThrow to="/perfil" /> : null}
-            <form onSubmit={handleSignIn}>
-
+           <Jumbotron title="Logueate!" text="Para acceder a todo el contenido"> 
+            <form className="uniqueNewYork" onSubmit={handleSignIn}>
                 <label>Email</label>
                 <input type="email" name="email" placeholder="Email" />
                 <label>Password</label>
                 <input type="password" name="password" placeholder="Password" />
+                <div></div>
                 <button type="submit">Login</button>
             </form>
-
-
-            <form onSubmit={handleSignUp}>
-
+            </Jumbotron>
+            <Jumbotron title="o Registrate!" text="Si no tenés cuenta aún">
+            <form className="uniqueNewYork" onSubmit={handleSignUp}>
+           
                 <label>Email</label>
                 <input type="email" name="email" placeholder="Email" />
                 <label>Password</label>
                 <input type="password" name="password" placeholder="Password" />
+                <div></div>
                 <button type="submit">Register</button>
             </form>
+            </Jumbotron>
             </section>
 
             

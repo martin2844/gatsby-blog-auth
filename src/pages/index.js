@@ -79,6 +79,19 @@ query {
         }
       }
 
+      oimages: allFile(sort: {fields: [name], order: ASC}, filter: { sourceInstanceName: { eq: "images" } }) {
+        edges {
+          node {
+            childImageSharp {
+              fixed(width: 600) {
+                ...GatsbyImageSharpFixed
+                originalName
+              }
+            }
+          }
+        }
+      }
+
     
   } 
 `)
@@ -222,6 +235,11 @@ query {
 
 
 
+    let classImg = postsQuery.oimages.edges.filter((img) => {
+      return img.node.childImageSharp.fixed.originalName === "video.jpg"
+    })
+    classImg = classImg[0].node.childImageSharp.fixed;
+
 
     return ( 
     <Layout>
@@ -235,6 +253,19 @@ query {
                  <div className="card-container">
                     {courseCards}
                   </div>
+      
+        </section>
+        <section className="classes-section">
+             <Jumbotron title="Clases en vivo" text="Clases por videollamadas de programación" >
+               <div className="online-class">
+               <Img className="videoimg" style={{height:"280px"}} fixed={classImg} />
+               <div className="text">
+                 <p>Vemos cualquier tema relacionado con los tutoriales, los cursos o tus proyectos. Una, dos, tres horas. Lo que necesites lo coordinamos.</p>
+                <Link to="/acerca/contacto" className="button green"> Contactame</Link>
+               </div>
+               </div>
+              
+            </Jumbotron>
       
         </section>
         </Layout>

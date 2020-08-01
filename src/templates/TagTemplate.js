@@ -1,10 +1,10 @@
+
 import React, {useState, useContext, useEffect} from 'react';
 import Layout from '../layout/Layout';
-import {graphql, Link} from 'gatsby';
-import { GlobalDispatchContext, GlobalStateContext, AuthContext } from '../config/context';
+import {graphql} from 'gatsby';
+import { GlobalDispatchContext } from '../config/context';
 import PostCard from '../layout/postCard';
 import { globalHistory as history } from '@reach/router';
-
 import './catntag.scss';
 
 
@@ -54,15 +54,15 @@ query($title: String) {
 const TagTemplate = ({data, pageContext}) => {
 
   const { location } = history;
-  const { pathname } = location;
-
-  const state = useContext(GlobalStateContext) || {
-      toggleDark: true
-  }
+  // Uncomment this to make theme context available on this file
+  // const state = useContext(GlobalStateContext) || {
+  //     toggleDark: true
+  // }
   const dispatch = useContext(GlobalDispatchContext);
   useEffect(()=> {
     dispatch({type: "CRUMB_4_SET", payload: pageContext.title
     })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname])
   
 
@@ -95,7 +95,7 @@ const TagTemplate = ({data, pageContext}) => {
               return slugMatchPNG;
           } else {
               // console.log("nomatch")
-              return
+              return null;
           }
 
 
@@ -111,11 +111,11 @@ const TagTemplate = ({data, pageContext}) => {
 
 
 
-      let { tags } = posts.node.frontmatter;
+      // let { tags } = posts.node.frontmatter;
       //iffy in case a post misses tags.
   
-      let theme = "dark";
-      state.toggleDark ? theme = "dark" : theme = "light";
+      // let theme = "dark";
+      // state.toggleDark ? theme = "dark" : theme = "light";
 
       return ( < PostCard
           key = {posts.node.fields.slug}

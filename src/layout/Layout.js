@@ -3,7 +3,7 @@ import './main-rules.scss';
 import './Layout.scss';
 import Header from './Header';
 import MobileMenu from './MobileMenu';
-import {GlobalDispatchContext, GlobalStateContext} from '../config/context';
+import { GlobalStateContext } from '../config/context';
 
 const Layout = (props) => {
 

@@ -11,7 +11,68 @@
 
 }
 
+.classes-section {
+    padding: 80px 0;
+}
+
+.online-class {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 0 30px;
+    .text { 
+        padding: 0 30px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        .button {
+            width: 100px;
+            margin-top: 20px;
+        }
+        p {
+           max-width: 500px;
+            text-align: justify;
+            &:first-child {
+                margin-top: 0;
+            }
+            font-size: 18px;
+        }
+    }
+}
+
 .hr-god {
     border:none;
     border-bottom: 2px solid #e7e7e7;
+}
+
+
+
+@media screen and (max-width: 500px) {
+
+    .main-container {
+        padding: 20px 40px;
+    }
+
+    .courses-section {
+        min-height: 500px;
+        background: #70bdc2;
+        margin: 0 -40px;
+        padding: 20px 40px;
+    
+    
+    }
+
+    .online-class {
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0;
+       .videoimg {
+          width: 240px !important;
+          height: 150px !important;
+          margin-bottom: 20px;
+       }
+    }
 }

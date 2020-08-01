@@ -24,7 +24,7 @@ const MobileMenu = () => {
             <svg onClick={() => setToggle(!toggle)} id="Outlined" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg"><g id="Fill"><polygon points="28.71 4.71 27.29 3.29 16 14.59 4.71 3.29 3.29 4.71 14.59 16 3.29 27.29 4.71 28.71 16 17.41 27.29 28.71 28.71 27.29 17.41 16 28.71 4.71"/></g></svg>
         <Link style={toggle ? {opacity: "100%"} : {opacity: "0"}} to="/tutoriales"><h2>Tutoriales</h2></Link>
         <Link style={toggle ? {opacity: "100%"} : {opacity: "0"}} to="/cursos"><h2>Cursos</h2></Link>
-        <Link style={toggle ? {opacity: "100%"} : {opacity: "0"}} to="/about"><h2>Acerca de</h2></Link>
+        <Link style={toggle ? {opacity: "100%"} : {opacity: "0"}} to="/acerca/codigomate"><h2>Acerca de</h2></Link>
        
         </section>
            
