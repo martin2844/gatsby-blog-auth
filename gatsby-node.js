@@ -24,6 +24,7 @@ module.exports.createPages = async ({graphql, actions}) => {
     const CatTemplate = path.resolve('./src/templates/CatTemplate.js');
     const TagTemplate = path.resolve('./src/templates/TagTemplate.js');
     const proTemplate = path.resolve('./src/templates/ProCourse.js');
+    const previewTemplate = path.resolve('./src/templates/PreviewTemplate.js');
     //here we query gatsby's internal graphql api to source all of our markdown files.
     const res = await graphql(`
     query {
@@ -66,7 +67,7 @@ module.exports.createPages = async ({graphql, actions}) => {
           console.log("paid course")
           createPage({
             component: proTemplate,
-            path: `/courses/pro/${edge.node.fields.slug}`,
+            path: `/cursos/pro/${edge.node.fields.slug}`,
             context: {
                 slug: edge.node.fields.slug
             }
@@ -75,8 +76,8 @@ module.exports.createPages = async ({graphql, actions}) => {
         } else if(edge.node.frontmatter.type === "paid-preview") {
           console.log("a paid course preview")
           createPage({
-            component: blogTemplate,
-            path: `/courses/preview/${edge.node.fields.slug}`,
+            component: previewTemplate,
+            path: `/cursos/preview/${edge.node.fields.slug}`,
             context: {
                 slug: edge.node.fields.slug
             }
@@ -86,7 +87,7 @@ module.exports.createPages = async ({graphql, actions}) => {
           console.log("a free course")
           createPage({
             component: blogTemplate,
-            path: `/courses/free/${edge.node.fields.slug}`,
+            path: `/cursos/free/${edge.node.fields.slug}`,
             context: {
                 slug: edge.node.fields.slug
             }

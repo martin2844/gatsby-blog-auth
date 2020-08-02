@@ -6,6 +6,9 @@ sinopsis: "Curso Pago "
 tags: [React]
 category: "Front End"
 id: "p1"
+proID: "c1"
+proSlug: "react"
 type: "paid-preview"
 course: true
 ---
+##  Content

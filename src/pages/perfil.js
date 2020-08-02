@@ -40,6 +40,7 @@ query {
     const [displayImage, setDisplayImage] = useState(null);
     const [change, displayChange] = useState(false);
     const [newName, setNewName] = useState("");
+    const [pro, setPro] = useState({pro: false, courses: null})
     const [commentData, setCommentData] = useState({
         commentCount: null,
         latestComment: {
@@ -148,6 +149,11 @@ query {
             
 
         }
+
+           //Promodule hook
+           let proStatus = await checkPro(currentUser);
+           proStatus && setPro({pro: true, courses: proStatus});
+
         }).catch(err => console.error(err));
 
         // ALSO set users image into state for displaying it.
@@ -157,9 +163,10 @@ query {
             console.log("no image set a no image thumb")
             setDisplayImage("https://limitlesstravellers.com/wp-content/plugins/wp-ulike/assets/img/no-thumbnail.png")
         }
-        //Promodule hook
-        checkPro(currentUser).then(console.log("checked pro succesful")).catch("fuck")
+     
     }, [currentUser]);
+
+    console.log(pro);
 
     //GET RANDOM IMAGE FUNCTION
     const setNewProfile = async () => {

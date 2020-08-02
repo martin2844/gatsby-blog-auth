@@ -13,9 +13,9 @@ const PostCard = (props) => {
         <article className="postcard-main">
         <div className="postcard-img">
         {type === "free" ?
-        <Link to={`/courses/free/${slug}`} ><Img fixed={image} /></Link>
+        <Link to={`/cursos/free/${slug}`} ><Img fixed={image} /></Link>
         :
-        <Link to={`/courses/preview/${slug}-preview`} ><Img fixed={image} /></Link>
+        <Link to={`/cursos/preview/${slug}-preview`} ><Img fixed={image} /></Link>
         }
         
         </div>
@@ -24,9 +24,9 @@ const PostCard = (props) => {
                 <div className="card-content course">
                     {type === "free" 
                     ? 
-                    <Link to={`/courses/free/${slug}`} ><h3>{title}</h3></Link> 
+                    <Link to={`/cursos/free/${slug}`} ><h3>{title}</h3></Link> 
                     : 
-                    <Link to={`/courses/preview/${slug}-preview`} ><h3>{title}</h3></Link>
+                    <Link to={`/cursos/preview/${slug}-preview`} ><h3>{title}</h3></Link>
                     }
                         <p>{sinopsis}</p>
                 </div>
