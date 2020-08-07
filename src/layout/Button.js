@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'gatsby';
 import './Button.scss';
 
-const Button = ({to, href, color, text, children}) => {
+const Button = ({to, href, color, text, children, onClick}) => {
 
     if(to && !href) {
         return (
@@ -26,8 +26,9 @@ const Button = ({to, href, color, text, children}) => {
 
     } else {
         return(
-            <div>
-                Cant double link properties or missing to or href prop
+            <div onClick={onClick} className={`button ${color}`}>
+            {text || children}    
+    
             </div>
         )
     }

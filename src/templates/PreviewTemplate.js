@@ -6,11 +6,11 @@ import { globalHistory as history } from '@reach/router';
 import '@firebase/firestore';
 import { Redirect } from "@reach/router";
 import { checkPro } from '../config/checkPro';
-
+import Button from '../layout/Button';
 //Basic firebase package
 import app from '../config/base.js';
 import { AuthContext, GlobalStateContext, GlobalDispatchContext } from '../config/context';
-
+import pay from "../config/pay";
 
 import './blogtemplate.scss';
 
@@ -37,6 +37,7 @@ query (
         course
         proID
         proSlug
+        price
       }
       html
     }
@@ -82,19 +83,28 @@ const BlogTemplate = (props) => {
   const postID = props.data.markdownRemark.frontmatter.id;
   const proID = props.data.markdownRemark.frontmatter.proID;
   const proSlug = props.data.markdownRemark.frontmatter.proSlug;
+  const price = props.data.markdownRemark.frontmatter.price;
+  const title = props.data.markdownRemark.frontmatter.title;
+
+  const thisCourse = {
+    name: title,
+    price: price,
+    id: proID,
+
+  }
   //Check if its bought; Run only once at initial render;
   useEffect(() => {
     checkPro(currentUser, proID).then(x => isBought(x));
   }, [currentUser])
 
 
-
+ 
   
 
   //initialize DB?
   const db = app.firestore();
 
-
+  
 
 
 
@@ -108,7 +118,9 @@ const BlogTemplate = (props) => {
         </div>
         <div className='post-content-container' dangerouslySetInnerHTML={{__html: props.data.markdownRemark.html}}></div>
         </section>
-        
+        <div>
+        <Button onClick={x => pay(thisCourse)} text="pagar"/>
+        </div>
         <Link className='goback' to="/cursos">Volver a los cursos</Link>
     </Layout>
  )

@@ -10,5 +10,8 @@ proID: "c1"
 proSlug: "react"
 type: "paid-preview"
 course: true
+price: "500"
 ---
 ##  Content
+
+

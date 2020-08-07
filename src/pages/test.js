@@ -68,7 +68,7 @@ const Test = () => {
     return (
         <div>
         <button onClick={sendTest}>
-            Press to send test to api
+            Press to send test to api (email)
         </button>
         <div>
         <button onClick={sendTest2}>
