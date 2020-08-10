@@ -65,6 +65,13 @@ August:
    Then test user creation, what is it? Do we need it? 
    Also revise trello card, still lots of thing missing, is payment a priority?
    
+   Need to add all billing info for user, so if user was created normally now we need to add information for payment. So basically make a checkout flow... This is important and great for learning.
+
+   1. First add all info to node api. // Allready added structure in pay.js
+   2. Then check via postman
+
+2. Checkout.js --> Begin form. //MUST ADD billing info to EDITPROFILE.js
+
 
 
 
@@ -108,3 +115,8 @@ If user pro - check courses inside user object. You'll get ID of course.
 Map through courses and match id from user to course ID.
 
 When accessing preview if users courses contains c1 - skip preview and redirect to course
+
+
+# Checkout.js
+// Posibilidad de agregar "Checkout State" - carrito tácito. Lleva dos cursos y tené un 30% descuento en el pago total
+// Entonces acá hay que recomendar cursos en base a los que ya hay. Para un futuro.

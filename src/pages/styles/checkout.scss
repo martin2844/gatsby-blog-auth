@@ -1,0 +1,15 @@
+.checkout-main {
+    display: flex;
+    flex-direction: row;
+
+}
+.billing-form, .course-container {
+    margin: 20px 40px;
+}
+
+.course-container {
+    border: solid 1px black;
+    min-width: 350px;
+    height: 550px;
+    padding: 20px;
+}

@@ -173,10 +173,6 @@ query {
             category = { posts.node.frontmatter.category }
             sinopsis = { posts.node.frontmatter.sinopsis }
             />
-
-
-
-
         )
 
     });

@@ -16,7 +16,8 @@ const initialState = {
       third: null,
       fourth: null,
       fifth: null
-    }
+    },
+    course: false
 }
 
 
@@ -85,6 +86,21 @@ function reducer(state, action) {
         }
       }
     }
+    case "HOIST_COURSE": {
+      return {
+        ...state,
+        course: {
+          ...action.payload
+        }
+      }
+    }
+    case "CLEAR_COURSE": {
+      return {
+        ...state,
+        course: false
+      }
+    }
+    
     default:
       throw new Error("Bad Action Type")
   }
