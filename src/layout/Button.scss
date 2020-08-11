@@ -7,6 +7,7 @@
     transition-property: background-color;
     max-width: 150px;
     text-align: center;
+    cursor: pointer;
     &.green {
         background-color: #9ab782;
         color: white;
@@ -14,4 +15,12 @@
         background-color: #bbceab;
     }
     }
+
+    &.blue {
+        background-color: #54C2DD;
+        &:hover {
+            background-color: #98e1f2;
+        }
+    }
+
 }

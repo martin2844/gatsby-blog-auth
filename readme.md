@@ -70,9 +70,9 @@ August:
    1. First add all info to node api. // Allready added structure in pay.js
    2. Then check via postman
 
-2. Checkout.js --> Begin form. //MUST ADD billing info to EDITPROFILE.js
+2. Created Checkout page, if user does not have billing info, send to checkout page before meli.
 
-
+3. Hoisted course, if user is not logged and wants to buy, redirect to login, and then once logged in, redirect to check out.
 
 
 

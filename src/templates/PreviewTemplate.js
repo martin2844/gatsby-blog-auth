@@ -125,7 +125,7 @@ const BlogTemplate = (props) => {
         ...course
       }
     });
-      isIncomplete(true)
+      isIncomplete(true);
 
   }
 
@@ -133,13 +133,16 @@ const BlogTemplate = (props) => {
   const db = app.firestore();
 
   const makePayment = async (course) => {
-
+    if(!currentUser){
+      //Remember course to buy, make user login or register, and then redirect to checkout.js
+      setIncomplete();
+      return false;
+    }
     const usernameRef = await db.collection('usernames').doc(currentUser.email).get();
     const usernameEntry = usernameRef.data();
-
     //Do username checks, if checks fail redirect to special flow checkout remembering course to pay.
-    if(!usernameEntry?.address) {
-      console.log("no address");
+    if(!usernameEntry?.personal?.name || !usernameEntry?.personal?.sirname) {
+      console.log("incomplete DATA");
       setIncomplete();
       return false;
     }
@@ -152,11 +155,11 @@ const BlogTemplate = (props) => {
  return (
     <Layout>
         {bought ? <Redirect noThrow to={`/cursos/pro/${proSlug}`} /> : null}
-        {incomplete ? <Redirect noThrow to={`/checkout/`} /> : null}
+        {incomplete && currentUser ? <Redirect noThrow to={`/checkout/`} /> : null}
+        {incomplete && !currentUser ? <Redirect noThrow to={`/login/`} /> : null}
         <section className='post-main'>
         <div className='post-title-container'>
         <h1 className='post-title-content'>{props.data.markdownRemark.frontmatter.title}</h1>
-
         </div>
         <div className='post-content-container' dangerouslySetInnerHTML={{__html: props.data.markdownRemark.html}}></div>
         </section>

@@ -26,10 +26,33 @@ const Checkout = () => {
               }
             }
           }
+          oimages: allFile(sort: {fields: [name], order: ASC}, filter: { sourceInstanceName: { eq: "images" } }) {
+            edges {
+              node {
+                childImageSharp {
+                  fixed(width: 300) {
+                    ...GatsbyImageSharpFixed
+                    originalName
+                  }
+                }
+              }
+            }
+          }
       } 
     `)
+    //Get MP image
+    const oImages = postsQuery.oimages.edges;
+    const MPArray = oImages.filter((node) => {
+      const a = node.node.childImageSharp.fixed.originalName;
+      const name = a.substring(0, a.lastIndexOf("."));
+      return name === "mp";
+  });
+    const MPimage = MPArray[0].node.childImageSharp.fixed;
+
     //Initial loading state
     const [loading, setLoading] = useState(true);
+    //Alerts
+    const [alert, setAlert] = useState(null);
       
      //BUILD BYPASS - GetCurrent User
      let currentUser;
@@ -55,7 +78,7 @@ const Checkout = () => {
     const thumb = thumbArray[0].node.childImageSharp.fixed;
 
 
- 
+    
 
     //Begin Form logic.  -->Later on, on refector, make this a separate component.
         //Set form Data to state.
@@ -113,22 +136,51 @@ const Checkout = () => {
 
 
     const submitAndPay = () => {
-      //First update billing info.
-      updateBillingInfo();
+      //First error check form
+      let errors = {};
+      if(formData.name === "") {
+        errors = {
+          ...errors,
+          name: "El campo nombre no puede estar vacìo."
+        }
+      }
+
+      if(formData.sirname === ""){
+        errors = {
+          ...errors,
+          sirname: "El campo apellido no puede estar vacìo."
+        }
+      }
+      console.log(errors);
+      if(Object.keys(errors).length){
+        setAlert(errors);
+        return;
+      }
+      
+      //then update billing info
+      updateBillingInfo().then(x => console.log(x));
       //Then post new info i.e. formdata && course info to pay.
       console.log("pay btn")
 
     }
 
+    //UseEffect to clean errors
+    useEffect(() => {
+      setAlert(null);
+    }, [formData])
 
 
     //Form to be displayed when initial data is loaded.
     const form = (
       <form className="uniqueNewYork">
       <label>Nombre *</label>
-      <input required type="text" value={formData.name} name="name" onChange={e => onChange(e)}/>
+      <input className={alert?.name ? "alert-input" : ""} required type="text" value={formData.name} name="name" onChange={e => onChange(e)}/>
+      <div className="error-form">{alert?.name && "El campo nombre no puede estar vacío"}</div>
+            
       <label>Apellido *</label>
-      <input required type="text" value={formData.sirname} name="sirname" onChange={e => onChange(e)}/>
+      <input className={alert?.sirname ? "alert-input" : ""} required type="text" value={formData.sirname} name="sirname" onChange={e => onChange(e)}/>
+            <div className="error-form">{alert?.sirname && "El campo apellido no puede estar vacío"}</div>
+            
       <label>Teléfono</label>
       <input type="number" value={formData.phone} name="phone" onChange={e => onChange(e)}/>
       <label>Dirección</label>
@@ -137,13 +189,16 @@ const Checkout = () => {
       <input type="Number" value={formData.streetNumber} name="streetNumber" onChange={e => onChange(e)}/>
       <label>Codigo Postal</label>
       <input type="text" value={formData.zipCode} name="zipCode" onChange={e => onChange(e)}/>
+      <p className="info-small">* obligatorio</p>
+      <div></div>
+      <p className="info">Esta información es únicamente para darsela a mercadopago, la cual se reenvia a la tarjeta de crédito, para evitar pagos rechazados por falta de información</p>
       </form>
     )
 
 
     return (
         <Layout>
-            <h1>Por favor completá algunos datos para seguir con la compra!</h1>
+            <h4>Por favor completá algunos datos para seguir con la compra!</h4>
             <div className="checkout-main">
             <section className="billing-form">
                {loading ? <Spinner></Spinner> : form}
@@ -152,7 +207,11 @@ const Checkout = () => {
             <Img fixed={thumb} />
             <h4>{state.course.name}</h4>
             <p>${state.course.price}</p>
-            <Button onClick={() => submitAndPay()} text="Pagar"/>
+            <div className="pay-container">
+            <Button color="blue" onClick={() => submitAndPay()} text="Pagar"/>
+            <Img fixed={MPimage} />
+            </div>
+          
             </section>
             </div>
         </Layout>

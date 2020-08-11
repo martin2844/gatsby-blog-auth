@@ -13,12 +13,13 @@ const pay = async (props) => {
         const db = app.firestore();
         const usernameRef = await db.collection('usernames').doc(email).get();
         const usernameEntry = usernameRef.data();
-        return usernameEntry
+        return usernameEntry?.personal
     }
 
     // get user info? 
-    getBuyerUser().then(x => console.log(x));
-    return
+    buyer = await getBuyerUser();
+    console.log(buyer);
+    
     // const buyer = getbuyeruserinfo();
 
 
@@ -47,18 +48,18 @@ const pay = async (props) => {
         unit: unit || 1,
         id: id,
         img: img || "https://eloquentjavascript.net/img/chapter_picture_1.jpg",
-        buyer: buyer || {
-            name: "test user",
-            surname: "sirname",
+        buyer: {
+            name: buyer.name,
+            surname: buyer.sirname,
             email: email || "john@john.com",
             phone: {
-                area: "11",
-                number: "4747-4747"
+                area: "",
+                number: buyer.phone || ""
             },
             address: {
-                zip: "1642",
-                streetName: "Albarellos",
-                number: "929"
+                zip: buyer.streetNumber  || "",
+                streetName: buyer.streetName || "",
+                number: buyer.streetNumber || ""
 
             }
         }

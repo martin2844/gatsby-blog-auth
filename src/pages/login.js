@@ -2,7 +2,7 @@ import React, { useContext } from 'react'
 import Layout from '../layout/Layout';
 import Title from '../layout/title';
 import app from '../config/base.js';
-import { AuthContext } from '../config/context';
+import { AuthContext, GlobalStateContext, GlobalDispatchContext } from '../config/context';
 import Jumbotron from '../layout/Jumbotron';
 import './styles/login.scss';
 
@@ -19,12 +19,19 @@ const Login = () => {
         currentUser = test.currentUser;
     }
 
+    // Get global state to get course to pay
+    const state = useContext(GlobalStateContext) || {
+        toggleDark: true
+    }
+    console.log(state.course);
+    
+
     const handleSignUp = async event => {
         event.preventDefault();
         const {email, password} = event.target.elements;
         try {
             await app.auth().createUserWithEmailAndPassword(email.value, password.value);
-          navigate(`/profile`);
+            navigate(`/profile`);
         } catch (error) {
             alert(error);
         }
@@ -36,7 +43,7 @@ const Login = () => {
         const {email, password} = event.target.elements;
         try {
             await app.auth().signInWithEmailAndPassword(email.value, password.value);
-           navigate(`/profile`);
+            navigate(`/profile`);
         } catch (error) {
             alert(error);
         }
@@ -47,7 +54,9 @@ const Login = () => {
 
     return (
         <Layout>
-                 {currentUser ? <Redirect noThrow to="/perfil" /> : null}
+                 {currentUser && !state.course ? <Redirect noThrow to="/perfil" /> : null}
+                 {currentUser && state.course ? <Redirect noThrow to="/checkout" /> : null}
+                 {state?.course ? <h3>Logueate o registrate para poder comprar el curso {state.course.name}</h3> : null}
         <section className="login-container">
            <Jumbotron title="Logueate!" text="Para acceder a todo el contenido"> 
             <form className="uniqueNewYork" onSubmit={handleSignIn}>
