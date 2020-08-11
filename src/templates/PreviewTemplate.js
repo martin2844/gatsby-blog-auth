@@ -143,7 +143,6 @@ const BlogTemplate = (props) => {
       setIncomplete();
       return false;
     }
-
     pay(course);
   }
   
