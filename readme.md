@@ -120,3 +120,5 @@ When accessing preview if users courses contains c1 - skip preview and redirect 
 # Checkout.js
 // Posibilidad de agregar "Checkout State" - carrito tácito. Lleva dos cursos y tené un 30% descuento en el pago total
 // Entonces acá hay que recomendar cursos en base a los que ya hay. Para un futuro.
+
+Still Alive
