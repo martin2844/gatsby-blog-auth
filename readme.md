@@ -74,6 +74,9 @@ August:
 
 3. Hoisted course, if user is not logged and wants to buy, redirect to login, and then once logged in, redirect to check out.
 
+September 2020: 
+Forgot about it, life happened.
+Started again, with edit profile. Must continue flow there.
 
 
 ## Ideas to implement
