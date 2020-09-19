@@ -134,3 +134,48 @@ p.success {
    
 
 }
+
+.side-by-side {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    .file {
+        margin-top: 8px;
+    }
+}
+
+.nice-button {
+    &.sent{
+        background-color: #98b880;
+        &:hover {
+         background:  #98b880;
+     }
+     &:active {
+         background: #98b880;
+     }
+    }
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #89837a;
+    color: #fff;
+    padding: 7px 25px;
+    max-width: 250px;
+    min-width: 100px;
+    min-height: 32px;
+    text-align: center;
+    -webkit-appearance: none;
+    cursor: pointer;
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    outline: none; 
+    border:none;
+    font-weight: bold;
+    border-radius: 2px;
+    &:hover {
+        background: #6a635a;
+    }
+    &:active {
+        background: #49433c;
+    }
+}

@@ -6,6 +6,9 @@ import { AuthContext } from '../../config/context';
 import app from '../../config/base.js';
 import Jumbotron from '../../layout/Jumbotron';
 import Spinner from '../../layout/RoundSpinner';
+import axios from 'axios';
+import Alert from '../../layout/Alert';
+import RoundSpinner from '../../layout/RoundSpinner';
 
 const Cursos = () => {
 
@@ -19,9 +22,21 @@ const Cursos = () => {
         if(currentUser !== undefined && currentUser !== null) {
             console.log(currentUser.metadata.creationTime)
         }
-
+        //User Data State
         const [userData, setUserData] = useState();
-
+        //Image data state
+        const [displayImage, setDisplayImage] = useState(null);
+        //File Data
+        const [fileData, setFileData] = useState();
+        //New profile image
+        const [newProfile, setNewProfile] = useState();
+        //Alert State
+        const [pictureAlert, setPictureAlert] = useState(null);
+        const [formAlert, setFormAlert] = useState();
+        const [randomAlert, setRandomAlert] = useState(null);
+        //Set loaders
+        const [loading, setLoading] = useState(false);
+        const [formLoading, setFormLoading] = useState(false);
 
         /* 
         
@@ -64,6 +79,18 @@ const Cursos = () => {
             getUserData().then((x) => {
                 setUserData(x);
             });
+
+        // Set image into state
+        if(currentUser && currentUser.photoURL !== null) {
+            setDisplayImage(currentUser.photoURL);
+        } else {
+            console.log("no image set a no image thumb")
+            setDisplayImage("https://limitlesstravellers.com/wp-content/plugins/wp-ulike/assets/img/no-thumbnail.png")
+        }
+     
+
+
+
         }, [currentUser])
         console.log(userData);
         //5. Detect changes and update them. 
@@ -85,18 +112,101 @@ const Cursos = () => {
         const onSubmit = async (e) => {
             //Prevent default behaviour.
             e.preventDefault();
+            setFormLoading(true);
             console.log(userData);
             //Update the firebase user.
             try {
+                await app.auth().currentUser.updateProfile({displayName: userData.username});
                 await db.collection("usernames").doc(currentUser.email).set({
                     ...userData
                 },{ merge: true });
+                setFormAlert("success");
+                setFormLoading(false);
             } catch (error) {
                 console.log(error);
+                setFormAlert("error");
+                setFormLoading(false);
             }
         }
 
 
+        //Create function for file changes
+        const onChangeFiles = e => {setFileData({[e.target.name]: e.target.files});}
+        //Upload Profile Picture Function
+        const uploadProfile = async (files) => { 
+            console.log("clicked");
+            setLoading(true);
+            if(files){
+                //Make an array from the fileList Type
+                let file = Array.from(files.file);
+                //Just get the first element since we are uploading just 1 picture
+                file = file[0];
+                //Generate new Form data in order to be able to upload to imgur
+                let imageData = new FormData();
+                //Add the file
+                imageData.append('image', file);
+                try {
+                    //Upload image to IMGUR
+                    let pictureUpload = await axios.post('https://api.imgur.com/3/image', imageData, {
+                             headers: {
+                                 'Authorization': 'Client-ID afda234326b61af',
+                                      }
+                                 });
+                    //Get the picture url out of the response body from axios.
+                    let pictureURL = pictureUpload.data.data.link;
+                    console.log(pictureURL);
+                    try {
+                        //Now Update the users profile picture and the user's DB picture.
+                        await app.auth().currentUser.updateProfile({photoURL: pictureURL});
+                        let UPDATEIT = await db.collection("usernames").doc(currentUser.email).set({
+                            profilePic: pictureURL
+                        },{ merge: true });
+                        setPictureAlert("success");
+                        setDisplayImage(pictureURL);
+                        setLoading(false);
+                    } catch (error) {
+                        console.log(error);
+                    }
+
+                } catch (error) {
+                    console.log(error);
+                }
+                
+                
+            } else {
+                setPictureAlert("no file");
+                setLoading(false);
+            }
+         
+        }
+
+        //GET RANDOM IMAGE FUNCTION
+        const setNewRandomPic = async () => {
+            setLoading(true);
+            let randomURL = await axios.get('https://source.unsplash.com/random/150x150').then((response) => {
+                console.log("function triggered")
+            return response.request.responseURL;
+            })
+
+            console.log( await randomURL, "lol");
+
+        try {
+            if(randomURL) {
+                await app.auth().currentUser.updateProfile({photoURL: randomURL});
+                await db.collection("usernames").doc(currentUser.email).update({
+                    profilePic: randomURL
+                })
+                console.log("new image?");
+                setDisplayImage(randomURL);
+                setRandomAlert("success");
+                setLoading(false);
+            }
+        } catch (error) {
+            console.log(error);
+            setRandomAlert("fail");
+        }
+        }
+            
 
 
 
@@ -125,16 +235,43 @@ const Cursos = () => {
                 <label>Repetí Password</label>
                 <input type="password" name="password" placeholder="Password" />
                 <div></div>
-                <button>Guardar Cambios</button>
+                <button>{formLoading ? <RoundSpinner /> : "Guardar Cambios"}</button>
+                {formAlert === "success" ? <Alert text="Información actualizada" success /> : null}
             </form>
         )
+        
+        const imageBox = (
+            <div class="image-box">
+            <h4>Tu foto de perfil actual:</h4>
+            {currentUser ? <img class="profile-pic" src={displayImage}/> : null}
+            <h4>Cambiar:</h4>
+            <button class="nice-button" onClick={() => setNewRandomPic()} >Poner una Random</button>
+          
+            <div class="side-by-side">
+                <input class="file"  type="file" name="file" onChange={e => onChangeFiles(e)}></input>
+                <button class="nice-button" onClick={() => uploadProfile(fileData)}>{loading ? <RoundSpinner /> : "Subir!"}</button>
+            </div>
+            {pictureAlert === "success" ? <Alert text="Imágen Subida" success /> : null}
+            {pictureAlert === "fail" ? <Alert text="Error, probá de nuevo más tarde" fail /> : null}
+            {pictureAlert === "no file" ? <Alert text="Probá adjuntando un archivo" fail /> : null}
+            {randomAlert === "success" ? <Alert text="Ya tenés una nueva imágen aleatoria" success /> : null}
+            {randomAlert === "fail" ? <Alert text="Error, probá de nuevo más tarde" fail /> : null}
+            </div>
+        )
+        
+        
+
+
 
     return (
         <Layout>
             <SetCrumbs  first="Perfil"/>
             <Jumbotron title="Editar Perfil" text="Aquí podes editar los detalles de tu cuenta"> 
             {!currentUser ? <Redirect noThrow to="/login" /> : null}
+            <div class="edit-profile-container">
             {userData?.username ? form : <Spinner/>}
+            {userData?.username ? imageBox : <Spinner/>}
+            </div>
             </Jumbotron>
         </Layout>
     )

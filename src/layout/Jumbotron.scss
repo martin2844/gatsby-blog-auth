@@ -28,6 +28,44 @@
     }
 }
 
+
+
+.edit-profile-container {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding: 4rem 0;
+    .profile-pic {
+        margin-bottom: 2rem;
+    }
+    .image-box {
+        h4 {
+            margin-top: 0;
+        }
+    }
+    form {
+        margin: 0 8rem;
+        .alert {
+            grid-column-start: 1;
+            grid-column-end: 3;
+            width: 90%;
+        }
+    }
+}
+
+
+
+.profile-pic {
+    border-radius:  50%;
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+}
+
+
+
+
 @media screen and (max-width: 500px) {
 
 

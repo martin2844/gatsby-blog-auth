@@ -77,6 +77,16 @@ August:
 September 2020: 
 Forgot about it, life happened.
 Started again, with edit profile. Must continue flow there.
+**19-9-20**: 
+- Refactor edit profile page.  
+- Added image upload to IMGUR  
+- added random image functionality. 
+- added alerts
+Must add to complete:   
+- Alert animations and fade-outs
+- Password changing logic
+- Check mobile for edit profile.
+     
 
 
 ## Ideas to implement

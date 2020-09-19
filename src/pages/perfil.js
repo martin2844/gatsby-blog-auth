@@ -266,7 +266,7 @@ query {
                     </div>
            
               <h5>Tu imagen:</h5>
-              {currentUser ? <img src={displayImage}/> : null}
+              {currentUser ? <img class="profile-pic" src={displayImage}/> : null}
               <div>        
                 <button>Cambiar:</button>
                 <button onClick={ () => setNewProfile() }>Poner una random</button>

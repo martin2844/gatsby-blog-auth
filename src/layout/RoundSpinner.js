@@ -1,8 +1,8 @@
 import React from 'react';
 import './RoundSpinner.scss';
-const RoundSpinner = () => {
+const RoundSpinner = ({style}) => {
     return (
-        <div id="loading"></div>
+        <div id="loading" style={{...style}}></div>
     )
 }
 
