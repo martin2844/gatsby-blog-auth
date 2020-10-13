@@ -5,6 +5,7 @@ import app from '../config/base.js';
 import {GlobalStateContext, AuthContext, GlobalDispatchContext} from '../config/context';
 import { globalHistory as history } from '@reach/router';
 import Img from 'gatsby-image';
+import {Helmet} from "react-helmet";
 
 const Header = () => {
   // First we will define our dispatch function to hoist crumbs to global state.
@@ -245,6 +246,13 @@ const Header = () => {
     // Begin MAIN JSX return
     return (
         <section className="header-main">
+          <Helmet>
+          <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+  />
+          </Helmet>
+   
             <div className="top-bar flex-row-center">
                  <div className="toggle-mode"></div>
                  {currentUser ?

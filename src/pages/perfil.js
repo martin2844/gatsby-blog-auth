@@ -2,10 +2,9 @@ import React, {useContext, useState, useEffect} from 'react'
 import Layout from '../layout/Layout';
 import Title from '../layout/title';
 import app from '../config/base.js';
-import axios from 'axios';
-import { GlobalDispatchContext, GlobalStateContext, AuthContext } from '../config/context';
+import { AuthContext } from '../config/context';
 import {Link, graphql, useStaticQuery} from 'gatsby';
-import Spinner from '../layout/Spinner';
+import RoundSpinner from '../layout/RoundSpinner';
 import './styles/profile.scss';
 import { checkPro } from '../config/checkPro';
 import SetCrumbs from '../config/SetCrumbs';
@@ -36,9 +35,8 @@ query {
   } 
 `)
 
-  console.log(postsQuery.posts.edges);
+    const [userData, setUserData] = useState();
     const [displayImage, setDisplayImage] = useState(null);
-    const [change, displayChange] = useState(false);
     const [newName, setNewName] = useState("");
     const [pro, setPro] = useState({pro: false, courses: null})
     const [commentData, setCommentData] = useState({
@@ -165,68 +163,9 @@ query {
         }
      
     }, [currentUser]);
-
-    console.log(pro);
-
-    //GET RANDOM IMAGE FUNCTION
-    const setNewProfile = async () => {
-
-        let randomURL = await axios.get('https://source.unsplash.com/random/150x150').then((response) => {
-            console.log("function triggered")
-           return response.request.responseURL
-        })
-
-        console.log( await randomURL, "lol");
-
-     try {
-        if(randomURL) {
-            await app.auth().currentUser.updateProfile({photoURL: randomURL});
-            await db.collection("usernames").doc(currentUser.email).update({
-                profilePic: randomURL
-            })
-            console.log("new image?")
-            setDisplayImage(randomURL);
-        }
-     } catch (error) {
-         console.log(error);
-     }
-    }
-
     
 
-    const d = new Date();
-    const ye = new Intl.DateTimeFormat('en', { year: 'numeric' }).format(d)
-    const mo = new Intl.DateTimeFormat('en', { month: 'short' }).format(d)
-    const da = new Intl.DateTimeFormat('en', { day: '2-digit' }).format(d)
-
-
-    //handleChange of username
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        console.log(newName)
-        try {
-            await app.auth().currentUser.updateProfile({displayName: newName});
-            console.log("new name set in user auth module");
-            await db.collection("usernames").doc(currentUser.email).set({
-                username: newName,
-            }, {merge: true});
-            console.log("new name set in DB");
-        } catch (error) {
-            console.error(error);
-        }
-    }
- 
-    //New Name form 
-
-    let newDispName = (
-        <form onSubmit={(e) => handleSubmit(e)}>
-            <input value={newName} type="text" onChange={e => setNewName(e.target.value)}></input>
-            <button>change</button>
-        </form>
-
-    )
-
-
+    //Coment display JSX
     let commentDisplay = (
         <div> 
             <h5>Dejaste un total de {commentData.commentCount} comentarios</h5>
@@ -241,49 +180,45 @@ query {
         </div>
     )
 
-    console.log(commentData)
-
     return (
         <Layout>
             <SetCrumbs  first="Perfil"/>
             {!currentUser ? <Redirect noThrow to="/login" /> : null}
             <section className="profile-top">
-            { name ? <Title subtitle={`Bienvenido ${name}`} sub2={`${da}-${mo}-${ye}`} /> : null}
-            {currentUser ? <img className="profile-pic" src={displayImage}/> : null}
+                    <div className="profile-data-container">
+                        <div className="info-section">
+                        { name ? <Title subtitle={`Bienvenido ${name}`} /> : null}
+                        {currentUser ? <img className="profile-pic" src={displayImage}/> : null}
+                        <p>Usuario </p>
+                        <p>Comentarios: </p>
+                      
+                        </div>
+
+                    
+
+                    
+                        <div className="user-section">
+                            <div className="user-comments">
+                                Ultimo comentario:
+                                {
+                                    commentData.commentCount === null ? 
+                                    <RoundSpinner text="loading comments" /> :
+                                    (commentData.commentCount >= 1 ? commentDisplay : 
+                                    <p>No comentaste en ningún post todavia!</p>)
+                                 }
+                                
+                            </div>
+                           
+                        </div>
+
+                    </div>
+                  
+
             </section>
             
 
 
 
-            <section className="user-section">
-
-              <div className="user-data">
-                    <div className="display-name">
-                          <h5>Tu nombre de display: {name}</h5>
-                          <button onClick={() => displayChange(!change)} >Cambiar</button>
-                           {change && newDispName}
-
-                    </div>
-           
-              <h5>Tu imagen:</h5>
-              {currentUser ? <img class="profile-pic" src={displayImage}/> : null}
-              <div>        
-                <button>Cambiar:</button>
-                <button onClick={ () => setNewProfile() }>Poner una random</button>
-              </div>
-      
-
-
-              </div>
-             
-             <div className="user-comments">
-                {commentData.commentCount === null ? <Spinner text="loading comments" /> : (commentData.commentCount >= 1 ? commentDisplay : <p>No comentaste todavia!</p>)}
-               
-
-             </div>
-
-             
-            </section>
 
 
 

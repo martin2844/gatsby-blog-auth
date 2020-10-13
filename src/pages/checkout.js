@@ -9,6 +9,7 @@ import pay from "../config/pay";
 import firebase from "firebase/app";
 import app from '../config/base.js';
 import './styles/checkout.scss';
+import { Redirect } from "@reach/router";
 
 const Checkout = () => {
     //First get course's thumbs
@@ -160,10 +161,11 @@ const Checkout = () => {
       //then update billing info
       updateBillingInfo().then(x => console.log(x));
       //Then post new info i.e. formdata && course info to pay.
-      console.log("pay btn")
-
+      pay(state.course);
     }
 
+   
+    
     //UseEffect to clean errors
     useEffect(() => {
       setAlert(null);
@@ -198,6 +200,7 @@ const Checkout = () => {
 
     return (
         <Layout>
+           {!state.course ? <Redirect noThrow to={`/`} /> : null}
             <h4>Por favor completá algunos datos para seguir con la compra!</h4>
             <div className="checkout-main">
             <section className="billing-form">

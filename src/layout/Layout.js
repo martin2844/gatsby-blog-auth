@@ -4,6 +4,7 @@ import './Layout.scss';
 import Header from './Header';
 import MobileMenu from './MobileMenu';
 import { GlobalStateContext } from '../config/context';
+import Footer from './footer';
 
 const Layout = (props) => {
 
@@ -22,6 +23,7 @@ const Layout = (props) => {
             
          {props.children}
         </div>
+        <Footer />
         </React.Fragment>
     )
 }

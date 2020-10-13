@@ -213,7 +213,7 @@ query {
         }
         
         return(
-            <PostCard key={course.node.frontmatter.title} title={course.node.frontmatter.title} category={course.node.frontmatter.category} type={course.node.frontmatter.type}  course image={courseImg}/>
+            <PostCard key={course.node.frontmatter.title} title={course.node.frontmatter.title} category={course.node.frontmatter.category} type={course.node.frontmatter.type} slug={course.node.fields.slug} course image={courseImg}/>
         )
     })
 
@@ -224,7 +224,7 @@ query {
     <Layout>
         <SetCrumbs first="Home" second="Cursos"/>
         <section className="card-container"> 
-                { posts } 
+                { courseCards } 
                 <hr className="hr-god" />   
         </section>
         </Layout>

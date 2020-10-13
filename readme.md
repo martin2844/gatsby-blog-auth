@@ -76,16 +76,23 @@ August:
 
 September 2020: 
 Forgot about it, life happened.
-Started again, with edit profile. Must continue flow there.
+Started again, with edit profile. Must continue flow there.  
 **19-9-20**: 
 - Refactor edit profile page.  
 - Added image upload to IMGUR  
 - added random image functionality. 
-- added alerts
-Must add to complete:   
+- added alerts  
+*Must add to complete*:   
 - Alert animations and fade-outs
 - Password changing logic
 - Check mobile for edit profile.
+  
+**22-9-20**
+Finished checkout.js flow.
+  
+**13-10-2020**  
+- Added Footer Component with mobile  
+- Worked on profile page - must adapt
      
 
 
@@ -93,6 +100,8 @@ Must add to complete:
 
 For the courses section we'll have two types of courses free and paid.
 Courses will be structured in markdown, so on gatsby node on the markdown loop we will have to create an if statement to separate courses from normal blog posts.
+
+```
 
 If (format === course) {
 
@@ -109,6 +118,8 @@ If (format === course) {
 } else {
     create page @ /tutoriales/
 }
+
+```
 
 also, .gitignore - avoid pushing paid courses. Actually this would not work since netlify uses git repo to push. Either fork repo when integration is done, and create new private repo with that or make repo private
 

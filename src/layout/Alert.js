@@ -1,7 +1,9 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import "./Alert.scss";
 
 const Alert = (props) => {
+    const [animation, setAnimation] = useState("animate__fadeInUp")
+
     let {text, fail, success} = props;
     let styling;
     if(fail){
@@ -11,10 +13,15 @@ const Alert = (props) => {
     } else {
         styling = null;
     }
+    
+    setTimeout(() => {
+        setAnimation("animate__fadeOut");
+    }, 3000);
 
+    
 
     return (
-        <div className={`alert ${styling}`}>
+        <div className={`alert ${styling} animate__animated ${animation}`}>
             {text}
         </div>
     )

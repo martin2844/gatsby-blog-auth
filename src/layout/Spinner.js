@@ -1,12 +1,10 @@
 import React from 'react'
-import './Spinner.scss'
+import './RoundSpinner.scss'
 
 const Spinner = (props) => {
     return (
         <div className="top-container">
-        <div className="seven">
-            <div className="loader" id="loader-7"></div>
-        </div>
+        <div class="spinner"></div>
         <h4>{props.text}</h4>
         </div>
     )

@@ -37,7 +37,7 @@ const Cursos = () => {
         //Set loaders
         const [loading, setLoading] = useState(false);
         const [formLoading, setFormLoading] = useState(false);
-
+        const [passData, setPassData] = useState();
         /* 
         
         We will get user data to populate this page 
@@ -108,23 +108,47 @@ const Cursos = () => {
             )
         }
 
+        const onChangePass = e => {setPassData({...passData, [e.target.name]: e.target.value})}
+
         //6. Create function to post new user data.
         const onSubmit = async (e) => {
             //Prevent default behaviour.
             e.preventDefault();
             setFormLoading(true);
             console.log(userData);
+
+            if(passData && passData.password !== passData.password2){
+                setFormAlert("passError")
+                setFormLoading(false);
+                throw Error;
+                return;
+            }
+
+            if(passData && passData.password.length < 6) {
+                setFormAlert("length");
+                setFormLoading(false);
+                throw Error;
+                return;
+            }
+
             //Update the firebase user.
             try {
                 await app.auth().currentUser.updateProfile({displayName: userData.username});
                 await db.collection("usernames").doc(currentUser.email).set({
                     ...userData
                 },{ merge: true });
+                if(passData?.password) {
+                    await app.auth().currentUser.updatePassword(passData.password)
+                }
                 setFormAlert("success");
                 setFormLoading(false);
             } catch (error) {
                 console.log(error);
-                setFormAlert("error");
+                if(error.code === "auth/requires-recent-login"){
+                    setFormAlert("re-login");
+                } else {
+                    setFormAlert("error");
+                }
                 setFormLoading(false);
             }
         }
@@ -231,12 +255,17 @@ const Cursos = () => {
                 <br/>
                 <div></div>
                 <label>Password</label>
-                <input type="password" name="password" placeholder="Password" />
+                <input onChange={e => onChangePass(e)} type="password" name="password" placeholder="Password" />
                 <label>Repetí Password</label>
-                <input type="password" name="password" placeholder="Password" />
+                <input onChange={e => onChangePass(e)} type="password" name="password2" placeholder="Repeat Pass" />
                 <div></div>
                 <button>{formLoading ? <RoundSpinner /> : "Guardar Cambios"}</button>
                 {formAlert === "success" ? <Alert text="Información actualizada" success /> : null}
+                {formAlert === "error" ? <Alert text="Ocurrió un error probá nuevamente después" fail /> : null}
+                {formAlert === "passError" ? <Alert text="Las contraseñas deben coincidir" fail /> : null}
+                {formAlert === "length" ? <Alert text="Las contraseña debe ser de al menos 6 carácteres" fail /> : null}
+                {formAlert === "re-login" ? <Alert text="Para cambiar la contraseña te vamos a pedir que te deslogues y vuelvas a loguear! Disculpa!" fail /> : null}
+                
             </form>
         )
         
@@ -260,8 +289,24 @@ const Cursos = () => {
         )
         
         
+        //Cleanup alerts
+        useEffect(() => {
+          setTimeout(() => {
+              setPictureAlert(null);
+          }, 8000);
+        }, [pictureAlert])
 
+        useEffect(() => {
+            setTimeout(() => {
+                setRandomAlert(null);
+            }, 8000);
+          }, [randomAlert])
 
+          useEffect(() => {
+            setTimeout(() => {
+                setFormAlert(null);
+            }, 8000);
+          }, [formAlert])
 
     return (
         <Layout>
