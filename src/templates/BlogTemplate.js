@@ -27,6 +27,9 @@ query (
         }
       }
     ){
+      fields {
+        slug
+      }
       frontmatter {
         title
         date
@@ -35,6 +38,9 @@ query (
         category
         tags
         course
+        type
+        page
+        final
       }
       html
     }
@@ -47,6 +53,7 @@ query (
 const BlogTemplate = (props) => {
   const { location } = history;
   const { pathname } = location;
+  
 
   const state = useContext(GlobalStateContext) || {
       toggleDark: true
@@ -348,9 +355,66 @@ const BlogTemplate = (props) => {
   )
 
 
+//IF course and has children render next and back BTN 
 
 
 
+//Define links for BTN's
+let slugForUrl = props.data.markdownRemark.fields.slug.replace(/[0-9]/g, '');
+let nextPage;
+let backPage;
+let backURL;
+
+if(props?.data?.markdownRemark.frontmatter.course){
+  if(!props.data.markdownRemark.frontmatter?.type?.includes("child")) {
+    backPage = 0;
+    nextPage = 2;
+  } else if(props.data.markdownRemark.frontmatter.page === 2){
+    nextPage = props.data.markdownRemark.frontmatter.page + 1
+    backPage = 0;
+    backURL = `/cursos/free/${slugForUrl}`
+  } else {
+    nextPage = props.data.markdownRemark.frontmatter.page + 1
+    backPage = props.data.markdownRemark.frontmatter.page - 1
+    backURL = `/cursos/free/${slugForUrl}/${backPage}`
+  }
+}
+
+let nextBTN = (
+  <Link className="btn-master" to={`/cursos/free/${slugForUrl}/${nextPage}`}>Next ➡</Link>
+)
+
+let backBTN = (
+  <Link className="btn-master" to={backURL}>⬅ Back</Link>
+)
+
+
+const [btn, setBtn] = useState({
+  prev: false,
+  next: false,
+})
+useEffect(() => {
+  console.log(props.data.markdownRemark.frontmatter)
+  console.log(props.data.markdownRemark.frontmatter.final)
+  if(props.data.markdownRemark.frontmatter.course && !props.data.markdownRemark.frontmatter.final && !props.data.markdownRemark.frontmatter?.type?.includes("child")) {
+    setBtn({
+      prev: false,
+      next: true
+    })
+  } else if(props.data.markdownRemark.frontmatter.course && !props.data.markdownRemark.frontmatter.final) {
+    setBtn({
+      prev: true,
+      next: true
+    })
+  } else {
+    setBtn({
+      prev: true,
+      next: false
+    })
+  }
+}, [props])
+
+console.log(btn)
 
 
  return (
@@ -367,6 +431,10 @@ const BlogTemplate = (props) => {
         </div>
         <div className='post-content-container' dangerouslySetInnerHTML={{__html: props.data.markdownRemark.html}}></div>
         </section>
+        <section className="post-nav">
+          {btn.prev ? backBTN : <div></div>}
+          {btn.next ? nextBTN : <div></div>}
+        </section>
         <section className="post-comments">
         <div className="top-comment-bar">
              <span>
@@ -377,7 +445,7 @@ const BlogTemplate = (props) => {
              </span> 
         </div>
 
-
+         
           {loading ? <Spinner text="cargando comentarios" /> : commentsDisplay}
          
         </section>

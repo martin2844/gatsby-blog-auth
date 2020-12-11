@@ -36,6 +36,8 @@ module.exports.createPages = async ({graphql, actions}) => {
                 category
                 type
                 course
+                page
+                id
               }
               fields {
                 slug
@@ -59,25 +61,38 @@ module.exports.createPages = async ({graphql, actions}) => {
 
 
     res.data.allMarkdownRemark.edges.forEach( (edge) => {
-      
+
       //Tags is an array inside frontmatter so we can loop it and add each individual item to the newly created tagg set.
       if(edge.node.frontmatter.course) {
+       
 
         if(edge.node.frontmatter.type === "paid") {
           console.log("paid course")
-          createPage({
-            component: proTemplate,
-            path: `/cursos/pro/${edge.node.fields.slug}`,
-            context: {
-                slug: edge.node.fields.slug
-            }
-        });
+          if(edge.node.frontmatter.type.includes("child")) {
+            console.log("creating child")
+            createPage({
+              component: proTemplate,
+              path: `/cursos/pro/${edge.node.fields.slug}/${edge.node.frontmatter.page}`,
+              context: {
+                  slug: edge.node.fields.slug
+              }
+          });
+          }else {
+            createPage({
+              component: proTemplate,
+              path: `/cursos/pro/${edge.node.fields.slug}`,
+              context: {
+                  slug: edge.node.fields.slug
+              }
+          });
+          }
+     
           return
         } else if(edge.node.frontmatter.type === "paid-preview") {
           console.log("a paid course preview")
           createPage({
             component: previewTemplate,
-            path: `/cursos/preview/${edge.node.fields.slug}`,
+            path: `/cursos/preview/${edge.node.fields.slug}${edge.node.frontmatter.page}`,
             context: {
                 slug: edge.node.fields.slug
             }
@@ -85,13 +100,27 @@ module.exports.createPages = async ({graphql, actions}) => {
           return
         } else {
           console.log("a free course")
-          createPage({
-            component: blogTemplate,
-            path: `/cursos/free/${edge.node.fields.slug}`,
-            context: {
-                slug: edge.node.fields.slug
-            }
-        });
+         
+          if(edge.node.frontmatter.type.includes("child")) {
+            let slug = edge.node.fields.slug.replace(/[0-9]/g, '');
+            console.log(`/cursos/free/${slug}/${edge.node.frontmatter.page}`)
+            createPage({
+              component: blogTemplate,
+              path: `/cursos/free/${slug}/${edge.node.frontmatter.page}`,
+              context: {
+                  slug: edge.node.fields.slug
+              }
+          });
+          } else {
+            createPage({
+              component: blogTemplate,
+              path: `/cursos/free/${edge.node.fields.slug}`,
+              context: {
+                  slug: edge.node.fields.slug
+              }
+          });
+          }
+     
         }
 
 

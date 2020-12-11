@@ -1,13 +1,14 @@
 ---
 
-
-title: 'React para principiantes'
-date: '2020-07-01'
-sinopsis: '¿Qué es React y para que sirve? ¿Cómo y por donde empezar con React? Veremos como arrancar con create-react-app'
-tags: [React, Principiantes]
-id: "4"
-category: "Front-End"
-
+title: "React para principiantes"
+date: "2019-06-29"
+sinopsis: "Curso Pago "
+tags: [React]
+category: "Front End"
+id: "f1"
+type: "free"
+course: true
+page: 1
 ---
 
 Bienvenidos a CodigoMate, mi nombre es Martin, y hoy vamos a ver los contenidos básicos sobre React y como empezar con esta biblioteca.

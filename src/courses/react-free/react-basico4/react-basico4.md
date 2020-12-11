@@ -4,9 +4,12 @@
 title: 'React para principiantes 4'
 date: '2020-07-04'
 sinopsis: 'Ya tenemos lo principal hecho, ahora vamos con el CRUD, es decir la funcion de create - read - update - delete. Veremos el manejo de estado en react'
-tags: [React, Principiantes]
-id: "7"
-category: "Front-End"
+tags: [React]
+category: "Front End"
+id: "f1-3"
+type: "free-child"
+course: true
+page: 4
 
 ---
 

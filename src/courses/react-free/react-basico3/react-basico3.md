@@ -4,9 +4,12 @@
 title: 'React para principiantes 3'
 date: '2020-07-03'
 sinopsis: 'Ya escribimos nuestro primer componente y logramos usarlo. Vamos a instalar algunos paquetes para poder estilar nuestra aplicación y que se vea mejor'
-tags: [React, Principiantes]
-id: "6"
-category: "Front-End"
+tags: [React]
+category: "Front End"
+id: "f1-3"
+type: "free-child"
+course: true
+page: 3
 
 ---
 

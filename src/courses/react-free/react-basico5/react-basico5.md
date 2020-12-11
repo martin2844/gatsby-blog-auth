@@ -2,9 +2,13 @@
 title: 'React para principiantes 5'
 date: '2020-07-05'
 sinopsis: 'Ya vimos useState, y del CRUD tenemos hecho el CR, create and read, nos falta delete y update. Pero antes veremos la persistencia de datos.'
-tags: [React, Principiantes]
-id: "8"
-category: "Front-End"
+tags: [React]
+category: "Front End"
+id: "f1-3"
+type: "free-child"
+course: true
+page: 5
+final: true
 ---
 
 
