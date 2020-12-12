@@ -92,7 +92,7 @@ module.exports.createPages = async ({graphql, actions}) => {
           console.log("a paid course preview")
           createPage({
             component: previewTemplate,
-            path: `/cursos/preview/${edge.node.fields.slug}${edge.node.frontmatter.page}`,
+            path: `/cursos/preview/${edge.node.fields.slug}`,
             context: {
                 slug: edge.node.fields.slug
             }

@@ -200,7 +200,9 @@ query {
 
 
     const courseCards = postsQuery.courses.edges.map((course) => {
-        console.log(course.node)
+      if(course.node.frontmatter.type.includes("child")) {
+        return
+      }
         let courseImg;
         let courseThumb = postsQuery.cimages.edges.filter((img) => {
             let name = img.node.childImageSharp.fixed.originalName

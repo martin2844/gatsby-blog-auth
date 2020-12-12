@@ -101,7 +101,7 @@ query {
                    
                 // If no results do following block
                 if(usernameEntry === undefined || usernameEntry.email === undefined || usernameEntry.profilePic === undefined) {
-                    console.log("username === undefind, writing name to DB")
+                    console.log("username === undefined, writing name to DB")
                     await db.collection("usernames").doc(currentUser.email).set({
                         email: currentUser.email,
                         username: currentUser.displayName,
